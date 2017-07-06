@@ -33,7 +33,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-fxbfbfbe3wgkj7xfm8vdnhp7ii0w85eiez9rkz7oqb9bivtup6r0b5rnjr0o.min.css">
+    <link rel="stylesheet" href="/assets/css/style-2vlb6rbuf0vtqqwvtxzs5fkkvywdbuzxcpzjrb6phlk5lnbldy5aztksln9t.min.css">
     <!--STYLES END-->
     
     
@@ -277,7 +277,7 @@
 <li>尝试添加参数-S和-H，没有效果。</li>
 <li>最后根据<a href="https://bbs.archlinux.org/viewtopic.php?id=202694" target="_blank" rel="external">Arch Forum</a>上的回答，修改了<code>/etc/security/limits.conf</code>文件并重启电脑，问题解决。</li>
 </ol>
-<h2 id="hexo-server报ENOSPC错误"><a href="#hexo-server报ENOSPC错误" class="headerlink" title="hexo server报ENOSPC错误"></a>hexo server报ENOSPC错误</h2><p>Hexo官网的<a href="https://hexo.io/zh-cn/docs/troubleshooting.html" target="_blank" rel="external">问题解答</a>中给出了如下描述：<br>它可以用过运行 <code>$ npm dedupe</code> 来解决，如果不起作用的话，可以尝试在 Linux 终端中运行下列命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</div></pre></td></tr></table></figure><br>这将会提高你能监视的文件数量。<br><code>$ npm dedupe</code>没有解决问题，最后使用上述的命令解决了问题。（注意在fish中，<code>&#39;&amp;&amp;&#39;</code>要用<code>&#39;COMMAND; and COMMAND&#39;来替代</code>）</p>
+<h2 id="hexo-server报ENOSPC错误"><a href="#hexo-server报ENOSPC错误" class="headerlink" title="hexo server报ENOSPC错误"></a>hexo server报ENOSPC错误</h2><p>Hexo官网的<a href="https://hexo.io/zh-cn/docs/troubleshooting.html" target="_blank" rel="external">问题解答</a>中给出了如下描述：<br>它可以用过运行 <code>$ npm dedupe</code> 来解决，如果不起作用的话，可以尝试在 Linux 终端中运行下列命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</div></pre></td></tr></table></figure><br>这将会提高你能监视的文件数量。<br><code>$ npm dedupe</code>没有解决问题，最后使用上述的命令解决了问题。（注意在fish中，<code>&#39;&amp;&amp;&#39;</code>要用<code>&#39;COMMAND; and COMMAND&#39;</code>来替代）</p>
 
                     
                         
@@ -579,7 +579,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-jkzvjgbpvlltpwrcgoof8fkpzgkmd2k2dsett57crwwbafcqttunoafn0huy.min.js"></script>
+<script src="/assets/js/script-he4hmxof1aagptuktwd9dfzd7rgjrefvbflppkmlhmhhxqoapcduvw2trjz2.min.js"></script>
 <!--SCRIPTS END-->
 
 

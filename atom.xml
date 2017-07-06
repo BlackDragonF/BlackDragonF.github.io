@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.duskdragon.com/"/>
-  <updated>2017-07-06T15:40:35.326Z</updated>
+  <updated>2017-07-06T15:45:04.672Z</updated>
   <id>http://blog.duskdragon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://blog.duskdragon.com/2017/07/06/Arch%E4%B8%8BHexo%E9%85%8D%E7%BD%AE%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/"/>
     <id>http://blog.duskdragon.com/2017/07/06/Arch下Hexo配置的问题总结/</id>
     <published>2017-07-06T12:29:45.000Z</published>
-    <updated>2017-07-06T15:40:35.326Z</updated>
+    <updated>2017-07-06T15:45:04.672Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>近期将主力环境从macOS切换至Arch Linux，然后将博客从原环境迁移至现环境，本来以为过程会比较简单，结果却还是踩了几个坑，现在将配置过程中遇到的问题记录并且总结如下。</p>
@@ -37,7 +37,7 @@
 <li>尝试添加参数-S和-H，没有效果。</li>
 <li>最后根据<a href="https://bbs.archlinux.org/viewtopic.php?id=202694" target="_blank" rel="external">Arch Forum</a>上的回答，修改了<code>/etc/security/limits.conf</code>文件并重启电脑，问题解决。</li>
 </ol>
-<h2 id="hexo-server报ENOSPC错误"><a href="#hexo-server报ENOSPC错误" class="headerlink" title="hexo server报ENOSPC错误"></a>hexo server报ENOSPC错误</h2><p>Hexo官网的<a href="https://hexo.io/zh-cn/docs/troubleshooting.html" target="_blank" rel="external">问题解答</a>中给出了如下描述：<br>它可以用过运行 <code>$ npm dedupe</code> 来解决，如果不起作用的话，可以尝试在 Linux 终端中运行下列命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</div></pre></td></tr></table></figure><br>这将会提高你能监视的文件数量。<br><code>$ npm dedupe</code>没有解决问题，最后使用上述的命令解决了问题。（注意在fish中，<code>&#39;&amp;&amp;&#39;</code>要用<code>&#39;COMMAND; and COMMAND&#39;来替代</code>）</p>
+<h2 id="hexo-server报ENOSPC错误"><a href="#hexo-server报ENOSPC错误" class="headerlink" title="hexo server报ENOSPC错误"></a>hexo server报ENOSPC错误</h2><p>Hexo官网的<a href="https://hexo.io/zh-cn/docs/troubleshooting.html" target="_blank" rel="external">问题解答</a>中给出了如下描述：<br>它可以用过运行 <code>$ npm dedupe</code> 来解决，如果不起作用的话，可以尝试在 Linux 终端中运行下列命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</div></pre></td></tr></table></figure><br>这将会提高你能监视的文件数量。<br><code>$ npm dedupe</code>没有解决问题，最后使用上述的命令解决了问题。（注意在fish中，<code>&#39;&amp;&amp;&#39;</code>要用<code>&#39;COMMAND; and COMMAND&#39;</code>来替代）</p>
 ]]></content>
     
     <summary type="html">

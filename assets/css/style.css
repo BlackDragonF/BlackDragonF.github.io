@@ -2697,7 +2697,7 @@ pre > code {
   width: 100%;
   box-sizing: border-box;
   padding: 15px;
-  font-family: SourceCodePro, monospace;
+  font-family: Source Code Pro, monospace;
   border: none;
   margin: 0;
   cursor: text;
@@ -2708,7 +2708,7 @@ pre > code {
 code {
   font-size: 1.5rem;
   display: inline-block;
-  font-family: "SourceCodePro", monospace;
+  font-family: "Source Code Pro", monospace;
   font-weight: 400;
   background-color: #f7f8f8;
   padding: 0 10px; }
@@ -4014,7 +4014,7 @@ figure.highlight,
   .codeblock .code,
   .codeblock .tag {
     background-color: inherit;
-    font-family: SourceCodePro, monospace;
+    font-family: Source Code Pro, monospace;
     border: none;
     padding: 0;
     margin: 0;
@@ -4073,7 +4073,7 @@ figure.highlight,
 
 .gist .line,
 .gist .line-number {
-  font-family: "SourceCodePro", monospace;
+  font-family: "Source Code Pro", monospace;
   font-size: 1em;
   margin: 0 0 5px 0; }
 
