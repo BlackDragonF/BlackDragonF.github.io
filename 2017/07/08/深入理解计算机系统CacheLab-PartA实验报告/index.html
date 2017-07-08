@@ -6,22 +6,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="小黑龙的窝">
-    <title>归档: 2017/7 - 小黑龙的窝</title>
+    <title>深入理解计算机系统CacheLab-PartA实验报告 - 小黑龙的窝</title>
     <meta name="author" content="BlackDragon">
     
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <meta name="description" content="/* 生命不息 代码不止 */">
+    <meta name="description" content="实验答案托管在我的GitHub上  考完试之后一直比较颓废，本来想看完《深入理解计算机系统》的第5章——优化程序性能之后就赶快来做实验的，后来发现无论是Cache Lab还是Performance Lab都需要第6章——存储器层次结构的知识。看了几天的书，又磨蹭了几天，终于把Cache Lab的Part A写完了，总结如下。  实验简介Cache Lab - Understanding Cache">
+<meta name="keywords" content="计算机系统,实验">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="小黑龙的窝">
-<meta property="og:url" content="http://blog.duskdragon.com/archives/2017/07/index.html">
+<meta property="og:title" content="深入理解计算机系统CacheLab-PartA实验报告">
+<meta property="og:url" content="http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/index.html">
 <meta property="og:site_name" content="小黑龙的窝">
-<meta property="og:description" content="/* 生命不息 代码不止 */">
+<meta property="og:description" content="实验答案托管在我的GitHub上  考完试之后一直比较颓废，本来想看完《深入理解计算机系统》的第5章——优化程序性能之后就赶快来做实验的，后来发现无论是Cache Lab还是Performance Lab都需要第6章——存储器层次结构的知识。看了几天的书，又磨蹭了几天，终于把Cache Lab的Part A写完了，总结如下。  实验简介Cache Lab - Understanding Cache">
+<meta property="og:updated_time" content="2017-07-08T12:32:31.532Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小黑龙的窝">
-<meta name="twitter:description" content="/* 生命不息 代码不止 */">
+<meta name="twitter:title" content="深入理解计算机系统CacheLab-PartA实验报告">
+<meta name="twitter:description" content="实验答案托管在我的GitHub上  考完试之后一直比较颓废，本来想看完《深入理解计算机系统》的第5章——优化程序性能之后就赶快来做实验的，后来发现无论是Cache Lab还是Performance Lab都需要第6章——存储器层次结构的知识。看了几天的书，又磨蹭了几天，终于把Cache Lab的Part A写完了，总结如下。  实验简介Cache Lab - Understanding Cache">
     
     
         
@@ -50,7 +52,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">小黑龙的窝</a>
@@ -74,7 +76,7 @@
         
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -225,26 +227,22 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
+            <div id="main" data-behavior="4"
                  class="
                         hasCoverMetaIn
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
-                            深入理解计算机系统CacheLab-PartA实验报告
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title" itemprop="headline">
+            深入理解计算机系统CacheLab-PartA实验报告
+        </h1>
+    
+    
+        <div class="post-meta">
     <time itemprop="datePublished" datetime="2017-07-08T17:55:51+08:00">
 	
 		    7月 08, 2017
@@ -259,10 +257,12 @@
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-content" itemprop="articleBody">
-                    <p>实验答案托管在我的<a href="https://github.com/BlackDragonF/CSAPPLabs/tree/master/CacheLab" target="_blank" rel="external">GitHub</a>上</p>
+    
+</div>
+    
+    <div class="post-content markdown" itemprop="articleBody">
+        <div class="main-content-wrap">
+            <p>实验答案托管在我的<a href="https://github.com/BlackDragonF/CSAPPLabs/tree/master/CacheLab" target="_blank" rel="external">GitHub</a>上</p>
 <blockquote>
 <p>考完试之后一直比较颓废，本来想看完《深入理解计算机系统》的第5章——优化程序性能之后就赶快来做实验的，后来发现无论是Cache Lab还是Performance Lab都需要第6章——存储器层次结构的知识。看了几天的书，又磨蹭了几天，终于把Cache Lab的Part A写完了，总结如下。</p>
 </blockquote>
@@ -294,94 +294,113 @@
 <h2 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h2><p>由于在寒假的课程设计中已经使用过了命令行参数解析以及复杂的数据结构设计与实验，Part A总体上来说不是很难，我主要的精力花费在代码风格上，希望代码能尽量具有良好的架构以及可读性。</p>
 <p>本部分中犯的错误有，直接根据s设置缓存的组数，而实际上的组数是2^s个。循环中由于手误导致出现死循环。没有搞清楚inline static而导致的连接错误等等。存在知识的盲区也存在这粗心导致的错误。以后还需要更加注意。</p>
 
-                    
-                        
-                    
-                    
-                        <p>
-                            <a href="/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
             
         </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2017/07/06/Arch下Hexo配置的问题总结/">
-                            Arch下Hexo配置的问题总结
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2017-07-06T20:29:45+08:00">
-	
-		    7月 06, 2017
-    	
-    </time>
-    
-        <span>发布在 </span>
-        
-    <a class="category-link" href="/categories/杂谈/">杂谈</a>
-
-
-    
-</div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/实验/">实验</a> <a class="tag tag--primary tag--small t-link" href="/tags/计算机系统/">计算机系统</a>
 
             </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/07/06/Arch下Hexo配置的问题总结/" data-tooltip="Arch下Hexo配置的问题总结">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        
             
-                <div class="postShorten-content" itemprop="articleBody">
-                    <blockquote>
-<p>近期将主力环境从macOS切换至Arch Linux，然后将博客从原环境迁移至现环境，本来以为过程会比较简单，结果却还是踩了几个坑，现在将配置过程中遇到的问题记录并且总结如下。</p>
-</blockquote>
-<h2 id="在Arch-Linux中安装Git和Node-js"><a href="#在Arch-Linux中安装Git和Node-js" class="headerlink" title="在Arch Linux中安装Git和Node.js"></a>在Arch Linux中安装Git和Node.js</h2><p>根据<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">Hexo官方文档</a>的说明，安装Hexo需要的依赖为Git和Node.js。<br>Git的安装比较简单，使用Arch Linux的默认包管理器pacman即可安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pacman -S git</div></pre></td></tr></table></figure><br>Node.js官方文档推荐使用nvm安装，并且官方文档给出了安装脚本。<br>但是我的电脑使用的是伪fish——参考<a href="https://wiki.archlinux.org/index.php/Fish" target="_blank" rel="external">Arch Wiki</a>，我通过的是通过给terminal emulator添加参数的方式进入fish的。<br>因此，我的默认shell仍然是bash。而该安装脚本在检测到我的默认shell之后直接将相关的导出环境变量的命令添加至了.bashrc，导致了进入fish之后由于相关的环境变量丢失无法找到nvm命令的问题。</p>
-<ol>
-<li>第一种解决方法是采用Node.js的fish版安装脚本，该脚本托管在<a href="https://github.com/Alex7Kom/nvm-fish" target="_blank" rel="external">Github</a>上，但是该脚本目前已不再被MAINTAINED，需要自行承担风险。</li>
-<li>第二种解决方法是采用<a href="https://github.com/edc/bass" target="_blank" rel="external">bass</a>包装原始的nvm。</li>
-</ol>
-<p>对于第二种解决方法，我们首先使用官方文档的安装脚本安装nvm：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh</div></pre></td></tr></table></figure><br>然后我们按照Github上的教程手动安装bass：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/edc/bass.git</div><div class="line">$ cd bass</div><div class="line">$ make install</div></pre></td></tr></table></figure><br>最后我们建立如下的文件并重启终端，即可正常地在fish中使用nvm：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cat ~/.config/fish/functions/nvm.fish</div><div class="line">function nvm</div><div class="line">    bass source ~/.nvm/nvm.sh --no-use &apos;;&apos; nvm $argv</div><div class="line">end</div></pre></td></tr></table></figure><br>使用nvm安装Node.js最新版本的命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ nvm install v8.1.3</div></pre></td></tr></table></figure><br>最后我们安装hexo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install -g hexo-cli</div></pre></td></tr></table></figure></p>
-<h2 id="hexo-server报EMFILE错误"><a href="#hexo-server报EMFILE错误" class="headerlink" title="hexo server报EMFILE错误"></a>hexo server报EMFILE错误</h2><p>报错内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Error: EMFILE, too many open files</div></pre></td></tr></table></figure><br>Hexo官网的<a href="https://hexo.io/zh-cn/docs/troubleshooting.html" target="_blank" rel="external">问题解答</a>中给出了如下描述：<br>虽然 Node.js 有非阻塞 I/O，同步 I/O 的数量仍被系统所限制，在生成大量静态文件的时候，您可能会碰到 EMFILE 错误，您可以尝试提高同步 I/O 的限制数量来解决此问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ulimit -n 10000</div></pre></td></tr></table></figure><br>但是当我尝试使用ulimit的时候，却报了如下的错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Permission denied when changing resource of type &apos;Maximum number of open file descriptors&apos;</div></pre></td></tr></table></figure><br>在这之后进行了如下的尝试：</p>
-<ol>
-<li>使用sudo无法运行ulimit，后su至root运行，虽然没有报错，但是使用<code>ulimit -n</code>查看发现修改失败。</li>
-<li>尝试添加参数-S和-H，没有效果。</li>
-<li>最后根据<a href="https://bbs.archlinux.org/viewtopic.php?id=202694" target="_blank" rel="external">Arch Forum</a>上的回答，修改了<code>/etc/security/limits.conf</code>文件并重启电脑，问题解决。</li>
-</ol>
-<h2 id="hexo-server报ENOSPC错误"><a href="#hexo-server报ENOSPC错误" class="headerlink" title="hexo server报ENOSPC错误"></a>hexo server报ENOSPC错误</h2><p>Hexo官网的<a href="https://hexo.io/zh-cn/docs/troubleshooting.html" target="_blank" rel="external">问题解答</a>中给出了如下描述：<br>它可以用过运行 <code>$ npm dedupe</code> 来解决，如果不起作用的话，可以尝试在 Linux 终端中运行下列命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</div></pre></td></tr></table></figure><br>这将会提高你能监视的文件数量。<br><code>$ npm dedupe</code>没有解决问题，最后使用上述的命令解决了问题。（注意在fish中，<code>&#39;&amp;&amp;&#39;</code>要用<code>&#39;COMMAND; and COMMAND&#39;</code>来替代）</p>
-
-                    
-                        
-                    
-                    
-                        <p>
-                            <a href="/2017/07/06/Arch下Hexo配置的问题总结/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
             
-        </div>
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-facebook-official"></i>
+                </a>
+            </li>
         
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-twitter"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-google-plus"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://service.weibo.com/share/share.php?&amp;title=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-weibo"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/&amp;title=深入理解计算机系统CacheLab-PartA实验报告">
+                    <i class="fa fa-qq"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-star"></i>
+                </a>
+            </li>
         
         
-        <li class="pagination-number">第 1 页 共 1 页</li>
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#">
+            
+                <i class="fa fa-list"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+        
+    </div>
+</article>
 
 
 
@@ -392,6 +411,152 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/07/06/Arch下Hexo配置的问题总结/" data-tooltip="Arch下Hexo配置的问题总结">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-facebook-official"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-twitter"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-google-plus"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://service.weibo.com/share/share.php?&amp;title=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-weibo"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/&amp;title=深入理解计算机系统CacheLab-PartA实验报告">
+                    <i class="fa fa-qq"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-star"></i>
+                </a>
+            </li>
+        
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#">
+            
+                <i class="fa fa-list"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-google-plus"></i><span>分享到 Google+</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="http://service.weibo.com/share/share.php?&amp;title=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-weibo"></i><span>分享到 Weibo</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/&amp;title=深入理解计算机系统CacheLab-PartA实验报告">
+                    <i class="fa fa-qq"></i><span>分享到 QQ</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
+                    <i class="fa fa-star"></i><span>分享到 Qzone</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -659,6 +824,8 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-he4hmxof1aagptuktwd9dfzd7rgjrefvbflppkmlhmhhxqoapcduvw2trjz2.min.js"></script>
 <!--SCRIPTS END-->
+
+    
 
 
     </body>
