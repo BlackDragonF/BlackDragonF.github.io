@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.duskdragon.com/friendly-links/index.html</loc>
+    
+    <lastmod>2017-07-13T17:08:34.720Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.duskdragon.com/about/index.html</loc>
+    
+    <lastmod>2017-07-13T16:57:52.321Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.duskdragon.com/2017/07/08/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FCacheLab-PartA%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</loc>
     
     <lastmod>2017-07-09T04:36:47.460Z</lastmod>
@@ -40,20 +54,6 @@
     <loc>http://blog.duskdragon.com/2017/05/12/%E8%BF%81%E7%A7%BB%E8%AF%B4%E6%98%8E/</loc>
     
     <lastmod>2017-05-14T16:30:19.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.duskdragon.com/friendly-links/index.html</loc>
-    
-    <lastmod>2017-05-12T11:19:26.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.duskdragon.com/about/index.html</loc>
-    
-    <lastmod>2017-05-10T16:35:56.000Z</lastmod>
     
   </url>
   
