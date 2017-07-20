@@ -239,6 +239,80 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title" itemprop="headline">
                     
+                        <a class="link-unstyled" href="/2017/07/20/深入理解计算机系统PerformanceLab实验报告/">
+                            深入理解计算机系统PerformanceLab实验报告
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2017-07-20T01:23:51+08:00">
+	
+		    7月 20, 2017
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/计算机系统/">计算机系统</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content" itemprop="articleBody">
+                    <p>实验答案托管在我的<a href="https://github.com/BlackDragonF/CSAPPLabs/tree/master/PerformanceLab" target="_blank" rel="external">GitHub</a>上</p>
+<blockquote>
+<p>由于Cache Lab的Part B的64 × 64的矩阵一直拿不到满分，索性放在了一边，先从老的Performance Lab开始做起。</p>
+</blockquote>
+<h2 id="实验简介"><a href="#实验简介" class="headerlink" title="实验简介"></a>实验简介</h2><p>Performance Lab - Code Optimization是有关性能优化的实验，对应于书本的第5章：优化程序性能和第6章：存储器层次结构。主要提供了利用书本所学的知识优化代码的机会。</p>
+<p>本实验主要分为两个部分，每个部分分别对于一个简单的图像处理函数进行优化。第一个部分所优化的函数旋转(rotate)对于缓存更加敏感，而第二个部分所优化的函数平滑(smooth)则属于计算密集型函数。对它们优化的侧重是有所不同的。</p>
+<p>本实验的具体介绍见<a href="http://csapp.cs.cmu.edu/3e/perflab.pdf" target="_blank" rel="external">实验讲义</a>。</p>
+<h2 id="实验介绍"><a href="#实验介绍" class="headerlink" title="实验介绍"></a>实验介绍</h2><p>在本实验中，我们将实现两个图像处理函数——旋转和平滑。</p>
+<p>我们将一张图片抽象地表示为一个二维矩阵M，M(i, j)代表了M中第i行第j列的像素的值，该像素值被定义为红色、绿色、蓝色（RGB）的值的三元组。在本实验中，我们只考虑正方形的图片。下标遵循C语言风格，从0到N-1。</p>
+<p>旋转操作被定义为将图片逆时针旋转90°，旋转可以分为两步实现——</p>
+<ol>
+<li>将矩阵转置，即将M(i, j)变为M(j, i)</li>
+<li>将矩阵的第i行和第N - i - 1交换</li>
+</ol>
+<p>平滑操作被定义为将每一个像素点的值换位周围像素点（以该像素点为中心的最多3*3的正方形）的平均值。</p>
+<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p>在本实验中像素（pixel）是一个定义如下的结构体：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">The core data structure deals with image representation. A pixel is a <span class="class"><span class="keyword">struct</span> <span class="title">as</span> <span class="title">shown</span> <span class="title">below</span>:</span></div><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> red;    <span class="comment">/* R value */</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> green;  <span class="comment">/* G value */</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> blue;   <span class="comment">/* B value */</span></div><div class="line">&#125; pixel;</div></pre></td></tr></table></figure></p>
+<p>此外，为了简化起见，还定义了如下的宏：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> RIDX(i,j,n) ((i)*(n)+(j))</span></div></pre></td></tr></table></figure></p>
+<p>旋转操作的朴素版本如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">naive_rotate</span><span class="params">(<span class="keyword">int</span> dim, pixel *src, pixel *dst)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> i, j;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i &lt; dim; i++)</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>; j &lt; dim; j++)</div><div class="line">            dst[RIDX(dim<span class="number">-1</span>-j,i,dim)] = src[RIDX(i,j,dim)];</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>平滑操作的朴素版本如下（辅助函数未列出）：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">naive_smooth</span><span class="params">(<span class="keyword">int</span> dim, pixel *src, pixel *dst)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> i, j;</div><div class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i &lt; dim; i++)</div><div class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>; j &lt; dim; j++)</div><div class="line">            dst[RIDX(i,j,dim)] = avg(dim, i, j, src); <span class="comment">/* Smooth the (i,j)th pixel */</span></div><div class="line">    <span class="keyword">return</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>为了简化起见，你可以假设所有的矩阵的边长都是32的倍数，并且在进行正确性测试的时候，只会测试5个值。</p>
+<p>具体的注册函数和自动跑分机制请参阅实验讲义。</p>
+<h2 id="实验思路"><a href="#实验思路" class="headerlink" title="实验思路"></a>实验思路</h2><p>旋转操作：旋转操作不涉及复杂的计算，经过测试将代码移动所带来的性能提升微乎其微。主要应当采用分块的手段提高代码的空间局部性的利用率。</p>
+<p>平滑操作（平滑操作参考了别人的思路）：平滑操作是计算密集型函数，经过测试，通过减少过程调用以及代码移动带来的有限的性能提升。<br>观察原始代码可以发现分支预测的惩罚是巨大的（因为循环只会执行3次，会带来大量的预测不命中）。我们可以考虑将红、绿、蓝三色的值的计算分开地并行处理，并且依次处理四个角、四条边、和剩余的像素点。以提升局部性的利用率并且降低分支预测不命中所带来的惩罚。</p>
+<h2 id="实验答案"><a href="#实验答案" class="headerlink" title="实验答案"></a>实验答案</h2><p>旋转操作：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">block_rotate</span><span class="params">(<span class="keyword">int</span> dim, pixel * src, pixel * dst)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> i, j, k, l;</div><div class="line">    <span class="keyword">int</span> cst0 = dim - <span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span> ; i &lt; dim ; i += <span class="number">8</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (j = <span class="number">0</span> ; j &lt; dim ; j += <span class="number">8</span>) &#123;</div><div class="line">            <span class="keyword">for</span> (k = i ; k &lt; i + <span class="number">8</span> ; k++) &#123;</div><div class="line">                <span class="keyword">for</span> (l = j ; l &lt; j + <span class="number">8</span> ; l++) &#123;</div><div class="line">                    dst[RIDX(cst0 - l, k, dim)] = src[RIDX(k, l, dim)];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>平滑操作：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">optimized_smooth</span><span class="params">(<span class="keyword">int</span> dim, pixel * src, pixel * dst)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> i, j;</div><div class="line">    <span class="keyword">int</span> tmp;</div><div class="line"></div><div class="line">    dst[<span class="number">0</span>].red = (src[<span class="number">0</span>].red + src[<span class="number">1</span>].red + src[dim].red + src[dim + <span class="number">1</span>].red) &gt;&gt; <span class="number">2</span>;</div><div class="line">    dst[<span class="number">0</span>].green = (src[<span class="number">0</span>].green + src[<span class="number">1</span>].green + src[dim].green + src[dim + <span class="number">1</span>].green) &gt;&gt; <span class="number">2</span>;</div><div class="line">    dst[<span class="number">0</span>].blue = (src[<span class="number">0</span>].blue + src[<span class="number">1</span>].blue + src[dim].blue + src[dim + <span class="number">1</span>].blue) &gt;&gt; <span class="number">2</span>;</div><div class="line">    i = dim - <span class="number">1</span>;</div><div class="line">    dst[i].red = (src[i].red + src[i - <span class="number">1</span>].red + src[i + dim].red + src[i + dim <span class="number">-1</span>].red) &gt;&gt; <span class="number">2</span>;</div><div class="line">    dst[i].green = (src[i].green + src[i - <span class="number">1</span>].green + src[i + dim].green + src[i + dim <span class="number">-1</span>].green) &gt;&gt; <span class="number">2</span>;</div><div class="line">    dst[i].blue = (src[i].blue + src[i - <span class="number">1</span>].blue + src[i + dim].blue + src[i + dim <span class="number">-1</span>].blue) &gt;&gt; <span class="number">2</span>;</div><div class="line">    i = i * dim;</div><div class="line">    dst[i].red = (src[i].red + src[i + <span class="number">1</span>].red + src[i - dim].red + src[i - dim + <span class="number">1</span>].red) &gt;&gt; <span class="number">2</span>;</div><div class="line">    dst[i].green = (src[i].green + src[i + <span class="number">1</span>].green + src[i - dim].green + src[i - dim + <span class="number">1</span>].green) &gt;&gt; <span class="number">2</span>;</div><div class="line">    dst[i].blue = (src[i].blue + src[i + <span class="number">1</span>].blue + src[i - dim].blue + src[i - dim + <span class="number">1</span>].blue) &gt;&gt; <span class="number">2</span>;</div><div class="line">    i = i + dim - <span class="number">1</span>;</div><div class="line">    dst[i].red = (src[i].red + src[i - <span class="number">1</span>].red + src[i - dim].red + src[i - dim - <span class="number">1</span>].red) &gt;&gt; <span class="number">2</span>;</div><div class="line">    dst[i].green = (src[i].green + src[i - <span class="number">1</span>].green + src[i - dim].green + src[i - dim - <span class="number">1</span>].green) &gt;&gt; <span class="number">2</span>;</div><div class="line">    dst[i].blue = (src[i].blue + src[i - <span class="number">1</span>].blue + src[i - dim].blue + src[i - dim - <span class="number">1</span>].blue) &gt;&gt; <span class="number">2</span>;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (i = <span class="number">1</span> ; i &lt; dim - <span class="number">1</span> ; i++) &#123;</div><div class="line">        dst[i].red = (src[i].red + src[i - <span class="number">1</span>].red + src[i + <span class="number">1</span>].red + src[i + dim].red + src[i + dim - <span class="number">1</span>].red + src[i + dim + <span class="number">1</span>].red) / <span class="number">6</span>;</div><div class="line">        dst[i].green = (src[i].green + src[i - <span class="number">1</span>].green + src[i + <span class="number">1</span>].green + src[i + dim].green + src[i + dim - <span class="number">1</span>].green + src[i + dim + <span class="number">1</span>].green) / <span class="number">6</span>;</div><div class="line">        dst[i].blue = (src[i].blue + src[i - <span class="number">1</span>].blue + src[i + <span class="number">1</span>].blue + src[i + dim].blue + src[i + dim - <span class="number">1</span>].blue + src[i + dim + <span class="number">1</span>].blue) / <span class="number">6</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (i = dim * (dim - <span class="number">1</span>) + <span class="number">1</span> ; i &lt; dim * dim - <span class="number">1</span> ; i++) &#123;</div><div class="line">        dst[i].red = (src[i].red + src[i - <span class="number">1</span>].red + src[i + <span class="number">1</span>].red + src[i - dim].red + src[i - dim - <span class="number">1</span>].red + src[i - dim + <span class="number">1</span>].red) / <span class="number">6</span>;</div><div class="line">        dst[i].green = (src[i].green + src[i - <span class="number">1</span>].green + src[i + <span class="number">1</span>].green + src[i - dim].green + src[i - dim - <span class="number">1</span>].green + src[i - dim + <span class="number">1</span>].green) / <span class="number">6</span>;</div><div class="line">        dst[i].blue = (src[i].blue + src[i - <span class="number">1</span>].blue + src[i + <span class="number">1</span>].blue+ src[i - dim].blue + src[i - dim - <span class="number">1</span>].blue+ src[i - dim + <span class="number">1</span>].blue) / <span class="number">6</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (j = dim ; j &lt; dim * (dim - <span class="number">1</span>) ; j+= dim) &#123;</div><div class="line">        dst[j].red = (src[j].red + src[j + <span class="number">1</span>].red + src[j - dim].red + src[j - dim + <span class="number">1</span>].red + src[j + dim].red + src[j + dim + <span class="number">1</span>].red) / <span class="number">6</span>;</div><div class="line">        dst[j].green = (src[j].green + src[j + <span class="number">1</span>].green + src[j - dim].green+ src[j - dim + <span class="number">1</span>].green + src[j + dim].green + src[j + dim + <span class="number">1</span>].green) / <span class="number">6</span>;</div><div class="line">        dst[j].blue = (src[j].blue + src[j + <span class="number">1</span>].blue + src[j - dim].blue + src[j - dim + <span class="number">1</span>].blue + src[j + dim].blue + src[j + dim + <span class="number">1</span>].blue) / <span class="number">6</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (j = <span class="number">2</span> * dim - <span class="number">1</span> ; j &lt; dim * dim - <span class="number">1</span> ; j += dim) &#123;</div><div class="line">        dst[j].red = (src[j].red + src[j - <span class="number">1</span>].red + src[j - dim].red + src[j - dim - <span class="number">1</span>].red + src[j + dim].red + src[j + dim - <span class="number">1</span>].red) / <span class="number">6</span>;</div><div class="line">        dst[j].green = (src[j].green + src[j - <span class="number">1</span>].green + src[j - dim].green + src[j - dim - <span class="number">1</span>].green + src[j + dim].green + src[j + dim - <span class="number">1</span>].green) / <span class="number">6</span>;</div><div class="line">        dst[j].blue = (src[j].blue + src[j - <span class="number">1</span>].blue + src[j - dim].blue + src[j - dim - <span class="number">1</span>].blue + src[j + dim].blue + src[j + dim - <span class="number">1</span>].blue) / <span class="number">6</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (i = <span class="number">1</span> ; i &lt; dim - <span class="number">1</span> ; i++) &#123;</div><div class="line">        <span class="keyword">for</span> (j = <span class="number">1</span> ; j &lt; dim - <span class="number">1</span> ; j++) &#123;</div><div class="line">            tmp = i * dim + j;</div><div class="line">            dst[tmp].red = (src[tmp].red + src[tmp - <span class="number">1</span>].red + src[tmp + <span class="number">1</span>].red + src[tmp - dim].red + src[tmp - dim - <span class="number">1</span>].red + src[tmp - dim + <span class="number">1</span>].red + src[tmp + dim].red + src[tmp + dim - <span class="number">1</span>].red + src[tmp + dim + <span class="number">1</span>].red) / <span class="number">9</span>;</div><div class="line">            dst[tmp].green = (src[tmp].green + src[tmp - <span class="number">1</span>].green + src[tmp + <span class="number">1</span>].green + src[tmp - dim].green + src[tmp - dim - <span class="number">1</span>].green + src[tmp - dim + <span class="number">1</span>].green + src[tmp + dim].green + src[tmp + dim - <span class="number">1</span>].green + src[tmp + dim + <span class="number">1</span>].green) / <span class="number">9</span>;</div><div class="line">            dst[tmp].blue = (src[tmp].blue + src[tmp - <span class="number">1</span>].blue + src[tmp + <span class="number">1</span>].blue + src[tmp - dim].blue + src[tmp - dim - <span class="number">1</span>].blue + src[tmp - dim + <span class="number">1</span>].blue + src[tmp + dim].blue + src[tmp + dim - <span class="number">1</span>].blue + src[tmp + dim + <span class="number">1</span>].blue) / <span class="number">9</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h2><p>实验的第一部分对于缓存的要求不是很高，简单的分块可以带来很大的性能提升。</p>
+<p>实验的第二部分实际上我是卡了比较久的，在发现减少过程调用和代码移动性能提升有限后我就卡住了，因为我发现似乎无法进行循环展开。实际上还是太生疏了，没有想到要分析性能瓶颈，最后参考了别人的答案，实际上看到了别人答案的一瞬间就豁然开朗了，但是在这之前完全没有想到会是分支预测的问题。还需要多加练习。</p>
+
+                    
+                        
+                    
+                    
+                        <p>
+                            <a href="/2017/07/20/深入理解计算机系统PerformanceLab实验报告/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
                         <a class="link-unstyled" href="/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/">
                             深入理解计算机系统CacheLab-PartA实验报告
                         </a>
@@ -1410,524 +1484,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2017/03/05/王爽汇编语言第三版检测点答案/">
-                            王爽汇编语言第三版检测点答案
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2017-03-05T18:49:39+08:00">
-	
-		    3月 05, 2017
-    	
-    </time>
-    
-        <span>发布在 </span>
-        
-    <a class="category-link" href="/categories/汇编/">汇编</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content" itemprop="articleBody">
-                    <blockquote>
-<p>开学三周，王爽的《汇编语言》（第三版）总算是基本上看完了，本文是总结的第一部分，包括了书上所有的检测点答案</p>
-</blockquote>
-<h2 id="第一章-基础知识"><a href="#第一章-基础知识" class="headerlink" title="第一章 基础知识"></a>第一章 基础知识</h2><h3 id="检测点-1-1"><a href="#检测点-1-1" class="headerlink" title="检测点 1.1"></a>检测点 1.1</h3><ol>
-<li>1个CPU的寻址能力为8KB，那么它的地址总线的宽度为____。<br> <strong>13</strong><br> 解析：CPU在内存中寻址的最小单位是Byte（字节），8KB = 2^13B，因此地址总线的宽度为13.</li>
-<li>1KB的存储器有____个存储单元。存储单元的编号从____到____。<br> <strong>1024    0    1023</strong></li>
-<li>1KB的存储器可以存储____个bit，____个Byte。<br> <strong>2^13    2^10</strong></li>
-<li>1GB、1MB、1KB分别是____________Byte<br> <strong>2^30    2^20    2^10</strong></li>
-<li>8080、8088、80286、80386的地址总线宽度分别为16根、20根、24根、32根，则他们的寻址能力分别为____（KB）、____（MB）、____（MB）、____（GB）。<br> <strong>64    1    16    4</strong></li>
-<li>8080、8088、8086、80286、80386的数据总线宽度分别为8根、8根、16根、16根、32根。则它们一次可以传送的数据为：____（B）、____（B）、____（B）、____（B）、____（B）。<br> <strong>1    1    2    2    4</strong></li>
-<li>从内存中读取1024字节的数据，8086至少要读取____次，80386至少要读取____次。<br> <strong>512    256</strong></li>
-<li>在存储器中，数据和程序以____形式存放。<br> <strong>二进制</strong></li>
-</ol>
-<h2 id="第二章-寄存器"><a href="#第二章-寄存器" class="headerlink" title="第二章 寄存器"></a>第二章 寄存器</h2><h3 id="检测点-2-1"><a href="#检测点-2-1" class="headerlink" title="检测点 2.1"></a>检测点 2.1</h3><ol>
-<li>写出每条汇编指令执行后相关寄存器中的值 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">62627</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="number">ah</span>, <span class="number">31H</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">al</span>, <span class="number">23H</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">add</span> <span class="built_in">ax</span>, <span class="built_in">ax</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">826CH</span>		<span class="built_in">BX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">cx</span>, <span class="built_in">ax</span>		<span class="built_in">CX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="built_in">bx</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">add</span> <span class="built_in">ax</span>, <span class="built_in">bx</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">al</span>, <span class="number">bh</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="number">ah</span>, <span class="built_in">bl</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">add</span> <span class="number">ah</span>, <span class="number">ah</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">add</span> <span class="built_in">al</span>, <span class="number">6</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">add</span> <span class="built_in">al</span>, <span class="built_in">al</span>		<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="built_in">cx</span>		<span class="built_in">AX</span> =</div></pre></td></tr></table></figure>
- <strong>F4A3H    31A3H    3123H 6246H    826CH    6246H    826CH    04D8H    0482H    6C82H    D882H    D888H    D810H    6246H</strong></li>
-<li>只能使用目前学过的汇编指令，最多使用4条指令，编程计算2的4次方。 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">2</span></div><div class="line"><span class="keyword">add</span> <span class="built_in">ax</span>, <span class="built_in">ax</span></div><div class="line"><span class="keyword">add</span> <span class="built_in">ax</span>, <span class="built_in">ax</span></div><div class="line"><span class="keyword">add</span> <span class="built_in">ax</span>, <span class="built_in">ax</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="检测点-2-2"><a href="#检测点-2-2" class="headerlink" title="检测点 2.2"></a>检测点 2.2</h3><ol>
-<li>给定段地址为0001H，仅通过变化偏移地址寻址，CPU的寻址范围为_____到_____。<br> <strong>00010H到1000FH</strong></li>
-<li>有一数据存放在内存20000H的单元中，现给定段地址为SA，若想用偏移地址寻到此单元。则SA应满足的条件是：最小为_____，最大为_____。提示，反过来思考一下，当段地址给定为多少，CPU无论怎么变化偏移地址都无法寻到20000H单元？<br> <strong>1001F    2000H</strong><br> <strong>20000H - 0FFFFH = 10001H</strong><br> <strong>20000H - 00000H = 20000H</strong></li>
-</ol>
-<h3 id="检测点-2-3"><a href="#检测点-2-3" class="headerlink" title="检测点 2.3"></a>检测点 2.3</h3><p>下面的3条指令执行后，CPU几次修改IP？都是在什么时候？最后IP中的值是多少？<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="built_in">bx</span></div><div class="line"><span class="keyword">sub</span> <span class="built_in">ax</span>, <span class="built_in">ax</span></div><div class="line"><span class="keyword">jmp</span> <span class="built_in">ax</span></div></pre></td></tr></table></figure></p>
-<p>修改了四次：</p>
-<ol>
-<li>第1条指令执行后，IP指向第2条指令</li>
-<li>第2条指令执行后，IP指向第3条指令</li>
-<li>第3条指令执行后，IP指向第4条指令</li>
-<li>JMP指令执行后，IP重新指向第1条指令</li>
-</ol>
-<h2 id="第三章-寄存器（内存访问）"><a href="#第三章-寄存器（内存访问）" class="headerlink" title="第三章 寄存器（内存访问）"></a>第三章 寄存器（内存访问）</h2><h3 id="检测点-3-1"><a href="#检测点-3-1" class="headerlink" title="检测点 3.1"></a>检测点 3.1</h3><ol>
-<li><p>在Debug中，用“d 0:0 1f”查看内存，结果如下。</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">0000</span>:<span class="number">0000</span> <span class="number">70</span> <span class="number">80</span> F0 <span class="number">30</span> EF <span class="number">60</span> <span class="number">30</span> E2-<span class="number">00</span> <span class="number">80</span> <span class="number">80</span> <span class="number">12</span> <span class="number">66</span> <span class="number">20</span> <span class="number">22</span> <span class="number">60</span></div><div class="line"><span class="number">0000</span>:<span class="number">0010</span> <span class="number">62</span> <span class="number">26</span> E6 D6 CC 2E 3C 3B-AB BA <span class="number">00</span> <span class="number">00</span> <span class="number">26</span> <span class="number">06</span> <span class="number">66</span> <span class="number">88</span></div></pre></td></tr></table></figure>
-<p> 下面的程序执行前，AX=0，BX=0，写出每条汇编指令执行完后相关寄存器中的值。</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">1</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, [<span class="number">0000</span>]			<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">bx</span>, [<span class="number">0001</span>]			<span class="built_in">BX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="built_in">bx</span>			<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, [<span class="number">0000</span>]			<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">bx</span>, [<span class="number">0002</span>]			<span class="built_in">BX</span> =</div><div class="line"><span class="keyword">add</span> <span class="built_in">ax</span>, <span class="built_in">bx</span>			<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">add</span> <span class="built_in">ax</span>, [<span class="number">0004</span>]			<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">0</span>			<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">al</span>, [<span class="number">0002</span>]			<span class="built_in">AX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">0</span>			<span class="built_in">BX</span> =</div><div class="line"><span class="keyword">mov</span> <span class="built_in">bl</span>, [000C]			<span class="built_in">BX</span> =</div><div class="line"><span class="keyword">add</span> <span class="built_in">al</span>, <span class="built_in">bl</span>			<span class="built_in">AX</span> =</div></pre></td></tr></table></figure>
-<p> 提示，注意ds的设置。</p>
-<p> 2662H    E626H    E626H    2662H    D6E6H    FD48H    2C14H    0    00E6H    0    0026H    000CH</p>
-</li>
-<li>内存中的情况如图3.6所示。<br> 各寄存器的初始值：CS=2000H，IP=0，DS=1000H，AX=0，BX=0；<br> (1)写出CPU执行的指令序列（用汇编指令写出）<br> (2)写出CPU执行每条指令后，CS、IP和相关寄存器中的数值。<br> (3)再次体会：数据和程序有区别吗？如何确定内存中的信息哪些是数据，哪些是程序？</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">指令</th>
-<th style="text-align:center">CS:IP</th>
-<th style="text-align:center">DS</th>
-<th style="text-align:center">AX</th>
-<th style="text-align:center">BX</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">mov ax, 6622H</td>
-<td style="text-align:center">2000:3</td>
-<td style="text-align:center">1000H</td>
-<td style="text-align:center">6622H</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">jmp 0ff0:0100</td>
-<td style="text-align:center">2000:8-&gt;1000:0</td>
-<td style="text-align:center">1000H</td>
-<td style="text-align:center">6622H</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">mov ax, 2000H</td>
-<td style="text-align:center">1000:3</td>
-<td style="text-align:center">1000H</td>
-<td style="text-align:center">2000H</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">mov ds, ax</td>
-<td style="text-align:center">1000:5</td>
-<td style="text-align:center">2000H</td>
-<td style="text-align:center">2000H</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">mov ax, [0008]</td>
-<td style="text-align:center">1000:8</td>
-<td style="text-align:center">2000H</td>
-<td style="text-align:center">C389H</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">mov ax, [0002]</td>
-<td style="text-align:center">1000:B</td>
-<td style="text-align:center">2000H</td>
-<td style="text-align:center">EA66H</td>
-<td style="text-align:center">0</td>
-</tr>
-</tbody>
-</table>
-<p>程序和数据没有区别，本质上都是二进制01码，关键在于CPU如何解读。</p>
-<h3 id="检测点-3-2"><a href="#检测点-3-2" class="headerlink" title="检测点 3.2"></a>检测点 3.2</h3><ol>
-<li><p>补全下面的程序，使其可以将10000H～1000FH中的8个字，逆序复制到20000H～2000FH中。逆序复制的含义如图3.17所示（图中内存里的数据均为假设）。</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">1000H</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line">__________</div><div class="line">__________</div><div class="line">__________</div><div class="line"><span class="keyword">push</span> [<span class="number">0</span>]</div><div class="line"><span class="keyword">push</span> [<span class="number">2</span>]</div><div class="line"><span class="keyword">push</span> [<span class="number">4</span>]</div><div class="line"><span class="keyword">push</span> [<span class="number">6</span>]</div><div class="line"><span class="keyword">push</span> [<span class="number">8</span>]</div><div class="line"><span class="keyword">push</span> [A]</div><div class="line"><span class="keyword">push</span> [C]</div><div class="line"><span class="keyword">push</span> [E]</div></pre></td></tr></table></figure>
-<p> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">2000H</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">ss</span>, <span class="built_in">ax</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">sp</span>, <span class="number">0010H</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>补全下面的程序，使其可以将10000H～1000FH中的8个字，逆序复制到20000H～2000FH中。</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">2000H</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line">__________</div><div class="line">__________</div><div class="line">__________</div><div class="line"><span class="keyword">pop</span> [E]</div><div class="line"><span class="keyword">pop</span> [C]</div><div class="line"><span class="keyword">pop</span> [A]</div><div class="line"><span class="keyword">pop</span> [<span class="number">8</span>]</div><div class="line"><span class="keyword">pop</span> [<span class="number">6</span>]</div><div class="line"><span class="keyword">pop</span> [<span class="number">4</span>]</div><div class="line"><span class="keyword">pop</span> [<span class="number">2</span>]</div><div class="line"><span class="keyword">pop</span> [<span class="number">0</span>]</div></pre></td></tr></table></figure>
-<p> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">1000H</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">ss</span>, <span class="built_in">ax</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">sp</span>, <span class="number">0</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="第六章-包含多个段的程序"><a href="#第六章-包含多个段的程序" class="headerlink" title="第六章 包含多个段的程序"></a>第六章 包含多个段的程序</h2><h3 id="检测点-6-1"><a href="#检测点-6-1" class="headerlink" title="检测点 6.1"></a>检测点 6.1</h3><ol>
-<li><p>下面的程序实现依此用内存0:0-0:15单元中的内容改写程序中的数据，完成程序：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:codesg</div><div class="line"></div><div class="line">codesg <span class="meta">segment</span></div><div class="line">	<span class="built_in">dw</span> <span class="number">0123h</span>, <span class="number">0456h</span>, <span class="number">0789h</span>, <span class="number">0abch</span>, <span class="number">0defh</span>, <span class="number">0fedh</span>, <span class="number">0cbah</span>, <span class="number">0987h</span></div><div class="line"><span class="symbol"></span></div><div class="line">start:	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">0</span></div><div class="line"></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">cx</span>, <span class="number">8</span></div><div class="line"><span class="symbol">s:</span>	<span class="keyword">mov</span> <span class="built_in">ax</span>, [<span class="built_in">bx</span>]</div><div class="line">	_________</div><div class="line">	<span class="keyword">add</span> <span class="built_in">bx</span>, <span class="number">2</span></div><div class="line">	<span class="keyword">loop</span> s</div><div class="line"></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">4c00h</span></div><div class="line">	<span class="keyword">int</span> <span class="number">21h</span></div><div class="line"></div><div class="line">codesg ends</div><div class="line"></div><div class="line">end start</div></pre></td></tr></table></figure>
-<p> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">cs</span>:[<span class="built_in">bx</span>], <span class="built_in">ax</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>下面的程序实现依此用内存0:0-0:15单元中的内容改写程序中的数据，数据的传送用栈来进行。栈空间设置在程序内。完成程序：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:codesg</div><div class="line">	<span class="built_in">dw</span> <span class="number">0123h</span>, <span class="number">0456h</span>, <span class="number">0789h</span>, <span class="number">0abch</span>, <span class="number">0defh</span>, <span class="number">0fedh</span>, <span class="number">0cbah</span>, <span class="number">0987h</span></div><div class="line"></div><div class="line">	<span class="built_in">dw</span> <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></div><div class="line"><span class="symbol"></span></div><div class="line">start:	<span class="keyword">mov</span> <span class="built_in">ax</span>, ____</div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ss</span>, <span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">sp</span>, ____</div><div class="line"></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">cx</span>, <span class="number">8</span></div><div class="line"><span class="symbol">s:</span>	<span class="keyword">push</span> [<span class="built_in">bx</span>]</div><div class="line">	____________</div><div class="line">	<span class="keyword">add</span> <span class="built_in">bx</span>, <span class="number">2</span></div><div class="line">	<span class="keyword">loop</span> s</div><div class="line"></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">4c00h</span></div><div class="line">	<span class="keyword">int</span> <span class="number">21h</span></div><div class="line"></div><div class="line">codesg ends</div><div class="line"></div><div class="line">end start</div></pre></td></tr></table></figure>
-<p> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cs</span></div><div class="line"><span class="number">24h</span></div><div class="line"><span class="keyword">pop</span> <span class="built_in">cs</span>:[<span class="built_in">bx</span>]</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="第九章-转移指令的原理"><a href="#第九章-转移指令的原理" class="headerlink" title="第九章 转移指令的原理"></a>第九章 转移指令的原理</h2><h3 id="检测点-9-1"><a href="#检测点-9-1" class="headerlink" title="检测点 9.1"></a>检测点 9.1</h3><ol>
-<li><p>程序如下</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:code</div><div class="line"></div><div class="line">data <span class="meta">segment</span></div><div class="line">	___________</div><div class="line">data ends</div><div class="line"></div><div class="line">code <span class="meta">segment</span></div><div class="line"><span class="symbol">start:</span>	<span class="keyword">mov</span> <span class="built_in">ax</span>, data</div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">jmp</span> <span class="built_in">word</span> <span class="built_in">ptr</span> [<span class="built_in">bx</span>+<span class="number">1</span>]</div><div class="line"></div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure>
-<p> 若要使程序中的jmp指令执行后，CS:IP指向程序的第一条指令，在data段中应该定义哪些数据？<br> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">dw</span> <span class="number">0</span>, <span class="number">0</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>程序如下</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:code</div><div class="line"></div><div class="line">data <span class="meta">segment</span></div><div class="line">	<span class="built_in">dd</span> <span class="number">12345678H</span></div><div class="line">data ends</div><div class="line"></div><div class="line">code <span class="meta">segment</span></div><div class="line"><span class="symbol"></span></div><div class="line">start:	<span class="keyword">mov</span> <span class="built_in">ax</span>, data</div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> [<span class="built_in">bx</span>], ____</div><div class="line">	<span class="keyword">mov</span> [<span class="built_in">bx</span> + <span class="number">2</span>], ____</div><div class="line">	<span class="keyword">jmp</span> <span class="built_in">dword</span> <span class="built_in">ptr</span> <span class="built_in">ds</span>:[<span class="number">0</span>]</div><div class="line"></div><div class="line">code ends</div><div class="line"></div><div class="line">end start</div></pre></td></tr></table></figure>
-<p> 补全程序，使jmp指令执行后，CS:IP指向程序的第一条指令。<br> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">bx</span></div><div class="line"><span class="built_in">cs</span></div></pre></td></tr></table></figure>
-<p> 注意：bx指向低位，bx+2指向高位，低位为IP，而高位为CS。</p>
-</li>
-<li><p>用Debug查看内存，结果如下：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">2000</span>:<span class="number">1000</span> BE <span class="number">00</span> <span class="number">06</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> ......</div></pre></td></tr></table></figure>
-<p> 则此时，CPU执行指令：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">2000H</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">es</span>, <span class="built_in">ax</span></div><div class="line"><span class="keyword">jmp</span> <span class="built_in">dword</span> <span class="built_in">ptr</span> <span class="built_in">es</span>:[<span class="number">1000H</span>]</div></pre></td></tr></table></figure>
-<p> 后，(CS)=?，(IP)=?<br> 答案：<br> (CS)=0006，(IP)=00BE</p>
-</li>
-</ol>
-<h3 id="检测点-9-2"><a href="#检测点-9-2" class="headerlink" title="检测点 9.2"></a>检测点 9.2</h3><p>补全编程，利用jcxz指令，实现在内存2000H段中查找第一个值为0的字节，找到后，将它的偏移地址存储在dx中。<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:code</div><div class="line">code <span class="meta">segment</span></div><div class="line"><span class="symbol">start:</span>	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">2000H</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">0</span></div><div class="line"><span class="symbol">s:</span>	__________</div><div class="line">	__________</div><div class="line">	__________</div><div class="line">	__________</div><div class="line">	<span class="keyword">jmp</span> short s</div><div class="line"><span class="symbol">ok:</span>	<span class="keyword">mov</span> <span class="built_in">dx</span>, <span class="built_in">bx</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">4c00h</span></div><div class="line">	<span class="keyword">int</span> <span class="number">21h</span></div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure><br>答案：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">cl</span>, [<span class="built_in">bx</span>]</div><div class="line"><span class="keyword">mov</span> <span class="number">ch</span>, <span class="number">0</span> <span class="comment">;注意这一步的必要性</span></div><div class="line"><span class="keyword">jcxz</span> ok</div><div class="line"><span class="keyword">inc</span> <span class="built_in">bx</span></div></pre></td></tr></table></figure></p>
-<h3 id="检测点-9-3"><a href="#检测点-9-3" class="headerlink" title="检测点 9.3"></a>检测点 9.3</h3><p>补全编程，利用loop指令，实现在内存的2000H段中查找第一个值为0的字节，找到后，将它的偏移地址存储在dx中。<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:code</div><div class="line">code <span class="meta">segment</span></div><div class="line"><span class="symbol">start:</span>	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">2000H</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">0</span></div><div class="line"><span class="symbol">s:</span>	<span class="keyword">mov</span> <span class="built_in">cl</span>, [<span class="built_in">bx</span>]</div><div class="line">	<span class="keyword">mov</span> <span class="number">ch</span>, <span class="number">0</span></div><div class="line">	_________</div><div class="line">	<span class="keyword">inc</span> <span class="built_in">bx</span></div><div class="line">	<span class="keyword">loop</span> s</div><div class="line"><span class="symbol">ok:</span>	<span class="keyword">dec</span> <span class="built_in">bx</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">dx</span>, <span class="built_in">bx</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">4c00h</span></div><div class="line">	<span class="keyword">int</span> <span class="number">21h</span></div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure><br>答案：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">inc</span> <span class="built_in">cx</span> <span class="comment">;注意loop的工作原理</span></div></pre></td></tr></table></figure></p>
-<h2 id="第十章-CALL和RET指令"><a href="#第十章-CALL和RET指令" class="headerlink" title="第十章 CALL和RET指令"></a>第十章 CALL和RET指令</h2><h3 id="检测点-10-1"><a href="#检测点-10-1" class="headerlink" title="检测点 10.1"></a>检测点 10.1</h3><p>补全程序，实现从内存1000：0000处开始执行指令。<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:code</div><div class="line"></div><div class="line">stack <span class="meta">segment</span></div><div class="line">	<span class="built_in">db</span> <span class="number">16</span> dup (<span class="number">0</span>)</div><div class="line">stack ends</div><div class="line"></div><div class="line">code <span class="meta">segment</span></div><div class="line"><span class="symbol">start:</span>	<span class="keyword">mov</span> <span class="built_in">ax</span>,stack</div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ss</span>,<span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">sp</span>,<span class="number">16</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, ____</div><div class="line">	<span class="keyword">push</span> <span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, ____</div><div class="line">	<span class="keyword">push</span> <span class="built_in">ax</span></div><div class="line">	<span class="keyword">retf</span></div><div class="line">code ends</div><div class="line"></div><div class="line">end start</div></pre></td></tr></table></figure><br>答案：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">1000h</span></div><div class="line"><span class="number">0</span></div></pre></td></tr></table></figure></p>
-<h3 id="检测点-10-2"><a href="#检测点-10-2" class="headerlink" title="检测点 10.2"></a>检测点 10.2</h3><p>下面的程序执行后，ax中的数值为多少？</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">内存地址</th>
-<th style="text-align:center">机器码</th>
-<th style="text-align:center">汇编指令</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1000:0</td>
-<td style="text-align:center">b8 00 00</td>
-<td style="text-align:center">mov ax,0</td>
-</tr>
-<tr>
-<td style="text-align:center">1000:3</td>
-<td style="text-align:center">e8 01 00</td>
-<td style="text-align:center">call s</td>
-</tr>
-<tr>
-<td style="text-align:center">1000:6</td>
-<td style="text-align:center">40</td>
-<td style="text-align:center">inc ax</td>
-</tr>
-<tr>
-<td style="text-align:center">1000:7</td>
-<td style="text-align:center">58</td>
-<td style="text-align:center">s:    pop ax</td>
-</tr>
-</tbody>
-</table>
-<p>ax中的数值为6，注意执行完call s后，IP先变为6，然后将IP的值压栈，最后跳转至s。</p>
-<h3 id="检测点-10-3"><a href="#检测点-10-3" class="headerlink" title="检测点 10.3"></a>检测点 10.3</h3><p>下面的程序执行后，ax中的数值为多少？</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">内存地址</th>
-<th style="text-align:center">机器码</th>
-<th style="text-align:center">汇编指令</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1000:0</td>
-<td style="text-align:center">b8 00 00</td>
-<td style="text-align:center">mov ax,0</td>
-</tr>
-<tr>
-<td style="text-align:center">1000:3</td>
-<td style="text-align:center">9a 09 00 00 10</td>
-<td style="text-align:center">call far ptr s</td>
-</tr>
-<tr>
-<td style="text-align:center">1000:8</td>
-<td style="text-align:center">40</td>
-<td style="text-align:center">inc ax</td>
-</tr>
-<tr>
-<td style="text-align:center">1000:9</td>
-<td style="text-align:center">58</td>
-<td style="text-align:center">s:    pop ax</td>
-</tr>
-<tr>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">add ax,ax</td>
-</tr>
-<tr>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">pop bx</td>
-</tr>
-<tr>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">add ax,bx</td>
-</tr>
-</tbody>
-</table>
-<p>ax中的数值为1010H，注意执行完call far ptr s后，IP先变为8，然后将CS、IP的值分别为1000和8依此压栈，最后再跳转至s继续执行。</p>
-<h3 id="检测点-10-4"><a href="#检测点-10-4" class="headerlink" title="检测点 10.4"></a>检测点 10.4</h3><p>下面的程序执行后，ax中的数值为多少？</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">内存地址</th>
-<th style="text-align:center">机器码</th>
-<th style="text-align:center">汇编指令</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1000:0</td>
-<td style="text-align:center">b8 06 00</td>
-<td style="text-align:center">mov ax,6</td>
-</tr>
-<tr>
-<td style="text-align:center">1000:3</td>
-<td style="text-align:center">ff d0</td>
-<td style="text-align:center">call ax</td>
-</tr>
-<tr>
-<td style="text-align:center">1000:5</td>
-<td style="text-align:center">40</td>
-<td style="text-align:center">inc ax</td>
-</tr>
-<tr>
-<td style="text-align:center">1000:6</td>
-<td style="text-align:center">58</td>
-<td style="text-align:center">mov bp,sp</td>
-</tr>
-<tr>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-<td style="text-align:center">add ax,[bp]</td>
-</tr>
-</tbody>
-</table>
-<p>ax中的数值为0BH，分析方法类似检测点10.2</p>
-<h3 id="检测点-10-5"><a href="#检测点-10-5" class="headerlink" title="检测点 10.5"></a>检测点 10.5</h3><ol>
-<li><p>下面的程序执行后，ax中的数值为多少？</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:code</div><div class="line">stack <span class="meta">segment</span></div><div class="line">	<span class="built_in">dw</span> <span class="number">8</span> dup (<span class="number">0</span>)</div><div class="line">stack ends</div><div class="line">code <span class="meta">segment</span></div><div class="line"><span class="symbol">start:</span>	<span class="keyword">mov</span> <span class="built_in">ax</span>,stack</div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ss</span>,<span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">sp</span>,<span class="number">16</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ds</span>,<span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>,<span class="number">0</span></div><div class="line">	<span class="keyword">call</span> <span class="built_in">word</span> <span class="built_in">ptr</span> <span class="built_in">ds</span>:[<span class="number">0eh</span>]</div><div class="line">	<span class="keyword">inc</span> <span class="built_in">ax</span></div><div class="line">	<span class="keyword">inc</span> <span class="built_in">ax</span></div><div class="line">	<span class="keyword">inc</span> <span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>,<span class="number">4c00h</span></div><div class="line">	<span class="keyword">int</span> <span class="number">21h</span></div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure>
-<p> ax中的数值为3，注意ds与ss中存放的段地址相同，在执行了call word ptr ds:[0EH]之后，程序会先将下一条指令inc ax的偏移量压栈，然后跳转到栈顶所指向的指令的位置，即跳转至第一条inc ax的位置，故最后ax的值为3。<br> 注意：在使用Debug单步跟踪的时候，由于t命令所导致的中断，而影响了栈中的值。</p>
-</li>
-<li><p>下面的程序执行后，ax和bx中的数值为多少？</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:codesg</div><div class="line">data <span class="meta">segment</span></div><div class="line">	<span class="built_in">dw</span> <span class="number">8</span> dup (<span class="number">0</span>)</div><div class="line">data ends</div><div class="line">code <span class="meta">segment</span></div><div class="line"><span class="symbol">start:</span>	<span class="keyword">mov</span> <span class="built_in">ax</span>,data</div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ss</span>,<span class="built_in">ax</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">sp</span>,<span class="number">16</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">word</span> <span class="built_in">ptr</span> <span class="built_in">ss</span>:[<span class="number">0</span>],offset s</div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ss</span>:[<span class="number">2</span>],<span class="built_in">cs</span></div><div class="line">	<span class="keyword">call</span> <span class="built_in">dword</span> <span class="built_in">ptr</span> <span class="built_in">ss</span>:[<span class="number">0</span>]</div><div class="line">	<span class="keyword">nop</span></div><div class="line"><span class="symbol">s:</span>	<span class="keyword">mov</span> <span class="built_in">ax</span>,offset s</div><div class="line">	<span class="keyword">sub</span> <span class="built_in">ax</span>,<span class="built_in">ss</span>:[<span class="number">0ch</span>]     </div><div class="line">   	<span class="keyword">mov</span> <span class="built_in">bx</span>,<span class="built_in">cs</span></div><div class="line">	<span class="keyword">sub</span> <span class="built_in">bx</span>,<span class="built_in">ss</span>:[<span class="number">0eh</span>]</div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>,<span class="number">4c00h</span></div><div class="line">	<span class="keyword">int</span> <span class="number">21h</span></div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure>
-<p> ax中的数值为1，bx中的数值为0，注意到程序的一开始将a的偏移量和cs放入ss:[0]和ss:[2]中，然后调用call指令，将CS和IP(nop指令的偏移量)依此压栈后跳转到s处继续执行，ax最终为s的偏移量减去nop指令所在位置的偏移量，为1，bx最终为cs的段地址相减，为0。</p>
-</li>
-</ol>
-<h2 id="第十一章-标志寄存器"><a href="#第十一章-标志寄存器" class="headerlink" title="第十一章 标志寄存器"></a>第十一章 标志寄存器</h2><h3 id="检测点-11-1"><a href="#检测点-11-1" class="headerlink" title="检测点 11.1"></a>检测点 11.1</h3><p>写出下面每条指令执行后，ZF、PF、SF等标志位的值</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">指令</th>
-<th style="text-align:center">ZF</th>
-<th style="text-align:center">PF</th>
-<th style="text-align:center">SF</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">sub al, al</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">mov al, 1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">push ax</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">pop bx</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">add al, bl</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">add bl, 10</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">mul al</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-</tr>
-</tbody>
-</table>
-<h3 id="检测点-11-2"><a href="#检测点-11-2" class="headerlink" title="检测点 11.2"></a>检测点 11.2</h3><p>写出下面每条指令执行后，ZF、PF、SF、CF、OF等标志位的值</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">指令</th>
-<th style="text-align:center">CF</th>
-<th style="text-align:center">OF</th>
-<th style="text-align:center">SF</th>
-<th style="text-align:center">ZF</th>
-<th style="text-align:center">PF</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">sub al, al</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td style="text-align:center">mov al, 10H</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td style="text-align:center">add al, 90H</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td style="text-align:center">mov al, 80H</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td style="text-align:center">add al, 80H</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td style="text-align:center">mov al, 0FCH</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td style="text-align:center">add al, 05H</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">mov al, 7DH</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">add al, 0BH</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-</tr>
-</tbody>
-</table>
-<h3 id="检测点-11-3"><a href="#检测点-11-3" class="headerlink" title="检测点 11.3"></a>检测点 11.3</h3><ol>
-<li><p>补全下面的程序，统计F000:0处32个字节中，大小在[32,128]的数据的个数。</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">0f000h</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line"></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">dx</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">cx</span>, <span class="number">32</span></div><div class="line"><span class="symbol">s:</span>	<span class="keyword">mov</span> <span class="built_in">al</span>, [<span class="built_in">bx</span>]</div><div class="line">	<span class="keyword">cmp</span> <span class="built_in">al</span>, <span class="number">32</span></div><div class="line">	__________</div><div class="line">	<span class="keyword">cmp</span> <span class="built_in">al</span>, <span class="number">128</span></div><div class="line">	__________</div><div class="line">	<span class="keyword">inc</span> <span class="built_in">dx</span></div><div class="line"><span class="symbol">s0:</span>	<span class="keyword">inc</span> <span class="built_in">bx</span></div><div class="line">	<span class="keyword">loop</span> s</div></pre></td></tr></table></figure>
-<p> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">jb</span> s0</div><div class="line"><span class="keyword">ja</span> s0</div></pre></td></tr></table></figure>
-</li>
-<li><p>补全下面的程序，统计F000:0处32个字节中，大小在(32,128)的数据的个数。</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">0f000h</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ds</span>, <span class="built_in">ax</span></div><div class="line"></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">dx</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">cx</span>, <span class="number">32</span></div><div class="line"><span class="symbol">s:</span>	<span class="keyword">mov</span> <span class="built_in">al</span>, [<span class="built_in">bx</span>]</div><div class="line">	<span class="keyword">cmp</span> <span class="built_in">al</span>, <span class="number">32</span></div><div class="line">	__________</div><div class="line">	<span class="keyword">cmp</span> <span class="built_in">al</span>, <span class="number">128</span></div><div class="line">	__________</div><div class="line">	<span class="keyword">inc</span> <span class="built_in">dx</span></div><div class="line"><span class="symbol">s0:</span>	<span class="keyword">inc</span> <span class="built_in">bx</span></div><div class="line">	<span class="keyword">loop</span> s</div></pre></td></tr></table></figure>
-<p> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">jna</span> s0</div><div class="line"><span class="keyword">jnb</span> s0</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="检测点-11-4"><a href="#检测点-11-4" class="headerlink" title="检测点 11.4"></a>检测点 11.4</h3><p>下面的程序执行后：(ax)=?</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">0</span></div><div class="line"><span class="keyword">push</span> <span class="built_in">ax</span></div><div class="line"><span class="keyword">popf</span> <span class="comment">;将PSW置0(本章所学习的标志位都为0)</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">0fff0h</span></div><div class="line"><span class="keyword">add</span> <span class="built_in">ax</span>, <span class="number">0010h</span> <span class="comment">;修改相关标志位</span></div><div class="line"><span class="keyword">pushf</span></div><div class="line"><span class="keyword">pop</span> <span class="built_in">ax</span> <span class="comment">;(将PSW保存至ax)</span></div><div class="line"><span class="keyword">and</span> <span class="built_in">al</span>, <span class="number">11000101B</span></div><div class="line"><span class="keyword">and</span> <span class="number">ah</span>, <span class="number">00001000B</span> <span class="comment">;只考虑CF,PF,ZF,SF,OF五个标志位</span></div></pre></td></tr></table></figure>
-<p>答案：<br>(ax)=45H</p>
-<h2 id="第十二章-内中断"><a href="#第十二章-内中断" class="headerlink" title="第十二章 内中断"></a>第十二章 内中断</h2><h3 id="检测点-12-1"><a href="#检测点-12-1" class="headerlink" title="检测点 12.1"></a>检测点 12.1</h3><ol>
-<li><p>用Debug查看内存，情况如下：<br> 0000:0000 68 10 A7 00 8B 01 70 00-16 00 9D 03 8B 01 70 00<br> 则3号中断源对应的中断处理程序的入口地址为：<strong><strong><em>__</em></strong></strong><br> 答案：<br> 0070:018B<br> 注意高地址存放段地址，低地址存放偏移地址</p>
-</li>
-<li><p>存储N号中断源对应的中断处理程序入口的偏移地址的内存单元的地址为：<strong><strong><br> 存储N号中断源对应的中断处理程序入口的段地址的内存单元的地址为：</strong></strong><br> 答案：4N，4N+2</p>
-</li>
-</ol>
-<h2 id="第十三章-int指令"><a href="#第十三章-int指令" class="headerlink" title="第十三章 int指令"></a>第十三章 int指令</h2><h3 id="检测点-13-1"><a href="#检测点-13-1" class="headerlink" title="检测点 13.1"></a>检测点 13.1</h3><ol>
-<li><p>在上面的内容中，我们用7ch中断例程实现loop的功能，则上面的7ch中断例程所能进行的最大转移位移为多少？<br> 答案：65535</p>
-</li>
-<li><p>用7ch中断例程完成jmp near ptr s指令的功能，用bx向中断例程传送转移位移。<br> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">jnp:</span>	<span class="keyword">push</span> <span class="built_in">bp</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">bp</span>, <span class="built_in">sp</span></div><div class="line">	<span class="keyword">add</span> [<span class="built_in">bp</span>+<span class="number">2</span>], <span class="built_in">bx</span></div><div class="line">	<span class="keyword">pop</span> <span class="built_in">bp</span></div><div class="line">	<span class="keyword">iret</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="检测点-13-2"><a href="#检测点-13-2" class="headerlink" title="检测点 13.2"></a>检测点 13.2</h3><p>判断下面说法的正误：</p>
-<ol>
-<li>我们可以编程改变FFFF:0处的指令，使得CPU不去执行BIOS中的硬件系统检测和初始化程序。<br> 错误：FFFF:0处的内容无法修改</li>
-<li>int 19h中断例程，可以由DOS提供。<br> 错误：此时DOS还未被引导</li>
-</ol>
-<h2 id="第十四章-端口"><a href="#第十四章-端口" class="headerlink" title="第十四章 端口"></a>第十四章 端口</h2><h3 id="检测点-14-1"><a href="#检测点-14-1" class="headerlink" title="检测点 14.1"></a>检测点 14.1</h3><ol>
-<li>编程，读取CMOS RAM的2号单元的内容。 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">al</span>, <span class="number">2</span></div><div class="line"><span class="keyword">out</span> <span class="number">70h</span>, <span class="number">2</span></div><div class="line"><span class="keyword">in</span> <span class="built_in">al</span>, <span class="number">71h</span></div></pre></td></tr></table></figure></li>
-<li>编程，向CMOS RAM的2号单元写入0。 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">al</span>, <span class="number">2</span></div><div class="line"><span class="keyword">out</span> <span class="number">70h</span>, <span class="number">2</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">al</span>, <span class="number">0</span></div><div class="line"><span class="keyword">out</span> <span class="number">71h</span>, <span class="built_in">al</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="检测点-14-2"><a href="#检测点-14-2" class="headerlink" title="检测点 14.2"></a>检测点 14.2</h3><p>编程，用加法和位移指令计算(ax)=(ax)*10。<br>提示，(ax)*10=(ax)*2+(ax)*8。</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="built_in">ax</span></div><div class="line"><span class="keyword">shl</span> <span class="built_in">ax</span>, <span class="number">1</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">cl</span>, <span class="number">3</span></div><div class="line"><span class="keyword">shl</span> <span class="built_in">bx</span>, <span class="built_in">cx</span></div><div class="line"><span class="keyword">add</span> <span class="built_in">ax</span>, <span class="built_in">bx</span></div></pre></td></tr></table></figure>
-<h2 id="第十五章-外中断"><a href="#第十五章-外中断" class="headerlink" title="第十五章 外中断"></a>第十五章 外中断</h2><h3 id="检测点-15-1"><a href="#检测点-15-1" class="headerlink" title="检测点 15.1"></a>检测点 15.1</h3><ol>
-<li><p>仔细分析一下上面的int 9中断例程，看看是否可以精简一下？<br> 其实在我们的int 9中断例程中，模拟int指令调用原int 9中断例程的程序段是可以精简的，因为在进入中断例程后，IF和TF都已经置0，没有必要再进行设置了。对于程序段：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">pushf</span></div><div class="line"><span class="keyword">pushf</span></div><div class="line"><span class="keyword">pop</span> <span class="built_in">ax</span></div><div class="line"><span class="keyword">and</span> <span class="number">ah</span>, <span class="number">11111100B</span></div><div class="line"><span class="keyword">push</span> <span class="built_in">ax</span></div><div class="line"><span class="keyword">popf</span></div><div class="line"><span class="keyword">call</span> <span class="built_in">dword</span> <span class="built_in">ptr</span> <span class="built_in">ds</span>:[<span class="number">0</span>]</div></pre></td></tr></table></figure>
-<p> 可以精简为：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">pushf</span></div><div class="line"><span class="keyword">call</span> <span class="built_in">dword</span> <span class="built_in">ptr</span> <span class="built_in">ds</span>:[<span class="number">0</span>]</div></pre></td></tr></table></figure>
-<p> 两条指令。</p>
-</li>
-<li><p>仔细分析上面程序中的主程序，看看有什么潜在的问题？<br> 在主程序中，如果在执行设置int 9中断例程的段地址和偏移地址的指令之间发生了键盘中断，则CPU将转去一个错误的地址执行，将发生错误。<br> 找出这样的程序段，改写它们，排除潜在的问题。<br> 提示，注意sti和cli指令的用法。<br> 答案：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cli</span></div><div class="line"><span class="keyword">mov</span> <span class="built_in">word</span> <span class="built_in">ptr</span> <span class="built_in">es</span>:[<span class="number">9</span>*<span class="number">4</span>],offset int9</div><div class="line"><span class="keyword">mov</span> <span class="built_in">word</span> <span class="built_in">ptr</span> <span class="built_in">es</span>:[<span class="number">9</span>*<span class="number">4</span>+<span class="number">2</span>],<span class="built_in">cs</span></div><div class="line"><span class="keyword">sti</span></div></pre></td></tr></table></figure>
-<p> 以及：</p>
- <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cli</span></div><div class="line"><span class="keyword">push</span> <span class="built_in">ds</span>:[<span class="number">0</span>]</div><div class="line"><span class="keyword">pop</span> <span class="built_in">es</span>:[<span class="number">9</span>*<span class="number">4</span>]</div><div class="line"><span class="keyword">push</span> <span class="built_in">ds</span>:[<span class="number">2</span>]</div><div class="line"><span class="keyword">pop</span> <span class="built_in">es</span>:[<span class="number">9</span>*<span class="number">4</span>+<span class="number">2</span>]</div><div class="line"><span class="keyword">sti</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="第十六章-直接定址表"><a href="#第十六章-直接定址表" class="headerlink" title="第十六章 直接定址表"></a>第十六章 直接定址表</h2><h3 id="检测点-16-1"><a href="#检测点-16-1" class="headerlink" title="检测点 16.1"></a>检测点 16.1</h3><p>下面的程序将code段中a处的8个数据累加，结果存储到b处的双字中，补全程序。<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:code</div><div class="line">code <span class="meta">segment</span></div><div class="line">	a <span class="built_in">dw</span> <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span></div><div class="line">	b <span class="built_in">dd</span> <span class="number">0</span></div><div class="line"><span class="symbol">start:</span>	<span class="keyword">mov</span> <span class="built_in">si</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">cx</span>, <span class="number">8</span></div><div class="line"><span class="symbol">s:</span>	<span class="keyword">mov</span> <span class="built_in">ax</span>, ____</div><div class="line">	<span class="keyword">add</span> ____, <span class="built_in">ax</span></div><div class="line">	<span class="keyword">adc</span> ____, <span class="number">0</span></div><div class="line">	<span class="keyword">add</span> <span class="built_in">si</span>, ____</div><div class="line">	<span class="keyword">loop</span> s</div><div class="line"></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">4c00h</span></div><div class="line">	<span class="keyword">int</span> <span class="number">21h</span></div><div class="line"></div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure><br>答案：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">a[<span class="built_in">si</span>]</div><div class="line"><span class="built_in">word</span> <span class="built_in">ptr</span> b[<span class="number">0</span>]</div><div class="line"><span class="built_in">word</span> <span class="built_in">ptr</span> b[<span class="number">2</span>]</div><div class="line"><span class="number">2</span></div></pre></td></tr></table></figure><br>注意word ptr的使用</p>
-<h3 id="检测点-16-2"><a href="#检测点-16-2" class="headerlink" title="检测点 16.2"></a>检测点 16.2</h3><p>下面的程序将data段中a处的8个数据累加，结果存储到b处的字中，补全程序。<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">assume</span> <span class="built_in">cs</span>:code, <span class="built_in">es</span>:data</div><div class="line"></div><div class="line">data <span class="meta">segment</span></div><div class="line">a	<span class="built_in">db</span> <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span></div><div class="line">b	<span class="built_in">dw</span> <span class="number">0</span></div><div class="line">data ends</div><div class="line"></div><div class="line">code <span class="meta">segment</span></div><div class="line"><span class="symbol">start:</span>	__________</div><div class="line">	__________</div><div class="line">	<span class="keyword">mov</span> <span class="built_in">si</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">cx</span>, <span class="number">8</span></div><div class="line"><span class="symbol">s:</span>	<span class="keyword">mov</span> <span class="built_in">al</span>, a[<span class="built_in">si</span>]</div><div class="line">	<span class="keyword">mov</span> <span class="number">ah</span>, <span class="number">0</span></div><div class="line">	<span class="keyword">add</span> b, <span class="built_in">ax</span></div><div class="line">	<span class="keyword">inc</span> <span class="built_in">si</span></div><div class="line">	<span class="keyword">loop</span> s</div><div class="line"></div><div class="line">	<span class="keyword">mov</span> <span class="built_in">ax</span>, <span class="number">4c00h</span></div><div class="line">	<span class="keyword">int</span> <span class="number">21h</span></div><div class="line">code ends</div><div class="line">end start</div></pre></td></tr></table></figure><br>答案：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="built_in">ax</span>, data</div><div class="line"><span class="keyword">mov</span> <span class="built_in">es</span>, <span class="built_in">ax</span></div></pre></td></tr></table></figure></p>
-<h2 id="第十七章-使用BIOS进行键盘输入和磁盘读写"><a href="#第十七章-使用BIOS进行键盘输入和磁盘读写" class="headerlink" title="第十七章 使用BIOS进行键盘输入和磁盘读写"></a>第十七章 使用BIOS进行键盘输入和磁盘读写</h2><h3 id="检测点-17-1"><a href="#检测点-17-1" class="headerlink" title="检测点 17.1"></a>检测点 17.1</h3><p>“在int 16h中断例程中，一定有设置IF=1的指令”，这种说法对吗？</p>
-<p>正确，int 16h中断例程在键盘缓冲区中没有数据时，会等待直到键盘缓冲区中有数据为止，因此，int 16h中需要处理int 9h中断，所以一定有设置IF=1的指令。</p>
-
-                    
-                        
-                    
-                    
-                        <p>
-                            <a href="/2017/03/05/王爽汇编语言第三版检测点答案/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -2210,7 +1766,7 @@
                 data-message-zero="没有找到文章"
                 data-message-one="找到 1 篇文章"
                 data-message-other="找到 {n} 篇文章">
-                找到 23 篇文章
+                找到 24 篇文章
             </p>
         </div>
     </div>
