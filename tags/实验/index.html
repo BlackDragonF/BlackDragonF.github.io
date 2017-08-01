@@ -239,6 +239,323 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title" itemprop="headline">
                     
+                        <a class="link-unstyled" href="/2017/08/01/深入理解计算机系统ShellLab实验报告/">
+                            深入理解计算机系统ShellLab实验报告
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2017-08-01T15:27:04+08:00">
+	
+		    8月 01, 2017
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/计算机系统/">计算机系统</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content" itemprop="articleBody">
+                    <p>实验答案托管在我的<a href="https://github.com/BlackDragonF/CSAPPLabs/tree/master/ShellLab" target="_blank" rel="external">GitHub</a>上</p>
+<blockquote>
+<p>这一个月一来一直在看《深入理解计算机系统》的后几章，终于全部看完了（除了第4章：处理器体系结构外）。然后开始集中处理实验，以下是Shell Lab的实验解答。</p>
+</blockquote>
+<h2 id="实验介绍"><a href="#实验介绍" class="headerlink" title="实验介绍"></a>实验介绍</h2><p>Shell Lab - Writing Your Own Unix Shell主要是有关于进程、信号以及异常处理的实验，对应于书本的第8章：异常控制流。主要通过实现一个带作业控制的Unix Shell来熟悉进程以及信号的概念。</p>
+<p>本实验已经给出了Tiny Shell的源程序的基本框架(tsh.c)，你需要做的是填充该框架中的eval builtin_cmd do_bgfg waitfg sigchld_handler sigint_handler sigtstp_handler等函数。使得编译后的Shell具有相应的功能。</p>
+<p>关于本实验的具体介绍详见<a href="http://csapp.cs.cmu.edu/3e/shlab.pdf" target="_blank" rel="external">实验讲义</a></p>
+<h2 id="实验介绍-1"><a href="#实验介绍-1" class="headerlink" title="实验介绍"></a>实验介绍</h2><p>Shell是一个代表用户运行程序的命令行解释器。一个Shell周期性的打印一个提示符，从标准输入流等待一条命令行输入，然后根据命令行的输入执行相应的功能。</p>
+<p>一条命令行输入是由空格分隔ASCII文本词(words)。命令行输入的第一个词要不然是一个内建命令(built-in command)要不然是一个可执行文件的路径。剩余的词是命令行参数。如果第一个词是内建命令，Shell立刻在当前进程中执行该命令。否则，词会被假设为一个可执行程序的路径。在这种情况下，Shell会fork出一个子进程，在子进程的上下文中加载并运行这个程序。被创建的子进程被称作任务(job)。总的来说，一个任务可以包含通过Unix管道(Unix Pipe)连接的多个子进程。</p>
+<p>如果命令行输入以<code>&#39;&amp;&#39;</code>结尾，那么这个任务将会在后台执行，这意味着Shell在打印下一个提示符并等待下一条命令行输入之前不会等待当前任务终止。在默认情况下，任务运行在前台，这意味这Shell在下一条命令行输入之前会等待当前任务终止。在任何的情况下， 只能有一个任务运行在前台，但是，可以有多个任务运行在后台。</p>
+<p>例如，输入<code>tsh&gt; jobs</code>使得Shell执行内建的jobs命令，输入<code>tsh&gt; /bin/ls -l -d</code>则在前台运行ls程序，同时，这个程序的argc == 3，argv[0] == “/bin/ls”a，argv[1] == “-l”，argv[2] == “-d”。相应地，输入<code>tsh&gt; /bin/ls -l -d &amp;</code>则会在后台运行ls程序。</p>
+<p>Unix Shell支持作业控制的概念，这允许用户将任务在前台和后台间来回移动，并且改变一个任务中进程的状态（运行，停止，终止）。按下ctrl-c将会发送SIGINT信号到当前前台任务的每一个进程中。按下ctrl-z将会发送SIGTSTP信号到前台任务的每一个进程中，SIGTSTP信号的默认功能是将进程设置为停止状态，直到其被一个SIGCONT信号唤醒。Unix Shell提供了不同的内建命令来支持作业控制，如：</p>
+<ul>
+<li>jobs - 打印运行的和停止的后台任务</li>
+<li>bg <job> - 将一个停止的后台任务转变为一个运行的后台任务</job></li>
+<li>fb <job> - 将一个运行的或是停止的后台任务转变为一个运行的前台任务</job></li>
+<li>kill <job> - 终止一个任务</job></li>
+</ul>
+<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p>所实现的tsh shell应当具有如下的特性：</p>
+<ul>
+<li>提示符应当为<code>&quot;tsh&gt; &quot;</code></li>
+<li>用户的命令行输入应当包括一个名字和0个或多个参数，均由一个或多个空格隔开。如果名字是一个内建命令，那么tsh应当立刻处理它并且等待下一个命令行输入。否则，tsh就会假设它是一个可执行文件的路径，并且在一个独立的子进程中加载并执行它</li>
+<li>tsh不需要支持管道(|)和I/O重定向(&gt;和&lt;)</li>
+<li>按下ctrl-c(ctrl-z)将会导致一个SIGINT(SIGTSTP)信号被发送至当前的前台任务，如果现在没有前台任务，那么这些信号将没有效果</li>
+<li>如果命令行输入以一个<code>&#39;&amp;&#39;</code>结束，那么tsh将会在后台运行这个任务，否则它会在前台运行这个任务</li>
+<li>每一个任务都可以被一个进程ID(PID)或是一个被tsh分配的正整数的任务ID(JID)唯一的标识。JIDS可以被前缀<code>&#39;%&#39;</code>标识，例如，<code>&#39;%5&#39;</code>就代表了JID 5，而<code>&#39;5&#39;</code>就代表了PID 5</li>
+<li>tsh应当提供如下的内建命令：<ul>
+<li>quit命令直接终止shell</li>
+<li>jobs命令列出所有在后台运行的任务</li>
+<li>bg <job>命令通过给<job>发送SIGCONT信号将其重启，然后将其在后台运行。参数<job>既可以是一个PID，也可以是一个JID</job></job></job></li>
+<li>fg <job>命令通过给<job>发送SIGCONT信号将其重启，然后将其在前台运行。参数<job>既可以是一个PID，也可以使一个JID</job></job></job></li>
+</ul>
+</li>
+<li>tsh应当回收它的所有僵死子进程。如果任何任务因为收到了一个未被捕获的信号而终止，那么tsh应当识别对应的时间并且输出相应的信息</li>
+</ul>
+<h2 id="实验评测"><a href="#实验评测" class="headerlink" title="实验评测"></a>实验评测</h2><ol>
+<li>参考答案 - 实验提供了一个作为参考的tshref可执行文件作为tsh的参考。你的tsh应当提供和tshref一致的输出（除了PIDs以外）</li>
+<li>Shell驱动 - sdriver.pl程序将shell作为一个子进程来执行，根据trace file来向它发送命令和信号，并且将shell的输出捕获并输出。实验总共提供了16个trace file。关于sdriver的具体用法请参考实验讲义。</li>
+</ol>
+<p>实验提供了tshref.out作为16个trace file在tshref程序下的参考输出。为了方便比较，写了一个小的（可能会有很多错误）的shell脚本gather_output.sh用来生成这些trace file在tsh下的输出，脚本如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin bash</span></div><div class="line"></div><div class="line">output_file=tsh.out</div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">""</span> &gt; tsh.out</div><div class="line"></div><div class="line"><span class="built_in">echo</span> -e <span class="string">"\n"</span> &gt;&gt; tsh.out</div><div class="line"></div><div class="line"><span class="keyword">for</span> trace_file <span class="keyword">in</span> ./*.txt</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> -e <span class="string">"`./sdriver.pl -t <span class="variable">$trace_file</span> -s ./tshref -a "</span>-p<span class="string">"`"</span> &gt;&gt; tsh.out</div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> -e <span class="string">"\n"</span> &gt;&gt; tsh.out</div></pre></td></tr></table></figure></p>
+<h2 id="实验思路"><a href="#实验思路" class="headerlink" title="实验思路"></a>实验思路</h2><blockquote>
+<p>最早在做这个实验的时候一直没有什么头绪，即使已经参考了实验讲义，使用trace file来指导编程（trace file的难度自简单到复杂）。后来还是先好好的阅读了一遍给出的框架源代码，整理如下。</p>
+</blockquote>
+<h3 id="框架代码分析"><a href="#框架代码分析" class="headerlink" title="框架代码分析"></a>框架代码分析</h3><h4 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h4><table>
+<thead>
+<tr>
+<th>宏</th>
+<th>描述</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAXLINE</td>
+<td>定义了命令行1行允许的最大字符数</td>
+<td>1024</td>
+</tr>
+<tr>
+<td>MAXARGS</td>
+<td>定义了命令行所允许的最大参数个数</td>
+<td>128</td>
+</tr>
+<tr>
+<td>MAXJOBS</td>
+<td>定义了命令行同一时间允许的最多任务个数</td>
+<td>16</td>
+</tr>
+<tr>
+<td>MAXJID</td>
+<td>定义了最大的任务ID</td>
+<td>1&lt;&lt;16</td>
+</tr>
+<tr>
+<td>UNDEF</td>
+<td>未定义的状态</td>
+<td>0</td>
+</tr>
+<tr>
+<td>FG</td>
+<td>任务运行在前台</td>
+<td>1</td>
+</tr>
+<tr>
+<td>BG</td>
+<td>任务运行在后台</td>
+<td>2</td>
+</tr>
+<tr>
+<td>ST</td>
+<td>任务停止</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>允许如下的状态转换<br>FG -&gt; ST : ctrl-z<br>ST -&gt; FG : fg命令<br>BG -&gt; FG : fg命令<br>ST -&gt; BG : bg命令</p>
+</blockquote>
+<h4 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">job_t</span> &#123;</span>              <span class="comment">//任务</span></div><div class="line">    <span class="keyword">pid_t</span> pid;              <span class="comment">//任务的PID</span></div><div class="line">    <span class="keyword">int</span> jid;                <span class="comment">//任务JID [1, 2, ...]</span></div><div class="line">    <span class="keyword">int</span> state;              <span class="comment">//状态 - 包括UNDEF, BG, FG, ST</span></div><div class="line">    <span class="keyword">char</span> cmdline[MAXLINE];  <span class="comment">//对应的命令行输入</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h4><table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>变量类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>environ</td>
+<td>char **</td>
+<td>定义在libc中 环境变量</td>
+</tr>
+<tr>
+<td>prompt</td>
+<td>char[]</td>
+<td>命令行提示符</td>
+</tr>
+<tr>
+<td>verbose</td>
+<td>int</td>
+<td>为1时输出额外信息</td>
+</tr>
+<tr>
+<td>nextjid</td>
+<td>int</td>
+<td>下一个待分配的JID</td>
+</tr>
+<tr>
+<td>subf</td>
+<td>char[MAXLINE]</td>
+<td>用于生成sprintf信息</td>
+</tr>
+<tr>
+<td>jobs</td>
+<td>struct job_t [MAXJOBS]</td>
+<td>全局任务表</td>
+</tr>
+</tbody>
+</table>
+<h4 id="函数列表"><a href="#函数列表" class="headerlink" title="函数列表"></a>函数列表</h4><table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>函数原型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>parseline</td>
+<td>int parseline(const char <em>cmdline, char *</em>argv)</td>
+<td>接收命令行输入以及参数列表，解析输入并且将解析到的参数存入参数列表，并且判断该命令是否以’&amp;’结尾，是则返回1，否则返回0</td>
+</tr>
+<tr>
+<td>sigquit_handler</td>
+<td>void sigquit_handler(int sig)</td>
+<td>SIGQUIT的信号处理函数</td>
+</tr>
+<tr>
+<td>clearjob</td>
+<td>void clearjob(struct job_t *job)</td>
+<td>将对应任务的PID，JID清零，状态设置为UNDEF，并且将命令行输入清空</td>
+</tr>
+<tr>
+<td>initjobs</td>
+<td>void initjobs(struct job_t *jobs)</td>
+<td>将任务列表中的所有任务清空</td>
+</tr>
+<tr>
+<td>maxjid</td>
+<td>int maxjid(struct job_t *jobs)</td>
+<td>返回任务列表中的最大JID</td>
+</tr>
+<tr>
+<td>addjob</td>
+<td>int addjob(struct job_t <em>jobs, pid_t pid, int state, char </em>cmdline)</td>
+<td>将给定任务添加至任务列表，如果nextjid超过了MAXJOBS，则将其重置为1</td>
+</tr>
+<tr>
+<td>deletejob</td>
+<td>int deletejob(struct job_t *jobs, pid_t pid)</td>
+<td>将对应任务从任务列表中删除，并将nextjid自增1</td>
+</tr>
+<tr>
+<td>fgpid</td>
+<td>pid_t fgpid(struct job_t *jobs)</td>
+<td>返回当前前台任务的PID，如果没有则返回0</td>
+</tr>
+<tr>
+<td>getjobpid</td>
+<td>struct job_t <em>getjobpid(struct job_t </em>jobs, pid_t pid)</td>
+<td>按照pid查询任务 如果没有则返回NULL</td>
+</tr>
+<tr>
+<td>getjobjid</td>
+<td>struct job_t <em>getjobjid(struct job_t </em>jobs, int jid)</td>
+<td>按照jid查询任务 如果没有则返回NULL</td>
+</tr>
+<tr>
+<td>pid2jid</td>
+<td>int pid2jid(pid_t pid)</td>
+<td>根据pid返回其jid，没有则返回0</td>
+</tr>
+<tr>
+<td>listjobs</td>
+<td>void listjobs(struct job_t *jobs)</td>
+<td>打印任务队列</td>
+</tr>
+<tr>
+<td>usage</td>
+<td>void usage(void)</td>
+<td>打印帮助信息</td>
+</tr>
+<tr>
+<td>unix_error</td>
+<td>void unix_error(char *msg)</td>
+<td>打印系统级错误信息并结束进程</td>
+</tr>
+<tr>
+<td>app_error</td>
+<td>void app_error(char *msg)</td>
+<td>打印应用级错误信息并结束进程</td>
+</tr>
+<tr>
+<td>Signal</td>
+<td>handler_t <em>Signal(int signum, handler_t </em>handler)</td>
+<td>signal的包装函数</td>
+</tr>
+<tr>
+<td>eval</td>
+<td>void eval(char *cmdline)</td>
+<td>求值函数</td>
+</tr>
+<tr>
+<td>builtin_cmd</td>
+<td>int builtin_cmd(char **argv)</td>
+<td>处理内建函数</td>
+</tr>
+<tr>
+<td>do_bgfg</td>
+<td>void do_bgfg(char **argv)</td>
+<td>实现内建的bg和fg</td>
+</tr>
+<tr>
+<td>waitfg</td>
+<td>void waitfg(pid_t pid)</td>
+<td>等待前台的任务完成</td>
+</tr>
+<tr>
+<td>sigchld_handler</td>
+<td>void sigchld_handler(int sig)</td>
+<td>SIGCHLD的信号处理程序</td>
+</tr>
+<tr>
+<td>sigtstp_handler</td>
+<td>void sigtstp_handler(int sig)</td>
+<td>SIGTSTP的信号处理程序</td>
+</tr>
+<tr>
+<td>sitint_handler</td>
+<td>void sigint_handler(int sig)</td>
+<td>SIGINT的信号处理程序</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实验答案"><a href="#实验答案" class="headerlink" title="实验答案"></a>实验答案</h2><blockquote>
+<p>为了简化篇幅，这里只附上几个相关的函数，已实现函数以及包装函数等就不一并附上。如有需要可以去GitHub中查看。</p>
+</blockquote>
+<p>实验答案为我自己的实验解法，很可能不是最优解法，请不要直接抄袭。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">eval</span><span class="params">(<span class="keyword">char</span> *cmdline)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">char</span> * argv[MAXARGS];</div><div class="line">    <span class="keyword">char</span> buf[MAXLINE];</div><div class="line">    <span class="keyword">int</span> bg; <span class="comment">/* if run in background */</span></div><div class="line">    <span class="keyword">pid_t</span> pid;</div><div class="line"></div><div class="line">    <span class="keyword">sigset_t</span> mask_all, mask_chld, prev_chld;</div><div class="line"></div><div class="line">    <span class="comment">/*initialize signal sets*/</span></div><div class="line">    Sigfillset(&amp;mask_all);</div><div class="line">    Sigemptyset(&amp;mask_chld);</div><div class="line">    Sigaddset(&amp;mask_chld, SIGCHLD);</div><div class="line"></div><div class="line">    <span class="built_in">strcpy</span>(buf, cmdline);</div><div class="line">    bg = parseline(buf, argv); <span class="comment">/* parse the command line */</span></div><div class="line">    <span class="keyword">if</span> (argv[<span class="number">0</span>] == <span class="literal">NULL</span>) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125; <span class="comment">/* handles if there is empty input */</span></div><div class="line"></div><div class="line">    <span class="keyword">if</span> (!builtin_cmd(argv)) &#123; <span class="comment">/* if the command line is builtin command */</span></div><div class="line">        Sigprocmask(SIG_BLOCK, &amp;mask_chld, &amp;prev_chld); <span class="comment">/* block SIGCHLD to avoid potential race between addjob and deletejob */</span></div><div class="line">        <span class="keyword">if</span> ((pid = Fork()) == <span class="number">0</span>) &#123;</div><div class="line">            Setpgid(<span class="number">0</span>, <span class="number">0</span>); <span class="comment">/* give the child process a new group id to handle SIGINT correctly */</span></div><div class="line">            Sigprocmask(SIG_SETMASK, &amp;prev_chld, <span class="literal">NULL</span>); <span class="comment">/* unblock SIGCHLD */</span></div><div class="line">            Execve(argv[<span class="number">0</span>], argv, environ);</div><div class="line">        &#125;</div><div class="line">        Sigprocmask(SIG_BLOCK, &amp;mask_all, <span class="literal">NULL</span>); <span class="comment">/* mask all signals to avoid potential races */</span></div><div class="line">        addjob(jobs, pid, bg + <span class="number">1</span>, cmdline); <span class="comment">/* add job to joblist */</span></div><div class="line">        Sigprocmask(SIG_SETMASK, &amp;prev_chld, <span class="literal">NULL</span>);</div><div class="line">        <span class="keyword">if</span> (!bg) &#123; <span class="comment">/* if the process should be exeuted in foreground */</span></div><div class="line">            waitfg(pid); <span class="comment">/* fg wait explictly */</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"[%d] (%d) %s"</span>, pid2jid(pid), pid, cmdline); <span class="comment">/* bg print message*/</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">builtin_cmd</span><span class="params">(<span class="keyword">char</span> **argv)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">/* handles the builtin command in current context */</span></div><div class="line">    <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">"quit"</span>)) &#123;</div><div class="line">        <span class="built_in">exit</span>(<span class="number">0</span>); <span class="comment">/* quit: exit directly*/</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">"jobs"</span>)) &#123;</div><div class="line">        listjobs(jobs); <span class="comment">/* jobs: print the current job list */</span></div><div class="line">        <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">"bg"</span>) || !<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">"fg"</span>)) &#123;</div><div class="line">        do_bgfg(argv); <span class="comment">/* bg|fg: handles in function do_bgfg */</span></div><div class="line">        <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">"&amp;"</span>)) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">/* returns 1 for empty &amp; */</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;     <span class="comment">/* not a builtin command */</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_bgfg</span><span class="params">(<span class="keyword">char</span> **argv)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> number = <span class="number">0</span>; <span class="comment">/* used to store the converted number */</span></div><div class="line">    <span class="keyword">char</span> * ptr = argv[<span class="number">1</span>]; <span class="comment">/* get the pointer to argument 1 */</span></div><div class="line">    <span class="keyword">char</span> * endptr = <span class="literal">NULL</span>; <span class="comment">/* used for error handling */</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">job_t</span> * <span class="title">job</span> = <span class="title">NULL</span>;</span> <span class="comment">/* used to store job pointer */</span></div><div class="line">    <span class="keyword">if</span> (!argv[<span class="number">1</span>]) &#123; <span class="comment">/* returns if missing argument */</span></div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%s command requires PID or %%jobid argument\n"</span>, argv[<span class="number">0</span>]);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (*ptr == <span class="string">'%'</span>) &#123; <span class="comment">/* if argument 1 is job ID */</span></div><div class="line">        ptr++; <span class="comment">/* adjust pointer */</span></div><div class="line">        number = strtol(ptr, &amp;endptr, <span class="number">10</span>);</div><div class="line">        <span class="keyword">if</span> (ptr == endptr) &#123; <span class="comment">/* handles convert error */</span></div><div class="line">            <span class="built_in">printf</span>(<span class="string">"%s: argument must be a PID or %%jobid\n"</span>, argv[<span class="number">0</span>]);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        job = getjobjid(jobs, number); <span class="comment">/* get the job */</span></div><div class="line">        <span class="keyword">if</span> (!job) &#123;<span class="comment">/* handles if there is no such job */</span></div><div class="line">            <span class="built_in">printf</span>(<span class="string">"%%%d: No such job\n"</span>, number);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;<span class="comment">/* if argument 1 is pid */</span></div><div class="line">        number = strtol(ptr, &amp;endptr, <span class="number">10</span>);</div><div class="line">        <span class="keyword">if</span> (ptr == endptr) &#123; <span class="comment">/* handles convert error */</span></div><div class="line">            <span class="built_in">printf</span>(<span class="string">"%s: argument must be a PID or %%jobid\n"</span>, argv[<span class="number">0</span>]);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        job = getjobpid(jobs, (<span class="keyword">pid_t</span>)number); <span class="comment">/* get the job */</span></div><div class="line">        <span class="keyword">if</span> (!job) &#123;<span class="comment">/* handles if there is no such job */</span></div><div class="line">            <span class="built_in">printf</span>(<span class="string">"(%d): No such process\n"</span>, number);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/* change process state and update the job list*/</span></div><div class="line">    <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">"bg"</span>)) &#123; <span class="comment">/*bg: turns ST to BG, send SIGCONT */</span></div><div class="line">        <span class="keyword">if</span>(job-&gt;state == ST) &#123;</div><div class="line">            Kill(-(job-&gt;pid), SIGCONT);</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"[%d] (%d) %s"</span>, job-&gt;jid, job-&gt;pid, job-&gt;cmdline);</div><div class="line">            job-&gt;state = BG;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">"fg"</span>)) &#123;<span class="comment">/* fg: turns ST/BG to FG, sent SIGCONT */</span></div><div class="line">        <span class="keyword">if</span>(job-&gt;state == ST) &#123;</div><div class="line">            Kill(-(job-&gt;pid), SIGCONT);</div><div class="line">            job-&gt;state = BG;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(job-&gt;state == BG) &#123;</div><div class="line">            job-&gt;state = FG;</div><div class="line">            waitfg(job-&gt;pid);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">waitfg</span><span class="params">(<span class="keyword">pid_t</span> pid)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">while</span>(fgpid(jobs)) &#123; <span class="comment">/* handles all zombie processes in signal handler */</span></div><div class="line">        sleep(<span class="number">0.01</span>); <span class="comment">/* busy loop only */</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">sigchld_handler</span><span class="params">(<span class="keyword">int</span> sig)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> olderrno = errno; <span class="comment">/* store old errno */</span></div><div class="line">    <span class="keyword">int</span> status; <span class="comment">/* used to trace pid's status */</span></div><div class="line">    <span class="keyword">sigset_t</span> mask_all, prev_all;</div><div class="line">    <span class="keyword">pid_t</span> pid;</div><div class="line"></div><div class="line">    Sigfillset(&amp;mask_all);</div><div class="line"></div><div class="line">    <span class="keyword">while</span>((pid = Waitpid(<span class="number">-1</span>, &amp;status, WUNTRACED | WNOHANG)) &gt; <span class="number">0</span>) &#123; <span class="comment">/* waitpid without waiting(WNOHANG) */</span></div><div class="line">        <span class="keyword">if</span> (WIFSTOPPED(status) &amp;&amp; (WSTOPSIG(status) == SIGTSTP || WSTOPSIG(status) == SIGSTOP)) &#123; <span class="comment">/* if the process is stopped */</span></div><div class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">job_t</span> * <span class="title">job</span> = <span class="title">getjobpid</span>(<span class="title">jobs</span>, <span class="title">pid</span>);</span></div><div class="line">            <span class="keyword">if</span> (job &amp;&amp; job-&gt;state != ST) &#123; <span class="comment">/* if the stop signal hasn't been catched */</span></div><div class="line">                <span class="built_in">printf</span>(<span class="string">"Job [%d] (%d) stopped by signal %d\n"</span>, pid2jid(pid), pid, WSTOPSIG(status));</div><div class="line">                <span class="class"><span class="keyword">struct</span> <span class="title">job_t</span> * <span class="title">stpjob</span> = <span class="title">getjobpid</span>(<span class="title">jobs</span>, <span class="title">pid</span>);</span></div><div class="line">                stpjob-&gt;state = ST;<span class="comment">/* handles here */</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (WIFSIGNALED(status) &amp;&amp; WTERMSIG(status) == SIGINT) &#123; <span class="comment">/* it the terminate signal hasn't been catched */</span></div><div class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">job_t</span> * <span class="title">job</span> = <span class="title">getjobpid</span>(<span class="title">jobs</span>, <span class="title">pid</span>);</span></div><div class="line">            <span class="keyword">if</span> (job) &#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"Job [%d] (%d) terminated by signal %d\n"</span>, pid2jid(pid), pid, WTERMSIG(status));</div><div class="line">                <span class="comment">/* handles here */</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (WIFEXITED(status) || WIFSIGNALED(status)) &#123;</div><div class="line">            Sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev_all);</div><div class="line">            deletejob(jobs, pid);</div><div class="line">            Sigprocmask(SIG_SETMASK, &amp;prev_all, <span class="literal">NULL</span>);</div><div class="line">        &#125;<span class="comment">/* remove the job in job list accordingly */</span></div><div class="line">    &#125;</div><div class="line">    errno = olderrno;</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">sigint_handler</span><span class="params">(<span class="keyword">int</span> sig)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> olderrno = errno; <span class="comment">/* store old errno */</span></div><div class="line">    <span class="keyword">sigset_t</span> mask_all, prev_all;</div><div class="line">    Sigfillset(&amp;mask_all);</div><div class="line">    Sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev_all); <span class="comment">/* block all signal in case the race between SIGINT and SIGCHLD */</span></div><div class="line"></div><div class="line">    <span class="keyword">pid_t</span> pid;</div><div class="line">    pid = fgpid(jobs);</div><div class="line">    Kill(-pid, SIGINT); <span class="comment">/* kill processes in fg job's process group */</span></div><div class="line"></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"Job [%d] (%d) terminated by signal %d\n"</span>, pid2jid(pid), pid, sig); <span class="comment">/* print the message */</span></div><div class="line"></div><div class="line">    deletejob(jobs, pid); <span class="comment">/* delete job in joblist */</span></div><div class="line"></div><div class="line">    Sigprocmask(SIG_SETMASK, &amp;prev_all, <span class="literal">NULL</span>);</div><div class="line"></div><div class="line">    errno = olderrno;</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">sigtstp_handler</span><span class="params">(<span class="keyword">int</span> sig)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> olderrno = errno; <span class="comment">/* store old errno */</span></div><div class="line">    <span class="keyword">sigset_t</span> mask_all, prev_all;</div><div class="line">    Sigfillset(&amp;mask_all);</div><div class="line">    Sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev_all); <span class="comment">/* block all signal in case the race between SIGTSTP and SIGCHLD */</span></div><div class="line"></div><div class="line">    <span class="keyword">pid_t</span> pid;</div><div class="line">    pid = fgpid(jobs);</div><div class="line">    Kill(-pid, SIGTSTP); <span class="comment">/* send SIGTSTP to fg job's process group */</span></div><div class="line"></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"Job [%d] (%d) stopped by signal %d\n"</span>, pid2jid(pid), pid, sig); <span class="comment">/* print the message */</span></div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">job_t</span> * <span class="title">stpjob</span> = <span class="title">getjobpid</span>(<span class="title">jobs</span>, <span class="title">pid</span>);</span></div><div class="line">    stpjob-&gt;state = ST; <span class="comment">/* modify the job list */</span></div><div class="line"></div><div class="line">    Sigprocmask(SIG_SETMASK, &amp;prev_all, <span class="literal">NULL</span>);</div><div class="line"></div><div class="line">    errno = olderrno;</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h2><p>总的来说不难的一个实验，关键在于要先理解整个框架中的代码，然后根据trace file渐进地完成程序。需要注意的地方实验讲义中的提示以及书本中都已经给出，这里不再赘述。需要强调的是SIGCHLD的信号处理程序需要处理未捕获的SIGTSTP和SIGINT信号。此外SIGINT/SIGTSTP和SIGCHLD的信号处理程序之间可能会有潜在的冲突导致错误的冲突。（信号处理程序是可以被其他信号中断的）</p>
+
+                    
+                        
+                    
+                    
+                        <p>
+                            <a href="/2017/08/01/深入理解计算机系统ShellLab实验报告/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
                         <a class="link-unstyled" href="/2017/07/20/深入理解计算机系统PerformanceLab实验报告/">
                             深入理解计算机系统PerformanceLab实验报告
                         </a>
@@ -1468,7 +1785,7 @@
                 data-message-zero="没有找到文章"
                 data-message-one="找到 1 篇文章"
                 data-message-other="找到 {n} 篇文章">
-                找到 24 篇文章
+                找到 25 篇文章
             </p>
         </div>
     </div>
