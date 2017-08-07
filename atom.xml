@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.duskdragon.com/"/>
-  <updated>2017-08-01T17:24:10.326Z</updated>
+  <updated>2017-08-07T16:36:25.396Z</updated>
   <id>http://blog.duskdragon.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://blog.duskdragon.com/2017/08/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FShellLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
     <id>http://blog.duskdragon.com/2017/08/01/深入理解计算机系统ShellLab实验报告/</id>
     <published>2017-08-01T07:27:04.000Z</published>
-    <updated>2017-08-01T17:24:10.326Z</updated>
+    <updated>2017-08-07T16:36:25.396Z</updated>
     
     <content type="html"><![CDATA[<p>实验答案托管在我的<a href="https://github.com/BlackDragonF/CSAPPLabs/tree/master/ShellLab" target="_blank" rel="external">GitHub</a>上</p>
 <blockquote>
@@ -55,13 +55,13 @@
 <li>fg <job>命令通过给<job>发送SIGCONT信号将其重启，然后将其在前台运行。参数<job>既可以是一个PID，也可以使一个JID</job></job></job></li>
 </ul>
 </li>
-<li>tsh应当回收它的所有僵死子进程。如果任何任务因为收到了一个未被捕获的信号而终止，那么tsh应当识别对应的时间并且输出相应的信息</li>
+<li>tsh应当回收它的所有僵死子进程。如果任何任务因为收到了一个未被捕获的信号而终止，那么tsh应当识别对应的事件并且输出相应的信息</li>
 </ul>
 <h2 id="实验评测"><a href="#实验评测" class="headerlink" title="实验评测"></a>实验评测</h2><ol>
 <li>参考答案 - 实验提供了一个作为参考的tshref可执行文件作为tsh的参考。你的tsh应当提供和tshref一致的输出（除了PIDs以外）</li>
 <li>Shell驱动 - sdriver.pl程序将shell作为一个子进程来执行，根据trace file来向它发送命令和信号，并且将shell的输出捕获并输出。实验总共提供了16个trace file。关于sdriver的具体用法请参考实验讲义。</li>
 </ol>
-<p>实验提供了tshref.out作为16个trace file在tshref程序下的参考输出。为了方便比较，写了一个小的（可能会有很多错误）的shell脚本gather_output.sh用来生成这些trace file在tsh下的输出，脚本如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin bash</span></div><div class="line"></div><div class="line">output_file=tsh.out</div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">""</span> &gt; tsh.out</div><div class="line"></div><div class="line"><span class="built_in">echo</span> -e <span class="string">"\n"</span> &gt;&gt; tsh.out</div><div class="line"></div><div class="line"><span class="keyword">for</span> trace_file <span class="keyword">in</span> ./*.txt</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> -e <span class="string">"`./sdriver.pl -t <span class="variable">$trace_file</span> -s ./tshref -a "</span>-p<span class="string">"`"</span> &gt;&gt; tsh.out</div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> -e <span class="string">"\n"</span> &gt;&gt; tsh.out</div></pre></td></tr></table></figure></p>
+<p>实验提供了tshref.out作为16个trace file在tshref程序下的参考输出。为了方便比较，写了一个小的（可能会有很多错误）的shell脚本gather_output.sh用来生成这些trace file在tsh下的输出，脚本如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin bash</span></div><div class="line"></div><div class="line">output_file=tsh.out</div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">""</span> &gt; tsh.out</div><div class="line"></div><div class="line"><span class="built_in">echo</span> -e <span class="string">"\n"</span> &gt;&gt; tsh.out</div><div class="line"></div><div class="line"><span class="keyword">for</span> trace_file <span class="keyword">in</span> ./*.txt</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> -e <span class="string">"`./sdriver.pl -t <span class="variable">$trace_file</span> -s ./tsh -a "</span>-p<span class="string">"`"</span> &gt;&gt; tsh.out</div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> -e <span class="string">"\n"</span> &gt;&gt; tsh.out</div></pre></td></tr></table></figure></p>
 <h2 id="实验思路"><a href="#实验思路" class="headerlink" title="实验思路"></a>实验思路</h2><blockquote>
 <p>最早在做这个实验的时候一直没有什么头绪，即使已经参考了实验讲义，使用trace file来指导编程（trace file的难度自简单到复杂）。后来还是先好好的阅读了一遍给出的框架源代码，整理如下。</p>
 </blockquote>
@@ -2161,9 +2161,9 @@
       <category term="iOS开发" scheme="http://blog.duskdragon.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
     
     
-      <category term="问题" scheme="http://blog.duskdragon.com/tags/%E9%97%AE%E9%A2%98/"/>
-    
       <category term="总结" scheme="http://blog.duskdragon.com/tags/%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="问题" scheme="http://blog.duskdragon.com/tags/%E9%97%AE%E9%A2%98/"/>
     
       <category term="iOS" scheme="http://blog.duskdragon.com/tags/iOS/"/>
     
