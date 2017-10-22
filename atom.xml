@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.duskdragon.com/"/>
-  <updated>2017-10-09T15:59:11.846Z</updated>
+  <updated>2017-10-22T09:21:29.840Z</updated>
   <id>http://blog.duskdragon.com/</id>
   
   <author>
@@ -20,11 +20,11 @@
     <link href="http://blog.duskdragon.com/2017/09/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FCacheLab-PartB%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
     <id>http://blog.duskdragon.com/2017/09/25/深入理解计算机系统CacheLab-PartB实验报告/</id>
     <published>2017-09-25T06:46:48.000Z</published>
-    <updated>2017-10-09T15:59:11.846Z</updated>
+    <updated>2017-10-22T09:21:29.840Z</updated>
     
     <content type="html"><![CDATA[<p>实验答案托管在我的<a href="https://github.com/BlackDragonF/CSAPPLabs/tree/master/CacheLab" target="_blank" rel="external">GitHub</a>上</p>
 <blockquote>
-<p>Cache Lab的Part B是我卡了比较久的实验，在7月份做完Pert A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。</p>
+<p>Cache Lab的Part B是我卡了比较久的实验，在7月份做完Part A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。</p>
 </blockquote>
 <h2 id="实验简介"><a href="#实验简介" class="headerlink" title="实验简介"></a>实验简介</h2><p>Cache Lab - Understanding Cache Memories主要是有关缓存的实验，对应于书本的第6章：存储器层次结构。主要阐明了缓存对于C语言程序的性能影响。</p>
 <p>本实验的第二部分要求优化一个简单的矩阵变换函数，使其具有尽可能晓得缓存不命中数。</p>

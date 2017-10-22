@@ -13,20 +13,20 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <meta name="description" content="实验答案托管在我的GitHub上  Cache Lab的Part B是我卡了比较久的实验，在7月份做完Pert A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。  实验简介Cache Lab - Understa">
+    <meta name="description" content="实验答案托管在我的GitHub上  Cache Lab的Part B是我卡了比较久的实验，在7月份做完Part A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。  实验简介Cache Lab - Understa">
 <meta name="keywords" content="计算机系统,实验">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="深入理解计算机系统CacheLab-PartB实验报告">
 <meta property="og:url" content="http://blog.duskdragon.com/2017/09/25/深入理解计算机系统CacheLab-PartB实验报告/index.html">
 <meta property="og:site_name" content="小黑龙的窝">
-<meta property="og:description" content="实验答案托管在我的GitHub上  Cache Lab的Part B是我卡了比较久的实验，在7月份做完Pert A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。  实验简介Cache Lab - Understa">
+<meta property="og:description" content="实验答案托管在我的GitHub上  Cache Lab的Part B是我卡了比较久的实验，在7月份做完Part A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。  实验简介Cache Lab - Understa">
 <meta property="og:image" content="http://blog.duskdragon.com/2017/09/25/深入理解计算机系统CacheLab-PartB实验报告/memory-arch">
 <meta property="og:image" content="http://blog.duskdragon.com/2017/09/25/深入理解计算机系统CacheLab-PartB实验报告/matrix64-1">
 <meta property="og:image" content="http://blog.duskdragon.com/2017/09/25/深入理解计算机系统CacheLab-PartB实验报告/matrix64-2">
-<meta property="og:updated_time" content="2017-10-09T15:59:11.846Z">
+<meta property="og:updated_time" content="2017-10-22T09:21:29.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解计算机系统CacheLab-PartB实验报告">
-<meta name="twitter:description" content="实验答案托管在我的GitHub上  Cache Lab的Part B是我卡了比较久的实验，在7月份做完Pert A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。  实验简介Cache Lab - Understa">
+<meta name="twitter:description" content="实验答案托管在我的GitHub上  Cache Lab的Part B是我卡了比较久的实验，在7月份做完Part A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。  实验简介Cache Lab - Understa">
 <meta name="twitter:image" content="http://blog.duskdragon.com/2017/09/25/深入理解计算机系统CacheLab-PartB实验报告/memory-arch">
     
     
@@ -42,6 +42,17 @@
     <link rel="stylesheet" href="/assets/css/style-nn6m8ydq0ckz5nrqnz2af7w4j5osnmp7kt9ywf3ioochherromwn5czfdybr.min.css">
     <!--STYLES END-->
     
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-108458894-1']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
     
 </head>
 
@@ -268,7 +279,7 @@
         <div class="main-content-wrap">
             <p>实验答案托管在我的<a href="https://github.com/BlackDragonF/CSAPPLabs/tree/master/CacheLab" target="_blank" rel="external">GitHub</a>上</p>
 <blockquote>
-<p>Cache Lab的Part B是我卡了比较久的实验，在7月份做完Pert A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。</p>
+<p>Cache Lab的Part B是我卡了比较久的实验，在7月份做完Part A之后我卡在了Part B的第二个矩阵优化，之后进度一直缓慢。直到几天之前团队分享，我才把这个实验重新捡了回来，最终将第二个矩阵转置优化到了1500+的miss数（尽管仍然没有达到满分），后参考了网上的思路完成了Part B，总结如下。</p>
 </blockquote>
 <h2 id="实验简介"><a href="#实验简介" class="headerlink" title="实验简介"></a>实验简介</h2><p>Cache Lab - Understanding Cache Memories主要是有关缓存的实验，对应于书本的第6章：存储器层次结构。主要阐明了缓存对于C语言程序的性能影响。</p>
 <p>本实验的第二部分要求优化一个简单的矩阵变换函数，使其具有尽可能晓得缓存不命中数。</p>
