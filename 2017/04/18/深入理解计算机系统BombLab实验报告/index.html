@@ -31,16 +31,25 @@
         
     
     
+        <meta property="og:image" content="http://blog.codedragon.tech/assets/images/avatar.jpg"/>
+    
     
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/font-awesome.css">
-    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-    <link rel="stylesheet" href="/assets/css/thumbs.css">
-    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <link rel="stylesheet" href="/assets/css/style-woaw2oiuh6ifndjd9g1rtlhfl8vkkshjspee4sufshrwj8j8vsj4o4ienv0e.min.css">
     <!--STYLES END-->
     
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-108458894-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
 
     
 </head>
@@ -50,6 +59,10 @@
             <!-- Define author's picture -->
 
 
+    
+        
+            
+        
     
 
 <header id="header" data-behavior="4">
@@ -63,6 +76,8 @@
                 href="#about">
         
         
+            <img class="header-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
+        
         </a>
     
 </header>
@@ -70,8 +85,23 @@
             <!-- Define author's picture -->
 
 
+
+        
+    
+
 <nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">CoSidian</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+</h5>
+                
+            </div>
         
         
             <ul class="sidebar-buttons">
@@ -130,21 +160,8 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link open-algolia-search"
-                             href="#search"
-                            
-                            title="搜索"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-lg fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">搜索</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
                         <a  class="sidebar-button-link "
-                             href="#about"
+                             href="/about"
                             
                             title="关于"
                         >
@@ -158,6 +175,42 @@
         
             <ul class="sidebar-buttons">
             
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/BlackDragonF" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://t.me/Cosidian" target="_blank" rel="noopener" title="Telegram">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-paper-plane" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Telegram</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://steamcommunity.com/id/BlackDragonF/" target="_blank" rel="noopener" title="Steam">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-steam" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Steam</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:obsidiandragon2016@gmail.com" target="_blank" rel="noopener" title="邮箱">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-envelope-o" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">邮箱</span>
+                    </a>
+            </li>
+            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -165,13 +218,26 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/atom.xml"
+                             href="/friendly-links"
                             
-                            title="RSS"
+                            title="友情链接"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
+                        <i class="sidebar-button-icon fa fa-lg fa-link" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">友情链接</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/book-recommend"
+                            
+                            title="图书推荐"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-book" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">图书推荐</span>
                     </a>
             </li>
             
@@ -419,8 +485,24 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/" title="分享到 Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                <a class="post-action-btn btn btn--default" target="new" href="http://service.weibo.com/share/share.php?&amp;title=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/" title="分享到 Weibo">
+                    <i class="fa fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/&amp;title=深入理解计算机系统BombLab实验报告" title="分享到 QQ">
+                    <i class="fa fa-qq" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/" title="分享到 Qzone">
+                    <i class="fa fa-star" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -505,8 +587,24 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/" title="分享到 Google+">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
+                <a class="post-action-btn btn btn--default" target="new" href="http://service.weibo.com/share/share.php?&amp;title=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/" title="分享到 Weibo">
+                    <i class="fa fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/&amp;title=深入理解计算机系统BombLab实验报告" title="分享到 QQ">
+                    <i class="fa fa-qq" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/" title="分享到 Qzone">
+                    <i class="fa fa-star" aria-hidden="true"></i>
                 </a>
             </li>
         
@@ -548,8 +646,24 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/">
-                    <i class="fa fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
+                <a class="share-option-btn" target="new" href="http://service.weibo.com/share/share.php?&amp;title=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/">
+                    <i class="fa fa-weibo" aria-hidden="true"></i><span>分享到 Weibo</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/&amp;title=深入理解计算机系统BombLab实验报告">
+                    <i class="fa fa-qq" aria-hidden="true"></i><span>分享到 QQ</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/">
+                    <i class="fa fa-star" aria-hidden="true"></i><span>分享到 Qzone</span>
                 </a>
             </li>
         
@@ -561,25 +675,37 @@
         
 
 
+    
+        
+    
+
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
             <i class="fa fa-remove"></i>
         </div>
         
+            <img id="about-card-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
+        
             <h4 id="about-card-name">CoSidian</h4>
         
-            <div id="about-card-bio"><p>author.bio</p>
+            <div id="about-card-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>本科在读</p>
 
             </div>
         
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                HUST, Wuhan, China
+            </div>
         
     </div>
 </div>
@@ -588,10 +714,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/jquery.js"></script>
-<script src="/assets/js/jquery.fancybox.js"></script>
-<script src="/assets/js/thumbs.js"></script>
-<script src="/assets/js/tranquilpeak.js"></script>
+<script src="/assets/js/script-6vdiix6siapvwghon7lidx0gknpzcytesubc5zbclfpo3imycvj35gg9xww8.min.js"></script>
 <!--SCRIPTS END-->
 
     
