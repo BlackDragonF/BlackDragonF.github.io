@@ -1,24 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>小黑龙的窝</title>
-  <subtitle>码龙黑曜</subtitle>
+  <title>码龙的窝</title>
+  
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://blog.duskdragon.com/"/>
-  <updated>2017-10-22T09:21:29.840Z</updated>
-  <id>http://blog.duskdragon.com/</id>
+  <link href="http://blog.codedragon.tech/"/>
+  <updated>2017-11-27T01:47:11.139Z</updated>
+  <id>http://blog.codedragon.tech/</id>
   
   <author>
-    <name>BlackDragon</name>
+    <name>CoSidian</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>域名变更说明</title>
+    <link href="http://blog.codedragon.tech/2017/11/27/%E5%9F%9F%E5%90%8D%E5%8F%98%E6%9B%B4%E8%AF%B4%E6%98%8E/"/>
+    <id>http://blog.codedragon.tech/2017/11/27/域名变更说明/</id>
+    <published>2017-11-26T17:08:59.000Z</published>
+    <updated>2017-11-27T01:47:11.139Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="域名信息"><a href="#域名信息" class="headerlink" title="域名信息"></a>域名信息</h2><ol>
+<li>2016年1月3日，域名duskdragon.com随阿里云学生主机一起购入，预计于2017年1月3日过期</li>
+<li>2016年2月1日，域名duskdragon.com备案完成</li>
+<li>2016年11月6日，域名duskdragon.com续费1年，预计于2018年1月3日过期</li>
+<li>2017年11月20日，新域名codedragon.tech购入，预计于2022年11月21日过期</li>
+</ol>
+<h2 id="域名变更说明"><a href="#域名变更说明" class="headerlink" title="域名变更说明"></a>域名变更说明</h2><p>从即日起至2018年1月3日，旧域名duskdragon.com和新域名codedragon.tech将同时有效，可通过这两个域名中的任意一个的二级域名blog访问本博客。</p>
+<p>从2018年1月4日起，旧域名duskdragon.com将完全废弃，仅可通过codedragon.tech的二级域名blog访问本博客。</p>
+<p>本次域名变更主要为了使域名更加贴近码龙的设定，并且在相当长的一段时间内都将会维持稳定；次要的考量在于.com域名的相对高价格。</p>
+<p>由于codedragon.com已被注册，所以退而求其次地选择了codedragon.tech作为新域名。</p>
+<h2 id="博客更新说明"><a href="#博客更新说明" class="headerlink" title="博客更新说明"></a>博客更新说明</h2><p>本次域名更新的同时也对博客进行了更新</p>
+<ol>
+<li>更换了新的头像 - Character(c) 我/Art By 漫步</li>
+<li>博客描述性文字的修改</li>
+<li>如果不额外说明，本博客的所有文章默认以CC BY-NC-SA 4.0即署名-非商业性使用-相同方式共享4.0国际发布。有关该协议的概要可以参考<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="external">这里</a></li>
+<li>修复了失效的友情链接并添加了Suncio的博客为友情链接</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;域名信息&quot;&gt;&lt;a href=&quot;#域名信息&quot; class=&quot;headerlink&quot; title=&quot;域名信息&quot;&gt;&lt;/a&gt;域名信息&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;2016年1月3日，域名duskdragon.com随阿里云学生主机一起购入，预计于2017年1月3日过期&lt;/l
+    
+    </summary>
+    
+      <category term="通知" scheme="http://blog.codedragon.tech/categories/%E9%80%9A%E7%9F%A5/"/>
+    
+    
+      <category term="通知" scheme="http://blog.codedragon.tech/tags/%E9%80%9A%E7%9F%A5/"/>
+    
+  </entry>
+  
+  <entry>
     <title>深入理解计算机系统CacheLab-PartB实验报告</title>
-    <link href="http://blog.duskdragon.com/2017/09/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FCacheLab-PartB%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
-    <id>http://blog.duskdragon.com/2017/09/25/深入理解计算机系统CacheLab-PartB实验报告/</id>
+    <link href="http://blog.codedragon.tech/2017/09/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FCacheLab-PartB%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
+    <id>http://blog.codedragon.tech/2017/09/25/深入理解计算机系统CacheLab-PartB实验报告/</id>
     <published>2017-09-25T06:46:48.000Z</published>
     <updated>2017-10-22T09:21:29.840Z</updated>
     
@@ -138,19 +178,19 @@
     
     </summary>
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="实验" scheme="http://blog.duskdragon.com/tags/%E5%AE%9E%E9%AA%8C/"/>
+      <category term="实验" scheme="http://blog.codedragon.tech/tags/%E5%AE%9E%E9%AA%8C/"/>
     
   </entry>
   
   <entry>
     <title>深入理解计算机系统ShellLab实验报告</title>
-    <link href="http://blog.duskdragon.com/2017/08/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FShellLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
-    <id>http://blog.duskdragon.com/2017/08/01/深入理解计算机系统ShellLab实验报告/</id>
+    <link href="http://blog.codedragon.tech/2017/08/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FShellLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
+    <id>http://blog.codedragon.tech/2017/08/01/深入理解计算机系统ShellLab实验报告/</id>
     <published>2017-08-01T07:27:04.000Z</published>
     <updated>2017-10-09T06:03:43.297Z</updated>
     
@@ -434,19 +474,19 @@
     
     </summary>
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="实验" scheme="http://blog.duskdragon.com/tags/%E5%AE%9E%E9%AA%8C/"/>
+      <category term="实验" scheme="http://blog.codedragon.tech/tags/%E5%AE%9E%E9%AA%8C/"/>
     
   </entry>
   
   <entry>
     <title>深入理解计算机系统PerformanceLab实验报告</title>
-    <link href="http://blog.duskdragon.com/2017/07/20/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FPerformanceLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
-    <id>http://blog.duskdragon.com/2017/07/20/深入理解计算机系统PerformanceLab实验报告/</id>
+    <link href="http://blog.codedragon.tech/2017/07/20/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FPerformanceLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
+    <id>http://blog.codedragon.tech/2017/07/20/深入理解计算机系统PerformanceLab实验报告/</id>
     <published>2017-07-19T17:23:51.000Z</published>
     <updated>2017-07-20T06:46:12.190Z</updated>
     
@@ -486,19 +526,19 @@
     
     </summary>
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="实验" scheme="http://blog.duskdragon.com/tags/%E5%AE%9E%E9%AA%8C/"/>
+      <category term="实验" scheme="http://blog.codedragon.tech/tags/%E5%AE%9E%E9%AA%8C/"/>
     
   </entry>
   
   <entry>
     <title>深入理解计算机系统CacheLab-PartA实验报告</title>
-    <link href="http://blog.duskdragon.com/2017/07/08/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FCacheLab-PartA%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
-    <id>http://blog.duskdragon.com/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/</id>
+    <link href="http://blog.codedragon.tech/2017/07/08/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FCacheLab-PartA%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
+    <id>http://blog.codedragon.tech/2017/07/08/深入理解计算机系统CacheLab-PartA实验报告/</id>
     <published>2017-07-08T09:55:51.000Z</published>
     <updated>2017-07-19T17:24:45.759Z</updated>
     
@@ -542,19 +582,19 @@
     
     </summary>
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="实验" scheme="http://blog.duskdragon.com/tags/%E5%AE%9E%E9%AA%8C/"/>
+      <category term="实验" scheme="http://blog.codedragon.tech/tags/%E5%AE%9E%E9%AA%8C/"/>
     
   </entry>
   
   <entry>
     <title>Arch下Hexo配置的问题总结</title>
-    <link href="http://blog.duskdragon.com/2017/07/06/Arch%E4%B8%8BHexo%E9%85%8D%E7%BD%AE%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/"/>
-    <id>http://blog.duskdragon.com/2017/07/06/Arch下Hexo配置的问题总结/</id>
+    <link href="http://blog.codedragon.tech/2017/07/06/Arch%E4%B8%8BHexo%E9%85%8D%E7%BD%AE%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/"/>
+    <id>http://blog.codedragon.tech/2017/07/06/Arch下Hexo配置的问题总结/</id>
     <published>2017-07-06T12:29:45.000Z</published>
     <updated>2017-07-06T15:45:04.672Z</updated>
     
@@ -585,19 +625,19 @@
     
     </summary>
     
-      <category term="杂谈" scheme="http://blog.duskdragon.com/categories/%E6%9D%82%E8%B0%88/"/>
+      <category term="杂谈" scheme="http://blog.codedragon.tech/categories/%E6%9D%82%E8%B0%88/"/>
     
     
-      <category term="问题" scheme="http://blog.duskdragon.com/tags/%E9%97%AE%E9%A2%98/"/>
+      <category term="问题" scheme="http://blog.codedragon.tech/tags/%E9%97%AE%E9%A2%98/"/>
     
-      <category term="踩坑" scheme="http://blog.duskdragon.com/tags/%E8%B8%A9%E5%9D%91/"/>
+      <category term="踩坑" scheme="http://blog.codedragon.tech/tags/%E8%B8%A9%E5%9D%91/"/>
     
   </entry>
   
   <entry>
     <title>深入理解计算机系统BufferLab实验报告</title>
-    <link href="http://blog.duskdragon.com/2017/05/16/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FBufferLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
-    <id>http://blog.duskdragon.com/2017/05/16/深入理解计算机系统BufferLab实验报告/</id>
+    <link href="http://blog.codedragon.tech/2017/05/16/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FBufferLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
+    <id>http://blog.codedragon.tech/2017/05/16/深入理解计算机系统BufferLab实验报告/</id>
     <published>2017-05-16T06:28:12.000Z</published>
     <updated>2017-05-16T06:31:58.000Z</updated>
     
@@ -730,19 +770,19 @@
     
     </summary>
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="实验" scheme="http://blog.duskdragon.com/tags/%E5%AE%9E%E9%AA%8C/"/>
+      <category term="实验" scheme="http://blog.codedragon.tech/tags/%E5%AE%9E%E9%AA%8C/"/>
     
   </entry>
   
   <entry>
     <title>迁移说明</title>
-    <link href="http://blog.duskdragon.com/2017/05/12/%E8%BF%81%E7%A7%BB%E8%AF%B4%E6%98%8E/"/>
-    <id>http://blog.duskdragon.com/2017/05/12/迁移说明/</id>
+    <link href="http://blog.codedragon.tech/2017/05/12/%E8%BF%81%E7%A7%BB%E8%AF%B4%E6%98%8E/"/>
+    <id>http://blog.codedragon.tech/2017/05/12/迁移说明/</id>
     <published>2017-05-12T09:36:25.000Z</published>
     <updated>2017-05-14T16:30:19.000Z</updated>
     
@@ -759,7 +799,7 @@
 <p>博客于2017年5月11日完成迁移，又于2017年5月12日完成相应的优化调整。</p>
 <p>现在你可以访问</p>
 <ul>
-<li><a href="http://blog.duskdragon.com">blog.duskdragon.com</a> 主站点</li>
+<li><a href="http://blog.duskdragon.com" target="_blank" rel="external">blog.duskdragon.com</a> 主站点</li>
 <li><a href="https://blackdragonf.github.io/" target="_blank" rel="external">blackdragonf.github.io</a> 备份站点</li>
 </ul>
 <blockquote>
@@ -783,17 +823,17 @@
     
     </summary>
     
-      <category term="通知" scheme="http://blog.duskdragon.com/categories/%E9%80%9A%E7%9F%A5/"/>
+      <category term="通知" scheme="http://blog.codedragon.tech/categories/%E9%80%9A%E7%9F%A5/"/>
     
     
-      <category term="通知" scheme="http://blog.duskdragon.com/tags/%E9%80%9A%E7%9F%A5/"/>
+      <category term="通知" scheme="http://blog.codedragon.tech/tags/%E9%80%9A%E7%9F%A5/"/>
     
   </entry>
   
   <entry>
     <title>深入理解计算机系统AttackLab实验报告</title>
-    <link href="http://blog.duskdragon.com/2017/05/09/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FAttackLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
-    <id>http://blog.duskdragon.com/2017/05/09/深入理解计算机系统AttackLab实验报告/</id>
+    <link href="http://blog.codedragon.tech/2017/05/09/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FAttackLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
+    <id>http://blog.codedragon.tech/2017/05/09/深入理解计算机系统AttackLab实验报告/</id>
     <published>2017-05-09T05:56:05.000Z</published>
     <updated>2017-05-14T16:30:37.000Z</updated>
     
@@ -890,19 +930,19 @@
     
     </summary>
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="实验" scheme="http://blog.duskdragon.com/tags/%E5%AE%9E%E9%AA%8C/"/>
+      <category term="实验" scheme="http://blog.codedragon.tech/tags/%E5%AE%9E%E9%AA%8C/"/>
     
   </entry>
   
   <entry>
     <title>深入理解计算机系统BombLab实验报告</title>
-    <link href="http://blog.duskdragon.com/2017/04/18/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FBombLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
-    <id>http://blog.duskdragon.com/2017/04/18/深入理解计算机系统BombLab实验报告/</id>
+    <link href="http://blog.codedragon.tech/2017/04/18/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FBombLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
+    <id>http://blog.codedragon.tech/2017/04/18/深入理解计算机系统BombLab实验报告/</id>
     <published>2017-04-17T16:10:24.000Z</published>
     <updated>2017-04-18T05:21:09.000Z</updated>
     
@@ -1054,19 +1094,19 @@
     
     </summary>
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="实验" scheme="http://blog.duskdragon.com/tags/%E5%AE%9E%E9%AA%8C/"/>
+      <category term="实验" scheme="http://blog.codedragon.tech/tags/%E5%AE%9E%E9%AA%8C/"/>
     
   </entry>
   
   <entry>
     <title>深入理解计算机系统DataLab实验报告</title>
-    <link href="http://blog.duskdragon.com/2017/04/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FDataLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
-    <id>http://blog.duskdragon.com/2017/04/04/深入理解计算机系统DataLab实验报告/</id>
+    <link href="http://blog.codedragon.tech/2017/04/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9FDataLab%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"/>
+    <id>http://blog.codedragon.tech/2017/04/04/深入理解计算机系统DataLab实验报告/</id>
     <published>2017-04-04T08:50:20.000Z</published>
     <updated>2017-06-18T10:38:21.000Z</updated>
     
@@ -1181,19 +1221,19 @@
     
     </summary>
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="计算机系统" scheme="http://blog.duskdragon.com/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+      <category term="计算机系统" scheme="http://blog.codedragon.tech/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="实验" scheme="http://blog.duskdragon.com/tags/%E5%AE%9E%E9%AA%8C/"/>
+      <category term="实验" scheme="http://blog.codedragon.tech/tags/%E5%AE%9E%E9%AA%8C/"/>
     
   </entry>
   
   <entry>
     <title>王爽汇编语言第三版综合研究结论</title>
-    <link href="http://blog.duskdragon.com/2017/03/10/%E7%8E%8B%E7%88%BD%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%B8%89%E7%89%88%E7%BB%BC%E5%90%88%E7%A0%94%E7%A9%B6%E7%BB%93%E8%AE%BA/"/>
-    <id>http://blog.duskdragon.com/2017/03/10/王爽汇编语言第三版综合研究结论/</id>
+    <link href="http://blog.codedragon.tech/2017/03/10/%E7%8E%8B%E7%88%BD%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%B8%89%E7%89%88%E7%BB%BC%E5%90%88%E7%A0%94%E7%A9%B6%E7%BB%93%E8%AE%BA/"/>
+    <id>http://blog.codedragon.tech/2017/03/10/王爽汇编语言第三版综合研究结论/</id>
     <published>2017-03-10T10:09:01.000Z</published>
     <updated>2017-03-16T14:25:07.000Z</updated>
     
@@ -1313,19 +1353,19 @@
     
     </summary>
     
-      <category term="汇编" scheme="http://blog.duskdragon.com/categories/%E6%B1%87%E7%BC%96/"/>
+      <category term="汇编" scheme="http://blog.codedragon.tech/categories/%E6%B1%87%E7%BC%96/"/>
     
     
-      <category term="汇编" scheme="http://blog.duskdragon.com/tags/%E6%B1%87%E7%BC%96/"/>
+      <category term="汇编" scheme="http://blog.codedragon.tech/tags/%E6%B1%87%E7%BC%96/"/>
     
-      <category term="综合研究" scheme="http://blog.duskdragon.com/tags/%E7%BB%BC%E5%90%88%E7%A0%94%E7%A9%B6/"/>
+      <category term="综合研究" scheme="http://blog.codedragon.tech/tags/%E7%BB%BC%E5%90%88%E7%A0%94%E7%A9%B6/"/>
     
   </entry>
   
   <entry>
     <title>王爽汇编语言第三版实验</title>
-    <link href="http://blog.duskdragon.com/2017/03/09/%E7%8E%8B%E7%88%BD%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%B8%89%E7%89%88%E5%AE%9E%E9%AA%8C/"/>
-    <id>http://blog.duskdragon.com/2017/03/09/王爽汇编语言第三版实验/</id>
+    <link href="http://blog.codedragon.tech/2017/03/09/%E7%8E%8B%E7%88%BD%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%B8%89%E7%89%88%E5%AE%9E%E9%AA%8C/"/>
+    <id>http://blog.codedragon.tech/2017/03/09/王爽汇编语言第三版实验/</id>
     <published>2017-03-09T03:42:37.000Z</published>
     <updated>2017-04-07T11:45:39.000Z</updated>
     
@@ -1470,19 +1510,19 @@
     
     </summary>
     
-      <category term="汇编" scheme="http://blog.duskdragon.com/categories/%E6%B1%87%E7%BC%96/"/>
+      <category term="汇编" scheme="http://blog.codedragon.tech/categories/%E6%B1%87%E7%BC%96/"/>
     
     
-      <category term="实验" scheme="http://blog.duskdragon.com/tags/%E5%AE%9E%E9%AA%8C/"/>
+      <category term="实验" scheme="http://blog.codedragon.tech/tags/%E5%AE%9E%E9%AA%8C/"/>
     
-      <category term="汇编" scheme="http://blog.duskdragon.com/tags/%E6%B1%87%E7%BC%96/"/>
+      <category term="汇编" scheme="http://blog.codedragon.tech/tags/%E6%B1%87%E7%BC%96/"/>
     
   </entry>
   
   <entry>
     <title>王爽汇编语言第三版检测点答案</title>
-    <link href="http://blog.duskdragon.com/2017/03/05/%E7%8E%8B%E7%88%BD%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%B8%89%E7%89%88%E6%A3%80%E6%B5%8B%E7%82%B9%E7%AD%94%E6%A1%88/"/>
-    <id>http://blog.duskdragon.com/2017/03/05/王爽汇编语言第三版检测点答案/</id>
+    <link href="http://blog.codedragon.tech/2017/03/05/%E7%8E%8B%E7%88%BD%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%AC%AC%E4%B8%89%E7%89%88%E6%A3%80%E6%B5%8B%E7%82%B9%E7%AD%94%E6%A1%88/"/>
+    <id>http://blog.codedragon.tech/2017/03/05/王爽汇编语言第三版检测点答案/</id>
     <published>2017-03-05T10:49:39.000Z</published>
     <updated>2017-04-08T11:01:16.000Z</updated>
     
@@ -1968,19 +2008,19 @@
     
     </summary>
     
-      <category term="汇编" scheme="http://blog.duskdragon.com/categories/%E6%B1%87%E7%BC%96/"/>
+      <category term="汇编" scheme="http://blog.codedragon.tech/categories/%E6%B1%87%E7%BC%96/"/>
     
     
-      <category term="答案" scheme="http://blog.duskdragon.com/tags/%E7%AD%94%E6%A1%88/"/>
+      <category term="答案" scheme="http://blog.codedragon.tech/tags/%E7%AD%94%E6%A1%88/"/>
     
-      <category term="汇编" scheme="http://blog.duskdragon.com/tags/%E6%B1%87%E7%BC%96/"/>
+      <category term="汇编" scheme="http://blog.codedragon.tech/tags/%E6%B1%87%E7%BC%96/"/>
     
   </entry>
   
   <entry>
     <title>寒假总结</title>
-    <link href="http://blog.duskdragon.com/2017/02/12/%E5%AF%92%E5%81%87%E6%80%BB%E7%BB%93/"/>
-    <id>http://blog.duskdragon.com/2017/02/12/寒假总结/</id>
+    <link href="http://blog.codedragon.tech/2017/02/12/%E5%AF%92%E5%81%87%E6%80%BB%E7%BB%93/"/>
+    <id>http://blog.codedragon.tech/2017/02/12/寒假总结/</id>
     <published>2017-02-12T10:21:42.000Z</published>
     <updated>2017-03-05T07:33:24.000Z</updated>
     
@@ -2022,17 +2062,17 @@
     
     </summary>
     
-      <category term="杂谈" scheme="http://blog.duskdragon.com/categories/%E6%9D%82%E8%B0%88/"/>
+      <category term="杂谈" scheme="http://blog.codedragon.tech/categories/%E6%9D%82%E8%B0%88/"/>
     
     
-      <category term="总结" scheme="http://blog.duskdragon.com/tags/%E6%80%BB%E7%BB%93/"/>
+      <category term="总结" scheme="http://blog.codedragon.tech/tags/%E6%80%BB%E7%BB%93/"/>
     
   </entry>
   
   <entry>
     <title>KMP(Knuth-Morris-Pratt)算法</title>
-    <link href="http://blog.duskdragon.com/2017/01/12/KMP-Knuth-Morris-Pratt-%E7%AE%97%E6%B3%95/"/>
-    <id>http://blog.duskdragon.com/2017/01/12/KMP-Knuth-Morris-Pratt-算法/</id>
+    <link href="http://blog.codedragon.tech/2017/01/12/KMP-Knuth-Morris-Pratt-%E7%AE%97%E6%B3%95/"/>
+    <id>http://blog.codedragon.tech/2017/01/12/KMP-Knuth-Morris-Pratt-算法/</id>
     <published>2017-01-12T04:14:58.000Z</published>
     <updated>2017-02-12T10:20:16.000Z</updated>
     
@@ -2093,16 +2133,16 @@
     </summary>
     
     
-      <category term="字符串匹配" scheme="http://blog.duskdragon.com/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/"/>
+      <category term="字符串匹配" scheme="http://blog.codedragon.tech/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/"/>
     
-      <category term="算法" scheme="http://blog.duskdragon.com/tags/%E7%AE%97%E6%B3%95/"/>
+      <category term="算法" scheme="http://blog.codedragon.tech/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
   <entry>
     <title>OSTEP学习笔记1</title>
-    <link href="http://blog.duskdragon.com/2016/12/12/OSTEP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/"/>
-    <id>http://blog.duskdragon.com/2016/12/12/OSTEP学习笔记1/</id>
+    <link href="http://blog.codedragon.tech/2016/12/12/OSTEP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/"/>
+    <id>http://blog.codedragon.tech/2016/12/12/OSTEP学习笔记1/</id>
     <published>2016-12-12T14:54:45.000Z</published>
     <updated>2016-12-21T13:24:52.000Z</updated>
     
@@ -2225,21 +2265,21 @@
     
     </summary>
     
-      <category term="操作系统" scheme="http://blog.duskdragon.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+      <category term="操作系统" scheme="http://blog.codedragon.tech/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="操作系统" scheme="http://blog.duskdragon.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+      <category term="操作系统" scheme="http://blog.codedragon.tech/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="虚拟化" scheme="http://blog.duskdragon.com/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+      <category term="虚拟化" scheme="http://blog.codedragon.tech/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
     
-      <category term="CPU" scheme="http://blog.duskdragon.com/tags/CPU/"/>
+      <category term="CPU" scheme="http://blog.codedragon.tech/tags/CPU/"/>
     
   </entry>
   
   <entry>
     <title>iOS学习笔记（三）</title>
-    <link href="http://blog.duskdragon.com/2016/07/06/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-89-ef-bc-89/"/>
-    <id>http://blog.duskdragon.com/2016/07/06/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-89-ef-bc-89/</id>
+    <link href="http://blog.codedragon.tech/2016/07/06/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-89-ef-bc-89/"/>
+    <id>http://blog.codedragon.tech/2016/07/06/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-89-ef-bc-89/</id>
     <published>2016-07-06T15:49:16.000Z</published>
     <updated>2016-12-12T09:02:48.000Z</updated>
     
@@ -2291,23 +2331,23 @@
     
     </summary>
     
-      <category term="iOS开发" scheme="http://blog.duskdragon.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
+      <category term="iOS开发" scheme="http://blog.codedragon.tech/categories/iOS%E5%BC%80%E5%8F%91/"/>
     
     
-      <category term="总结" scheme="http://blog.duskdragon.com/tags/%E6%80%BB%E7%BB%93/"/>
+      <category term="问题" scheme="http://blog.codedragon.tech/tags/%E9%97%AE%E9%A2%98/"/>
     
-      <category term="问题" scheme="http://blog.duskdragon.com/tags/%E9%97%AE%E9%A2%98/"/>
+      <category term="总结" scheme="http://blog.codedragon.tech/tags/%E6%80%BB%E7%BB%93/"/>
     
-      <category term="iOS" scheme="http://blog.duskdragon.com/tags/iOS/"/>
+      <category term="iOS" scheme="http://blog.codedragon.tech/tags/iOS/"/>
     
-      <category term="OC" scheme="http://blog.duskdragon.com/tags/OC/"/>
+      <category term="OC" scheme="http://blog.codedragon.tech/tags/OC/"/>
     
   </entry>
   
   <entry>
     <title>C语言复习问题总结</title>
-    <link href="http://blog.duskdragon.com/2016/06/20/c-e8-af-ad-e8-a8-80-e5-a4-8d-e4-b9-a0-e9-97-ae-e9-a2-98-e6-80-bb-e7-bb-93/"/>
-    <id>http://blog.duskdragon.com/2016/06/20/c-e8-af-ad-e8-a8-80-e5-a4-8d-e4-b9-a0-e9-97-ae-e9-a2-98-e6-80-bb-e7-bb-93/</id>
+    <link href="http://blog.codedragon.tech/2016/06/20/c-e8-af-ad-e8-a8-80-e5-a4-8d-e4-b9-a0-e9-97-ae-e9-a2-98-e6-80-bb-e7-bb-93/"/>
+    <id>http://blog.codedragon.tech/2016/06/20/c-e8-af-ad-e8-a8-80-e5-a4-8d-e4-b9-a0-e9-97-ae-e9-a2-98-e6-80-bb-e7-bb-93/</id>
     <published>2016-06-20T12:16:36.000Z</published>
     <updated>2016-12-12T08:48:27.000Z</updated>
     
@@ -2397,19 +2437,19 @@
     
     </summary>
     
-      <category term="C语言" scheme="http://blog.duskdragon.com/categories/C%E8%AF%AD%E8%A8%80/"/>
+      <category term="C语言" scheme="http://blog.codedragon.tech/categories/C%E8%AF%AD%E8%A8%80/"/>
     
     
-      <category term="C" scheme="http://blog.duskdragon.com/tags/C/"/>
+      <category term="C" scheme="http://blog.codedragon.tech/tags/C/"/>
     
-      <category term="总结" scheme="http://blog.duskdragon.com/tags/%E6%80%BB%E7%BB%93/"/>
+      <category term="总结" scheme="http://blog.codedragon.tech/tags/%E6%80%BB%E7%BB%93/"/>
     
   </entry>
   
   <entry>
     <title>iOS学习笔记（二）</title>
-    <link href="http://blog.duskdragon.com/2016/06/12/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-ba-8c-ef-bc-89/"/>
-    <id>http://blog.duskdragon.com/2016/06/12/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-ba-8c-ef-bc-89/</id>
+    <link href="http://blog.codedragon.tech/2016/06/12/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-ba-8c-ef-bc-89/"/>
+    <id>http://blog.codedragon.tech/2016/06/12/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-ba-8c-ef-bc-89/</id>
     <published>2016-06-12T14:06:45.000Z</published>
     <updated>2016-12-12T09:04:40.000Z</updated>
     
@@ -2453,36 +2493,12 @@
     
     </summary>
     
-      <category term="iOS开发" scheme="http://blog.duskdragon.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
+      <category term="iOS开发" scheme="http://blog.codedragon.tech/categories/iOS%E5%BC%80%E5%8F%91/"/>
     
     
-      <category term="iOS" scheme="http://blog.duskdragon.com/tags/iOS/"/>
+      <category term="iOS" scheme="http://blog.codedragon.tech/tags/iOS/"/>
     
-      <category term="OC" scheme="http://blog.duskdragon.com/tags/OC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>C语言第四次作业</title>
-    <link href="http://blog.duskdragon.com/2016/05/18/79-2/"/>
-    <id>http://blog.duskdragon.com/2016/05/18/79-2/</id>
-    <published>2016-05-18T04:26:20.000Z</published>
-    <updated>2016-12-12T08:28:45.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;;</div><div class="line">void swap(int *a, int *b);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">    int number[10];</div><div class="line">    int i, j;//循环变量</div><div class="line">    while (scanf(&quot;%d&quot;, &amp;amp;number[0]) != EOF)</div><div class="line">    &#123;</div><div class="line">        for (i = 1 ; i &amp;lt; 10 ; i++)</div><div class="line">            scanf(&quot;%d&quot;, &amp;amp;number[i]);</div><div class="line">        for (i = 0 ; i &amp;lt; 9 ; i++)</div><div class="line">        &#123;</div><div class="line">            for (j = 0 ; j &amp;lt;= 8 - i ; j++)</div><div class="line">            &#123;</div><div class="line">                if (number[j] &amp;gt; number[j+1])</div><div class="line">                    swap(&amp;amp;number[j], &amp;amp;number[j+1]);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        for (i = 0 ; i &amp;lt; 10 ; i++)</div><div class="line">        &#123;</div><div class="line">            if (i != 0) printf(&quot;-&amp;gt;&quot;);</div><div class="line">            printf(&quot;%d&quot;, number[i]);</div><div class="line">        &#125;</div><div class="line">        putchar(&apos;\n&apos;);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line">void swap(int *a, int *b)</div><div class="line">&#123;</div><div class="line">    int temp;</div><div class="line">    temp = *a;</div><div class="line">    *a = *b;</div><div class="line">    *b = temp;</div><div class="line">    return;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">    long number;</div><div class="line">    char currentByte;</div><div class="line">    int count;</div><div class="line">    while (scanf(&quot;%ld&quot;, &amp;amp;number) != EOF)</div><div class="line">    &#123;</div><div class="line">        for (count = 7 ; count &amp;gt;= 0 ; count--)</div><div class="line">        &#123;</div><div class="line">            currentByte = (((0xf &amp;lt;&amp;lt; (count * 4)) &amp;amp; number) &amp;gt;&amp;gt; (count * 4)) &amp;amp; 0xf;</div><div class="line">            printf(&quot;%hd(%c) &quot;, currentByte, currentByte);</div><div class="line">        &#125;</div><div class="line">        putchar(&apos;\n&apos;);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;;</div><div class="line">void swapArray(int a[], int n);</div><div class="line">void swap(int *a, int *b);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">    int number[100];</div><div class="line">    int totalNumber, individualNumber;</div><div class="line">    int count, i;//循环变量</div><div class="line">    scanf(&quot;%d&quot;, &amp;amp;totalNumber);</div><div class="line">    for (count = 0 ; count &amp;lt; totalNumber; count++)</div><div class="line">    &#123;</div><div class="line">        scanf(&quot;%d&quot;, &amp;amp;individualNumber);</div><div class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</div><div class="line">            scanf(&quot;%d&quot;, &amp;amp;number[i]);</div><div class="line">        swapArray(number, individualNumber);</div><div class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</div><div class="line">        &#123;</div><div class="line">            if (i != 0) putchar(&apos; &apos;);</div><div class="line">            printf(&quot;%d&quot;, number[i]);</div><div class="line">        &#125;</div><div class="line">        putchar(&apos;\n&apos;);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line">void swapArray(int a[], int n)</div><div class="line">&#123;</div><div class="line">    int startIndex = 0;</div><div class="line">    int endIndex = n - 1;</div><div class="line">    while (startIndex &amp;lt;= endIndex)</div><div class="line">    &#123;</div><div class="line">        swap(&amp;amp;a[startIndex], &amp;amp;a[endIndex]);</div><div class="line">        startIndex++;</div><div class="line">        endIndex--;</div><div class="line">    &#125;</div><div class="line">    return;</div><div class="line">&#125;</div><div class="line">void swap(int *a, int *b)</div><div class="line">&#123;</div><div class="line">    int temp;</div><div class="line">    temp = *a;</div><div class="line">    *a = *b;</div><div class="line">    *b = temp;</div><div class="line">    return;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="第四题"><a href="#第四题" class="headerlink" title="第四题"></a>第四题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;;</div><div class="line">void swap(int *a, int *b);</div><div class="line">void moveArray(int a[], int n, int m);//轮移数组,其中n为总个数,m为轮移次数</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">    int number[22];</div><div class="line">    int individualNumber, middleNumber;</div><div class="line">    int i;//循环变量</div><div class="line">    while ((scanf(&quot;%d&quot;, &amp;amp;individualNumber), individualNumber) != 0)</div><div class="line">    &#123;</div><div class="line">        scanf(&quot;%d&quot;, &amp;amp;middleNumber);</div><div class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</div><div class="line">            scanf(&quot;%d&quot;, &amp;amp;number[i]);</div><div class="line">        moveArray(number, individualNumber, middleNumber);</div><div class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</div><div class="line">        &#123;</div><div class="line">            if (i != 0) putchar(&apos; &apos;);</div><div class="line">            printf(&quot;%d&quot;, number[i]);</div><div class="line">        &#125;</div><div class="line">        putchar(&apos;\n&apos;);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line">void moveArray(int a[], int n, int m)</div><div class="line">&#123;</div><div class="line">    if (m == 0)</div><div class="line">    &#123;</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line">    else</div><div class="line">    &#123;</div><div class="line">        int temp, count;</div><div class="line">        temp = a[0];</div><div class="line">        for (count = 0 ; count &amp;lt; n - 1 ; count++)</div><div class="line">            a[count] = a[count+1];</div><div class="line">        a[n-1] = temp;</div><div class="line">        moveArray(a, n, --m);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">void swap(int *a, int *b)</div><div class="line">&#123;</div><div class="line">    int temp;</div><div class="line">    temp = *a;</div><div class="line">    *a = *b;</div><div class="line">    *b = temp;</div><div class="line">    return;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;第一题&quot;&gt;&lt;a href=&quot;#第一题&quot; class=&quot;headerlink&quot; title=&quot;第一题&quot;&gt;&lt;/a&gt;第一题&lt;/h2&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;d
-    
-    </summary>
-    
-      <category term="C语言" scheme="http://blog.duskdragon.com/categories/C%E8%AF%AD%E8%A8%80/"/>
-    
+      <category term="OC" scheme="http://blog.codedragon.tech/tags/OC/"/>
     
   </entry>
   
