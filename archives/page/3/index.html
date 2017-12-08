@@ -257,6 +257,83 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title" itemprop="headline">
                     
+                        <a class="link-unstyled" href="/2016/06/12/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-ba-8c-ef-bc-89/">
+                            iOS学习笔记（二）
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2016-06-12T22:06:45+08:00">
+	
+		    6月 12, 2016
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/iOS开发/">iOS开发</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content" itemprop="articleBody">
+                    <blockquote>
+<p>因为一些原因，用了整整一周的时间来重构项目，因为期末考试的原因，决定暑假继续这个项目，在复习之前最后总结一下这一段开发过程中遇到的一些问题。</p>
+</blockquote>
+<h2 id="定位问题"><a href="#定位问题" class="headerlink" title="定位问题"></a>定位问题</h2><hr>
+<p>参考博客：<a href="http://adad184.com/2015/07/22/how-to-deal-with-background-location-update/" target="_blank" rel="external">后台定位上传的代码实践|里脊串的开发随笔</a></p>
+<p>需求是每隔一定时间向服务器上传一次地理位置，而不管用户或系统是否杀死了APP。这里参考了里脊串博客里的写法，使用BackgroundMode中的Location updates即可实现。但是与这篇博客中的APP的需求不同，并不需要考虑速度距离等因素，只要考虑时间即可，因此可以通过判断两次location中的时间戳间隔即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#define kUpdateTimeInteval 60.0 //上传间隔</div><div class="line">@interface LocationManager()</div><div class="line">@property (nonatomic, strong) CLLocation * lastLocation; //最新一次的地理位置</div><div class="line">@property (nonatomic) double timeInteval; //上一次上传地理位置时的时间戳</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>然后在locationManager的委托方法中加入如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray&lt;CLLocation *&gt; *)locations &#123;</div><div class="line">    _lastLocation = locations[0];</div><div class="line">    if (_lastLocation.timestamp.timeIntervalSince1970 - _timeInteval &gt; kUpdateTimeInteval) &#123;</div><div class="line">        NSLog(@&quot;update location&quot;);</div><div class="line">        [self updateLocation]; //上传地理位置</div><div class="line">        _timeInteval = _lastLocation.timestamp.timeIntervalSince1970;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>需要注意的是，在进入后台模式或者是APP被杀的情况下，如果设备的位置没有发生变化，那么locationManager的 didUpdateLocations方法将不会被调用，因此尽管间隔的时间已经超过了设定的时间，地理位置也不会被上传。</p>
+<h2 id="不显示动画"><a href="#不显示动画" class="headerlink" title="不显示动画"></a>不显示动画</h2><hr>
+<p>由于APP中存在用户注册和登录的需求，因此需要加入验证码认证，两次验证码之间应有一分钟的间隔，此时，UI应该每隔1s刷新一次剩余时间以提醒用户，因此我使用了一个每隔1s执行一次的NSTimer去刷新UI，却发现每次刷新的时候按钮上的Title都会有渐入渐出的动画效果。后来发现这是UIButtonTypeRoundedRect的自带动画效果，为了不让这个渐变动画干扰了UI的刷新，加入如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[UIView performWithoutAnimation:^&#123;</div><div class="line">    //在这里设置UIButton的属性如Text等</div><div class="line">    [_button.layer layoutIfNeeded];</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<h2 id="自定义UIBarButtonItem"><a href="#自定义UIBarButtonItem" class="headerlink" title="自定义UIBarButtonItem"></a>自定义UIBarButtonItem</h2><hr>
+<p>参考了StackOverFlow</p>
+<p>需求是自定义一个同时带图片和文字的UIBarButtonItem，查阅文档和搜索后发现UIBarButtonItem有以下的方法：</p>
+<p><code>- (instancetype)initWithCustomView:(UIView *)customView;</code></p>
+<p>因此我们可以先实例化一个UIButton，给这个UIButton添加Image并且设置Title，再用这个UIButton去实例化一个UIBarButtonItem即可，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">UIButton * button = [UIButton buttonWithType:UIButtonTypeRoundedRect];</div><div class="line">[button setTitle:@&quot;返回&quot; forState:UIControlStateNormal];</div><div class="line">button.titleLabel.font = [UIFont systemFontOfSize:17.0];</div><div class="line">[button setImage:[UIImage imageNamed:@&quot;back&quot;] forState:UIControlStateNormal];</div><div class="line">button.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0); //使用这个属性控制UIImageView和UILabel之间的距离</div><div class="line">[button sizeToFit]; //设定button的frame</div><div class="line">[button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];</div><div class="line">UIBarButtonItem * leftButton = [[UIBarButtonItem alloc]initWithCustomView:button];</div></pre></td></tr></table></figure>
+<p>但是这样又发现一个新的问题，我们无法控制UIBarButtonItem的边距。官方文档UINavigationItem中对于leftBarButtonItems和rightBarButtonItems这两个属性中有如下描述：</p>
+<blockquote>
+<p>leftBarButtonItems are placed in the navigation bar left to right with the first item in the list at the left outside edge and left aligned.</p>
+<p>rightBarButtonItems are placed right to left with the first item in the list at the right outside edge and right aligned.</p>
+</blockquote>
+<p>因此我们可以再实例化一个UIBarButtonItem并设置它的width，完整代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">UIBarButtonItem * negativeSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];</div><div class="line">negativeSpacer.width = -16.0; //可根据实际需要调整</div><div class="line">UIButton * button = [UIButton buttonWithType:UIButtonTypeRoundedRect];</div><div class="line">[button setTitle:@&quot;返回&quot; forState:UIControlStateNormal];</div><div class="line">button.titleLabel.font = [UIFont systemFontOfSize:17.0];</div><div class="line">[button setImage:[UIImage imageNamed:@&quot;back&quot;] forState:UIControlStateNormal];</div><div class="line">button.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0);</div><div class="line">[button sizeToFit];</div><div class="line">[button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];</div><div class="line">UIBarButtonItem * leftButton = [[UIBarButtonItem alloc]initWithCustomView:button];</div><div class="line">self.navigationItem.leftBarButtonItems = @[negativeSpacer, leftbutton];</div></pre></td></tr></table></figure>
+<h2 id="去除UINavigationBar的阴影"><a href="#去除UINavigationBar的阴影" class="headerlink" title="去除UINavigationBar的阴影"></a>去除UINavigationBar的阴影</h2><hr>
+<p>我采用的是如下的方法：</p>
+<p><code>[nav.navigationBar setShadowImage:[[UIImage alloc]init]];</code></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2016/06/12/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-ba-8c-ef-bc-89/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
                         <a class="link-unstyled" href="/2016/05/18/79-2/">
                             C语言第四次作业
                         </a>
