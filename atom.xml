@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.codedragon.tech/"/>
-  <updated>2017-12-08T19:57:06.988Z</updated>
+  <updated>2017-12-11T15:46:41.130Z</updated>
   <id>http://blog.codedragon.tech/</id>
   
   <author>
@@ -14,6 +14,54 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Vim+Tmux配置Scheme编程环境</title>
+    <link href="http://blog.codedragon.tech/2017/12/11/Vim-Tmux%E9%85%8D%E7%BD%AEScheme%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/"/>
+    <id>http://blog.codedragon.tech/2017/12/11/Vim-Tmux配置Scheme编程环境/</id>
+    <published>2017-12-11T14:18:25.000Z</published>
+    <updated>2017-12-11T15:46:41.130Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>最近开始阅读Structure of Interpretation of Computer Science即计算机程序的构造与解释这本书。该书中使用的是Scheme作为Lisp的方言。<br>在此之前华盛顿大学的《程序设计语言》这门课的PartB中，我使用的Lisp方言是Racket，配合DrRacket作为IDE使用。因为最近一直在配置vim，这一次打算使用vim作为主力开发环境。</p>
+</blockquote>
+<p>如果你对我的配置文件（vim，tmux等）感兴趣，可以看<a href="https://github.com/BlackDragonF/ConfigurationFiles" target="_blank" rel="external">这里</a>。</p>
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p>最终的效果如下图所示：<br><img src="/2017/12/11/Vim-Tmux配置Scheme编程环境/final.gif" alt="final.gif" title=""></p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>最初的思路来自于网上的一篇文章，作者也是正在阅读SICP这本书，其提到了使用tmux进行分屏，在一边使用vim进行代码的编辑，另一边运行mit-scheme作为REPL（Read-Eval-Print-Loop）解释scheme代码。</p>
+<p>但是如果这么做的话，需要反复执行<code>mit-scheme &lt; source.scm</code>，这样做显然不能提高我们编程的效率。</p>
+<p>这几天逛友链博客的时候发现刚好Kyler也在读SICP并且配置了vim环境，具体可以参考这篇<a href="http://www.theta.live/2017/12/09/Vim-for-Scheme/" target="_blank" rel="external">博客</a>。<br>受到这篇博客的启发，我决定使用vim-slime来“沟通”vim和tmux，将vim中的Scheme代码发送到运行在tmux中的解释器，并且运行给出结果。</p>
+<p>在学习tmux的过程中我接触到了tmuxinator这个tmux配置管理工具。可以通过tmuxinator直接配置tmux session，十分方便。</p>
+<h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><p>这篇博客的配置依赖于：</p>
+<ol>
+<li>vim（文本编辑器）</li>
+<li>tmux和tmuxinator（终端会话工具）</li>
+<li>mit-scheme（Scheme解释器）</li>
+</ol>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>首先在家目录下的.tmuxinator子文件夹下创建新的配置文件scheme.yml：<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># tmuxinator configuration file for scheme  </span></div><div class="line"><span class="comment"># location: ~/.tmuxinator/scheme.yml</span></div><div class="line"></div><div class="line"><span class="attr">name:</span> <span class="string">scheme</span></div><div class="line"><span class="attr">root:</span> <span class="string">.</span></div><div class="line"></div><div class="line"><span class="attr">startup_window:</span> <span class="string">main</span></div><div class="line"><span class="attr">socket_name:</span> <span class="string">tmux_scheme</span></div><div class="line"></div><div class="line"><span class="attr">windows:</span></div><div class="line"><span class="attr">    - main:</span></div><div class="line"><span class="attr">        layout:</span> <span class="string">even-horizontal</span></div><div class="line"><span class="attr">        panes:</span></div><div class="line"><span class="bullet">            -</span> <span class="string">vim</span> &lt;%= @args[0] %&gt;</div><div class="line"><span class="bullet">            -</span> <span class="string">mit-scheme</span></div></pre></td></tr></table></figure><br>该配置文件指定新的scheme session拥有一个窗口main，该窗口有两个窗格，一个执行vim，另一个执行mit-scheme，并且创建的session的socket name为tmux_scheme。</p>
+<p>然后我们在.vimrc中安装并配置vim-slime插件。<br>这里我直接使用插件管理器Vundle安装vim-slime：<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Bundle <span class="string">'jpalardy/vim-slime'</span></div></pre></td></tr></table></figure></p>
+<p>然后在.vimrc中加入配置：<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">" vim-slime configuration</span></div><div class="line"><span class="comment">" 设置目标为tmux</span></div><div class="line"><span class="keyword">let</span> <span class="variable">g:slime_target</span> = <span class="string">"tmux"</span></div><div class="line"><span class="comment">" 为tmux设置默认配置，指定socket_name为tmux_scheme，目标窗格为当前窗口的第2个窗格</span></div><div class="line"><span class="keyword">let</span> <span class="variable">g:slime_default_config</span> = &#123;<span class="string">"socket_name"</span>: <span class="string">"tmux_scheme"</span>, <span class="string">"target_pane"</span>:<span class="string">":.1"</span>&#125;</div><div class="line"><span class="comment">" 指定slime在第一次发送代码时不要询问配置</span></div><div class="line"><span class="keyword">let</span> <span class="variable">g:slime_dont_ask_default</span> = <span class="number">1</span></div><div class="line"><span class="comment">" 指定作为缓冲区的文件（该文件默认在执行完后不会被清空或者删除）</span></div><div class="line"><span class="keyword">let</span> <span class="variable">g:slime_paste_file</span> = <span class="string">"$HOME/.slime_paste"</span></div></pre></td></tr></table></figure></p>
+<p>vim-slime的默认快捷键是<c-c> <c-c>（两次Ctrl-C）发送代码；<c-c> v（Ctrl-C + v）修改配置。</c-c></c-c></c-c></p>
+<p>最后编写测试文件test.scm，执行<code>tmuxinator start scheme test.scm</code>，在vim中按下两次Ctrl-C。应该能实现和上文效果图一样的效果。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>本篇博客只是给出了大概的环境配置的思路以及一些具体的配置文件。<br>如果想要深度地定制属于自己的Scheme开发环境，你可能还需要阅读vim、vim-slime、tmux、tmuxinator的文档与网上的教程。<br>配置的方式也不仅仅局限于tmux，gnu-screen、vim-terminal等同样能作为vim-slime连接的目标。<br>配置的环境也不必仅仅局限于Scheme，python、sml等解释型语言均可使用。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;最近开始阅读Structure of Interpretation of Computer Science即计算机程序的构造与解释这本书。该书中使用的是Scheme作为Lisp的方言。&lt;br&gt;在此之前华盛顿大学的《程序设计语言》这门课的PartB中
+    
+    </summary>
+    
+      <category term="环境配置" scheme="http://blog.codedragon.tech/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
+    
+    
+      <category term="vim" scheme="http://blog.codedragon.tech/tags/vim/"/>
+    
+      <category term="tmux" scheme="http://blog.codedragon.tech/tags/tmux/"/>
+    
+      <category term="scheme" scheme="http://blog.codedragon.tech/tags/scheme/"/>
+    
+  </entry>
   
   <entry>
     <title>MIT6.828操作系统工程Lab1-Booting a PC实验报告</title>
@@ -2532,108 +2580,6 @@
       <category term="iOS" scheme="http://blog.codedragon.tech/tags/iOS/"/>
     
       <category term="OC" scheme="http://blog.codedragon.tech/tags/OC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>C语言复习问题总结</title>
-    <link href="http://blog.codedragon.tech/2016/06/20/c-e8-af-ad-e8-a8-80-e5-a4-8d-e4-b9-a0-e9-97-ae-e9-a2-98-e6-80-bb-e7-bb-93/"/>
-    <id>http://blog.codedragon.tech/2016/06/20/c-e8-af-ad-e8-a8-80-e5-a4-8d-e4-b9-a0-e9-97-ae-e9-a2-98-e6-80-bb-e7-bb-93/</id>
-    <published>2016-06-20T12:16:36.000Z</published>
-    <updated>2016-12-12T08:48:27.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="C语言复习问题总结"><a href="#C语言复习问题总结" class="headerlink" title="C语言复习问题总结"></a>C语言复习问题总结</h1><hr>
-<h2 id="1-字段结构的成员的地址"><a href="#1-字段结构的成员的地址" class="headerlink" title="1.字段结构的成员的地址"></a>1.字段结构的成员的地址</h2><p>改错题：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">struct _half_byte &#123;</div><div class="line">    unsigned short hb0: 4, hb1: 4, hb2: 4, hb3: 4;</div><div class="line">&#125; m;</div><div class="line">scanf(&quot;%hu %hu %hu %hu&quot;, &amp;m.hb0, &amp;m.hb1, &amp;m.hb2, &amp;m.hb3);</div></pre></td></tr></table></figure>
-<p>这里需要注意到字段结构的成员是没有地址的，因此<code>scanf(&quot;%hu %hu %hu %hu&quot;, &amp;m.hb0, &amp;m.hb1, &amp;m.hb2, &amp;m.hb3);</code>是错误的，正确的代码可以类似：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">unsigned short tmp[4];</div><div class="line">    scanf(“%hu %hu %hu %hu”, &amp;tmp[0] , &amp;tmp[1] , &amp;tmp[2] , &amp;tmp[3]);</div><div class="line">    m.hb0 = tmp[0], m.hb1 = tmp[1] , m.hb2 = tmp[2] , m.hb3 = tmp[3];</div></pre></td></tr></table></figure>
-<h2 id="2-amp-amp-和-的编译器优化"><a href="#2-amp-amp-和-的编译器优化" class="headerlink" title="2.&amp;&amp;和||的编译器优化"></a>2.&amp;&amp;和||的编译器优化</h2><p>如果开启了编译器优化，那么若&amp;&amp;的第一个条件为假或者||的第一个条件为真，那么编译器将不会去看&amp;&amp;或||的第二个条件，因此：</p>
-<blockquote>
-<p>Declare <code>int x = 0, y = 1;</code> , which values of the following expressions are nonzero?</p>
-<p>A. <code>x++ + y--</code></p>
-<p>B. <code>y-x||x++, x</code></p>
-<p>C. <code>x*y&amp;&amp;y--, y</code></p>
-<p>D. <code>y-- ? y++ : y</code></p>
-</blockquote>
-<p>这道题目的B和C为例，B中y-x已经为1，所以编译器将忽略x++，所以x仍然为0，所以B错误。而C中x*y为0所以编译器将忽略y–，所以y为1，C正确。</p>
-<h2 id="3-注意标识符和关键字的区别"><a href="#3-注意标识符和关键字的区别" class="headerlink" title="3.注意标识符和关键字的区别"></a>3.注意标识符和关键字的区别</h2><p>例如：main是一个合法的标识符，而非关键字。</p>
-<p>再例如：Case是一个合法的标识符，而非关键字。（注意C语言区分大小写）</p>
-<h2 id="4-词法分析"><a href="#4-词法分析" class="headerlink" title="4.词法分析"></a>4.词法分析</h2><blockquote>
-<p>How many tokens are there in the statement of <code>*p+++=12.L;</code>?</p>
-<p>A. 5</p>
-<p>B. 6</p>
-<p>C. 7</p>
-<p>D. 10</p>
-</blockquote>
-<p>记号共有5类：标识符、关键字、常量（含字符串常量）、运算符、标点符号。</p>
-<p><code>*p+++=12.L;</code>可以被分解为 * p ++ += 12.L ;共计6个记号，所以，答案为B。</p>
-<h2 id="5-转义序列"><a href="#5-转义序列" class="headerlink" title="5.转义序列"></a>5.转义序列</h2><p>根据文档：</p>
-<blockquote>
-<p>Escape sequences are used to represent certain special characters within string literals and character constants.</p>
-</blockquote>
-<p>在C中可以由 \（反斜杠）+ 字符来进行转义。</p>
-<h2 id="6-类型转换"><a href="#6-类型转换" class="headerlink" title="6.类型转换"></a>6.类型转换</h2><blockquote>
-<p><code>long x, y; x = -6L; y = 5UL;</code> Which expression is equal to 1?</p>
-<p>A. <code>x&lt;y &amp;&amp; -6L&lt;5UL</code></p>
-<p>B. <code>x&lt;y &amp;&amp; -6L&gt;5UL</code></p>
-<p>C. <code>x&gt;y &amp;&amp; -6L&lt;5UL</code></p>
-<p>D. <code>x&gt;y &amp;&amp; -6L&gt;5UL</code></p>
-</blockquote>
-<p>x,y的类型为long，因此5UL将会被转换为5L，所以x<y。而在进行比较运算的时候-6l会被提升至unsigned long，此时-6l="">5UL，所以答案选B。</y。而在进行比较运算的时候-6l会被提升至unsigned></p>
-<h2 id="7-后缀自增自减运算符的计算延迟"><a href="#7-后缀自增自减运算符的计算延迟" class="headerlink" title="7.后缀自增自减运算符的计算延迟"></a>7.后缀自增自减运算符的计算延迟</h2><p>后缀式++/–在遇到&amp;&amp; || ?: , 运算符后、或者完整表达式结束后自增/自减。</p>
-<h2 id="8-注意作用域、链接和存储时期"><a href="#8-注意作用域、链接和存储时期" class="headerlink" title="8.注意作用域、链接和存储时期"></a>8.注意作用域、链接和存储时期</h2><p>作用域描述程序中可以访问一个标识符的一个或多个区域；链接包括外部、内部和空链接，具有空链接的变量被代码块或函数原型所私有，外部链接的变量可以在多文件程序的任何地方使用，内部链接的变量可以在一个文件的任何地方使用；静态存储时期的变量将在程序执行期间一直存在，并且只能初始化一次。</p>
-<p>具体可以参考C Primer Plus第十二章《存储类、链接和内存管理》或是课本。以下列出5个存储类的组合（来自C Primer Plus）：</p>
-<table><br><thead><br><tr><br>  <th align="center">存储类</th><br>  <th align="center">时期</th><br>  <th align="center">作用域</th><br>  <th align="center">链接</th><br>  <th align="center">声明方式</th><br></tr><br></thead><br><tbody><br><tr><br>  <td align="center">自动</td><br>  <td align="center">自动</td><br>  <td align="center">代码块</td><br>  <td align="center">空</td><br>  <td align="center">代码块内</td><br></tr><br><tr><br>  <td align="center">寄存器</td><br>  <td align="center">自动</td><br>  <td align="center">代码块</td><br>  <td align="center">空</td><br>  <td align="center">代码块内，使用关键字register</td><br></tr><br><tr><br>  <td align="center">具有外部链接的静态</td><br>  <td align="center">静态</td><br>  <td align="center">文件</td><br>  <td align="center">外部</td><br>  <td align="center">所有函数之外</td><br></tr><br><tr><br>  <td align="center">具有内部链接的静态</td><br>  <td align="center">静态</td><br>  <td align="center">文件</td><br>  <td align="center">内部</td><br>  <td align="center">所有函数之外，使用关键字static</td><br></tr><br><tr><br>  <td align="center">空链接的静态</td><br>  <td align="center">静态</td><br>  <td align="center">代码块</td><br>  <td align="center">空</td><br>  <td align="center">代码块内，使用关键字static</td><br></tr><br></tbody><br></table>
-
-<blockquote>
-<p>In the following descriptions about the using of static, which ones are correct?</p>
-<p>A. The static declaration can be used to variables and functions.</p>
-<p>B. The external static declaration limits the scope of that object.</p>
-<p>C. Internal static variables are local to a particular function just as auto variables are.</p>
-<p>D. Internal static variables provide permanent storage and are initialized only once.</p>
-</blockquote>
-<p>A正确，B external static具有内部链接，因此被限制了只能被当前文件引用，正确，C内部定义的静态变量具有代码块作用域，正确，D正确。</p>
-<p>同时在另外一个文件中引用具有外部链接的变量时需要使用关键字 extern，因此，下面一道题选D。</p>
-<blockquote>
-<p>Suppose that file_a.c and file_b.c can be compiled independently. and they share the following global variables</p>
-<p>extern int x; char ch;</p>
-<p>which are declared in file_a.c. The allowed global variables declared in file_b.c are</p>
-<p>A、extern int x; char ch;</p>
-<p>B、extern int x; extern char ch;</p>
-<p>C、int x; char ch;</p>
-<p>D、int x; extern char ch;</p>
-</blockquote>
-<h2 id="9-改错题注意悬挂指针"><a href="#9-改错题注意悬挂指针" class="headerlink" title="9.改错题注意悬挂指针"></a>9.改错题注意悬挂指针</h2><p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">char *a[5];</div><div class="line">int i = 0;</div><div class="line">for (i=0; i&lt;5; i++)</div><div class="line">    scanf(&quot;%s&quot;, a[i]);</div></pre></td></tr></table></figure>
-<h2 id="10-Switch中的break"><a href="#10-Switch中的break" class="headerlink" title="10.Switch中的break"></a>10.Switch中的break</h2><p>若switch中的case不加break，将会将该case后的所有语句全部执行完。</p>
-<h2 id="11-字段成员的内存分配"><a href="#11-字段成员的内存分配" class="headerlink" title="11.字段成员的内存分配"></a>11.字段成员的内存分配</h2><p>字段成员的内存分配是由低位到高位的。例如下面的题目，答案为C：</p>
-<blockquote>
-<p>Suppose declared:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">struct direction &#123;</div><div class="line">   unsigned short int east:4,south:4,west:4,north:4; //east为最低位4，north为最高位1</div><div class="line">&#125;;</div><div class="line">union ud&#123;</div><div class="line">   unsigned short int all;</div><div class="line">   struct direction d;</div><div class="line">&#125; a=&#123;0x1234&#125;;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>the output of <code>printf(&quot;%d\n&quot;,a.d.south);</code> is</p>
-<p>A、1</p>
-<p>B、2</p>
-<p>C、3</p>
-<p>D、4</p>
-</blockquote>
-<h2 id="12-细心审题"><a href="#12-细心审题" class="headerlink" title="12.细心审题"></a>12.细心审题</h2><p>C语言考试审题还是很重要的，稍微一不小心看错了一个字母，有可能题目就错了，务必仔细审题。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;C语言复习问题总结&quot;&gt;&lt;a href=&quot;#C语言复习问题总结&quot; class=&quot;headerlink&quot; title=&quot;C语言复习问题总结&quot;&gt;&lt;/a&gt;C语言复习问题总结&lt;/h1&gt;&lt;hr&gt;
-&lt;h2 id=&quot;1-字段结构的成员的地址&quot;&gt;&lt;a href=&quot;#1-字段结构的成
-    
-    </summary>
-    
-      <category term="C语言" scheme="http://blog.codedragon.tech/categories/C%E8%AF%AD%E8%A8%80/"/>
-    
-    
-      <category term="C" scheme="http://blog.codedragon.tech/tags/C/"/>
-    
-      <category term="总结" scheme="http://blog.codedragon.tech/tags/%E6%80%BB%E7%BB%93/"/>
     
   </entry>
   

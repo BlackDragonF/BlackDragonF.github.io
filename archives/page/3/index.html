@@ -257,6 +257,131 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title" itemprop="headline">
                     
+                        <a class="link-unstyled" href="/2016/06/20/c-e8-af-ad-e8-a8-80-e5-a4-8d-e4-b9-a0-e9-97-ae-e9-a2-98-e6-80-bb-e7-bb-93/">
+                            C语言复习问题总结
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2016-06-20T20:16:36+08:00">
+	
+		    6月 20, 2016
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/C语言/">C语言</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content" itemprop="articleBody">
+                    <h1 id="C语言复习问题总结"><a href="#C语言复习问题总结" class="headerlink" title="C语言复习问题总结"></a>C语言复习问题总结</h1><hr>
+<h2 id="1-字段结构的成员的地址"><a href="#1-字段结构的成员的地址" class="headerlink" title="1.字段结构的成员的地址"></a>1.字段结构的成员的地址</h2><p>改错题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">struct _half_byte &#123;</div><div class="line">    unsigned short hb0: 4, hb1: 4, hb2: 4, hb3: 4;</div><div class="line">&#125; m;</div><div class="line">scanf(&quot;%hu %hu %hu %hu&quot;, &amp;m.hb0, &amp;m.hb1, &amp;m.hb2, &amp;m.hb3);</div></pre></td></tr></table></figure>
+<p>这里需要注意到字段结构的成员是没有地址的，因此<code>scanf(&quot;%hu %hu %hu %hu&quot;, &amp;m.hb0, &amp;m.hb1, &amp;m.hb2, &amp;m.hb3);</code>是错误的，正确的代码可以类似：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">unsigned short tmp[4];</div><div class="line">    scanf(“%hu %hu %hu %hu”, &amp;tmp[0] , &amp;tmp[1] , &amp;tmp[2] , &amp;tmp[3]);</div><div class="line">    m.hb0 = tmp[0], m.hb1 = tmp[1] , m.hb2 = tmp[2] , m.hb3 = tmp[3];</div></pre></td></tr></table></figure>
+<h2 id="2-amp-amp-和-的编译器优化"><a href="#2-amp-amp-和-的编译器优化" class="headerlink" title="2.&amp;&amp;和||的编译器优化"></a>2.&amp;&amp;和||的编译器优化</h2><p>如果开启了编译器优化，那么若&amp;&amp;的第一个条件为假或者||的第一个条件为真，那么编译器将不会去看&amp;&amp;或||的第二个条件，因此：</p>
+<blockquote>
+<p>Declare <code>int x = 0, y = 1;</code> , which values of the following expressions are nonzero?</p>
+<p>A. <code>x++ + y--</code></p>
+<p>B. <code>y-x||x++, x</code></p>
+<p>C. <code>x*y&amp;&amp;y--, y</code></p>
+<p>D. <code>y-- ? y++ : y</code></p>
+</blockquote>
+<p>这道题目的B和C为例，B中y-x已经为1，所以编译器将忽略x++，所以x仍然为0，所以B错误。而C中x*y为0所以编译器将忽略y–，所以y为1，C正确。</p>
+<h2 id="3-注意标识符和关键字的区别"><a href="#3-注意标识符和关键字的区别" class="headerlink" title="3.注意标识符和关键字的区别"></a>3.注意标识符和关键字的区别</h2><p>例如：main是一个合法的标识符，而非关键字。</p>
+<p>再例如：Case是一个合法的标识符，而非关键字。（注意C语言区分大小写）</p>
+<h2 id="4-词法分析"><a href="#4-词法分析" class="headerlink" title="4.词法分析"></a>4.词法分析</h2><blockquote>
+<p>How many tokens are there in the statement of <code>*p+++=12.L;</code>?</p>
+<p>A. 5</p>
+<p>B. 6</p>
+<p>C. 7</p>
+<p>D. 10</p>
+</blockquote>
+<p>记号共有5类：标识符、关键字、常量（含字符串常量）、运算符、标点符号。</p>
+<p><code>*p+++=12.L;</code>可以被分解为 * p ++ += 12.L ;共计6个记号，所以，答案为B。</p>
+<h2 id="5-转义序列"><a href="#5-转义序列" class="headerlink" title="5.转义序列"></a>5.转义序列</h2><p>根据文档：</p>
+<blockquote>
+<p>Escape sequences are used to represent certain special characters within string literals and character constants.</p>
+</blockquote>
+<p>在C中可以由 \（反斜杠）+ 字符来进行转义。</p>
+<h2 id="6-类型转换"><a href="#6-类型转换" class="headerlink" title="6.类型转换"></a>6.类型转换</h2><blockquote>
+<p><code>long x, y; x = -6L; y = 5UL;</code> Which expression is equal to 1?</p>
+<p>A. <code>x&lt;y &amp;&amp; -6L&lt;5UL</code></p>
+<p>B. <code>x&lt;y &amp;&amp; -6L&gt;5UL</code></p>
+<p>C. <code>x&gt;y &amp;&amp; -6L&lt;5UL</code></p>
+<p>D. <code>x&gt;y &amp;&amp; -6L&gt;5UL</code></p>
+</blockquote>
+<p>x,y的类型为long，因此5UL将会被转换为5L，所以x<y。而在进行比较运算的时候-6l会被提升至unsigned long，此时-6l="">5UL，所以答案选B。</y。而在进行比较运算的时候-6l会被提升至unsigned></p>
+<h2 id="7-后缀自增自减运算符的计算延迟"><a href="#7-后缀自增自减运算符的计算延迟" class="headerlink" title="7.后缀自增自减运算符的计算延迟"></a>7.后缀自增自减运算符的计算延迟</h2><p>后缀式++/–在遇到&amp;&amp; || ?: , 运算符后、或者完整表达式结束后自增/自减。</p>
+<h2 id="8-注意作用域、链接和存储时期"><a href="#8-注意作用域、链接和存储时期" class="headerlink" title="8.注意作用域、链接和存储时期"></a>8.注意作用域、链接和存储时期</h2><p>作用域描述程序中可以访问一个标识符的一个或多个区域；链接包括外部、内部和空链接，具有空链接的变量被代码块或函数原型所私有，外部链接的变量可以在多文件程序的任何地方使用，内部链接的变量可以在一个文件的任何地方使用；静态存储时期的变量将在程序执行期间一直存在，并且只能初始化一次。</p>
+<p>具体可以参考C Primer Plus第十二章《存储类、链接和内存管理》或是课本。以下列出5个存储类的组合（来自C Primer Plus）：</p>
+<table><br><thead><br><tr><br>  <th align="center">存储类</th><br>  <th align="center">时期</th><br>  <th align="center">作用域</th><br>  <th align="center">链接</th><br>  <th align="center">声明方式</th><br></tr><br></thead><br><tbody><br><tr><br>  <td align="center">自动</td><br>  <td align="center">自动</td><br>  <td align="center">代码块</td><br>  <td align="center">空</td><br>  <td align="center">代码块内</td><br></tr><br><tr><br>  <td align="center">寄存器</td><br>  <td align="center">自动</td><br>  <td align="center">代码块</td><br>  <td align="center">空</td><br>  <td align="center">代码块内，使用关键字register</td><br></tr><br><tr><br>  <td align="center">具有外部链接的静态</td><br>  <td align="center">静态</td><br>  <td align="center">文件</td><br>  <td align="center">外部</td><br>  <td align="center">所有函数之外</td><br></tr><br><tr><br>  <td align="center">具有内部链接的静态</td><br>  <td align="center">静态</td><br>  <td align="center">文件</td><br>  <td align="center">内部</td><br>  <td align="center">所有函数之外，使用关键字static</td><br></tr><br><tr><br>  <td align="center">空链接的静态</td><br>  <td align="center">静态</td><br>  <td align="center">代码块</td><br>  <td align="center">空</td><br>  <td align="center">代码块内，使用关键字static</td><br></tr><br></tbody><br></table>
+
+<blockquote>
+<p>In the following descriptions about the using of static, which ones are correct?</p>
+<p>A. The static declaration can be used to variables and functions.</p>
+<p>B. The external static declaration limits the scope of that object.</p>
+<p>C. Internal static variables are local to a particular function just as auto variables are.</p>
+<p>D. Internal static variables provide permanent storage and are initialized only once.</p>
+</blockquote>
+<p>A正确，B external static具有内部链接，因此被限制了只能被当前文件引用，正确，C内部定义的静态变量具有代码块作用域，正确，D正确。</p>
+<p>同时在另外一个文件中引用具有外部链接的变量时需要使用关键字 extern，因此，下面一道题选D。</p>
+<blockquote>
+<p>Suppose that file_a.c and file_b.c can be compiled independently. and they share the following global variables</p>
+<p>extern int x; char ch;</p>
+<p>which are declared in file_a.c. The allowed global variables declared in file_b.c are</p>
+<p>A、extern int x; char ch;</p>
+<p>B、extern int x; extern char ch;</p>
+<p>C、int x; char ch;</p>
+<p>D、int x; extern char ch;</p>
+</blockquote>
+<h2 id="9-改错题注意悬挂指针"><a href="#9-改错题注意悬挂指针" class="headerlink" title="9.改错题注意悬挂指针"></a>9.改错题注意悬挂指针</h2><p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">char *a[5];</div><div class="line">int i = 0;</div><div class="line">for (i=0; i&lt;5; i++)</div><div class="line">    scanf(&quot;%s&quot;, a[i]);</div></pre></td></tr></table></figure>
+<h2 id="10-Switch中的break"><a href="#10-Switch中的break" class="headerlink" title="10.Switch中的break"></a>10.Switch中的break</h2><p>若switch中的case不加break，将会将该case后的所有语句全部执行完。</p>
+<h2 id="11-字段成员的内存分配"><a href="#11-字段成员的内存分配" class="headerlink" title="11.字段成员的内存分配"></a>11.字段成员的内存分配</h2><p>字段成员的内存分配是由低位到高位的。例如下面的题目，答案为C：</p>
+<blockquote>
+<p>Suppose declared:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">struct direction &#123;</div><div class="line">   unsigned short int east:4,south:4,west:4,north:4; //east为最低位4，north为最高位1</div><div class="line">&#125;;</div><div class="line">union ud&#123;</div><div class="line">   unsigned short int all;</div><div class="line">   struct direction d;</div><div class="line">&#125; a=&#123;0x1234&#125;;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>the output of <code>printf(&quot;%d\n&quot;,a.d.south);</code> is</p>
+<p>A、1</p>
+<p>B、2</p>
+<p>C、3</p>
+<p>D、4</p>
+</blockquote>
+<h2 id="12-细心审题"><a href="#12-细心审题" class="headerlink" title="12.细心审题"></a>12.细心审题</h2><p>C语言考试审题还是很重要的，稍微一不小心看错了一个字母，有可能题目就错了，务必仔细审题。</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2016/06/20/c-e8-af-ad-e8-a8-80-e5-a4-8d-e4-b9-a0-e9-97-ae-e9-a2-98-e6-80-bb-e7-bb-93/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
                         <a class="link-unstyled" href="/2016/06/12/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-ba-8c-ef-bc-89/">
                             iOS学习笔记（二）
                         </a>
