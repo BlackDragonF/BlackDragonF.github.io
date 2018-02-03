@@ -33,7 +33,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-woaw2oiuh6ifndjd9g1rtlhfl8vkkshjspee4sufshrwj8j8vsj4o4ienv0e.min.css">
+    <link rel="stylesheet" href="/assets/css/style-gtvt1lbvzeqmr99zec4y42qrxw5ogq1gul5orw7somyh6cv5ckqsrl4abr9a.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -249,6 +249,82 @@
                         ">
                 
     <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2017/05/12/迁移说明/">
+                            迁移说明
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2017-05-12T17:36:25+08:00">
+	
+		    5月 12, 2017
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/通知/">通知</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content" itemprop="articleBody">
+                    <h2 id="博客历史"><a href="#博客历史" class="headerlink" title="博客历史"></a>博客历史</h2><ul>
+<li>本博客自2016年1月4日上线。最早部署于BlackDragon的阿里云上，使用的是WordPress框架，服务器则采用了LAMP环境，DNS解析至一级域名。</li>
+<li>博客自上线后曾频繁的出现无法连接至数据库的情况，经过检查可能的原因是Apache占用的内存过大以至于MySQL服务被杀。后采用LNMP环境。</li>
+<li>2016年12月12日，将博客整个导出至Hexo并且部署至Github Pages，DNS解析至二级域名blog，原服务器与域名停止解析。</li>
+</ul>
+<h2 id="博客迁移"><a href="#博客迁移" class="headerlink" title="博客迁移"></a>博客迁移</h2><blockquote>
+<p>博客迁移的原因<br>在目前，我仍然希望这个博客的内容能被更多的人关注到，也希望能和更多的人交流，所以向Google和Baidu分别提交了Sitemap。<br>但是因国内Baidu仍然作为主要的搜索引擎，加上Github屏蔽了Baidu的爬虫，无法让博客的Sitemap被Baidu抓取并索引，在进行了尝试后决定将博客迁移。</p>
+</blockquote>
+<p>在遇到上述问题时，我首先尝试了将hexo生成的博客部署到Github以及Coding两个代码仓库，并通过DNS解析将国内和国外的访问分别解析至Coding和Github，并解决了问题。</p>
+<p>但是个人觉得这样做不够优雅，经过考虑还是决定将博客重新迁移至自己的阿里云，使用CentOS7作为Server，Nginx作为Web Server，同时将Github的Repo作为Mirror。</p>
+<p>博客于2017年5月11日完成迁移，又于2017年5月12日完成相应的优化调整。</p>
+<p>现在你可以访问</p>
+<ul>
+<li><a href="http://blog.duskdragon.com" target="_blank" rel="external">blog.duskdragon.com</a> 主站点</li>
+<li><a href="https://blackdragonf.github.io/" target="_blank" rel="external">blackdragonf.github.io</a> 备份站点</li>
+</ul>
+<blockquote>
+<p>这个博客的意义<br>这个博客不是技术博客（目前），因为我现在并没有足够的技能去支持一个技术博客。我现在仅仅是作为一个学习者记录在学习过程中遇到的各种问题，并且将学到的知识加以总结。欢迎任何的技术交流以及错误指正。<br>如果我所记录的题目的解答或是实验的报告能够给同样还在学习的你带来帮助，这就是对我最大的鼓励。</p>
+</blockquote>
+<h3 id="迁移过程中遇到的问题"><a href="#迁移过程中遇到的问题" class="headerlink" title="迁移过程中遇到的问题"></a>迁移过程中遇到的问题</h3><ul>
+<li>在配置iptables时，我在没有开放22端口的情况下将INPUT的默认策略设置为DROP，直接导致了ssh断开连接，不得不重置了阿里云。</li>
+<li>/home下的用户文件夹默认不具有读和执行权限，而我的html根目录放在家目录下，这导致了我在部署nginx时出现了403 Forbidden的错误。</li>
+</ul>
+<h2 id="优化调整"><a href="#优化调整" class="headerlink" title="优化调整"></a>优化调整</h2><p>本次迁移博客同时对于博客做出了以下优化及调整：</p>
+<ul>
+<li>将背景图片从PNG格式改为JPG格式，减少网页加载的时间</li>
+<li>之前为了美观采用了WQY字体，但是将字体作为资源文件大大延长了加载的时间，现在博客的中文字体采用了Google Fonts中的Noto Sans SC</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/05/12/迁移说明/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
     
     
     <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
@@ -1887,91 +1963,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2016/07/06/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-89-ef-bc-89/">
-                            iOS学习笔记（三）
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2016-07-06T23:49:16+08:00">
-	
-		    7月 06, 2016
-    	
-    </time>
-    
-        <span>发布在 </span>
-        
-    <a class="category-link" href="/categories/iOS开发/">iOS开发</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content" itemprop="articleBody">
-                    <blockquote>
-<p>花了两天半的时间基本实现了APP中让用户选择头像的功能（仿照手机版QQ），整理和总结如下——</p>
-</blockquote>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h3 id="UIImagePickerController"><a href="#UIImagePickerController" class="headerlink" title="- UIImagePickerController"></a>- UIImagePickerController</h3><hr>
-<p>原先想要采用UIImagePickerController来实现这个功能，UIImagePickerController是UINavigationController的子类，是系统提供的拍摄、选择照片和视频的UI。具体来说，在选择头像这个功能中，头像的来源有两种——拍照和从相册选择，同时完成头像的选择后我们还应该能够让用户选择头像的范围以及大小。</p>
-<p>若头像的来源为拍照：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];</div><div class="line">imagePickerController.delegate = self;</div><div class="line">imagePickerController.allowsEditing = YES;//允许编辑图片</div><div class="line">imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;//图片的来源为相机</div><div class="line">//...还可以在这里修改相机的前后镜头 是否开启闪光灯等</div><div class="line">[self presentViewController:imagePickerController animated:YES completion:nil];</div></pre></td></tr></table></figure>
-<p>同时，实现UIImagePickerDelegate中的如下方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary&lt;NSString *,id&gt; *)info &#123;</div><div class="line">    UIImage * originImage = info[UIImagePickerControllerOriginalImage];//这样获取的是原图像</div><div class="line">    UIImage * editedImage = info[UIImagePickerControllerEditedImage];//这样获取的是修改后的图像</div><div class="line">    //...在这里实现图像的保存</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果头像的来源为相册，则只需修改imagePickerController的sourceType属性即可:</p>
-<pre><code>`imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;`
-</code></pre><p>这样做就可以实现我们的需求了，但是这个方法的缺点也很明显，在这个方法中，我们使用的是系统封装好的UI，参考手机版QQ的选择头像我们可以发现，我们不能自定义相册中图片的分类、排版。同样的，我们也不能自定义编辑头像的界面，你不能将正方形的头像选框改成圆形的。因此，我们需要自己实现一个“UIImagePickerController”。在这个UIImagePickerController中，除了图片来源为拍照的情况下我们采用系统原生的UIImagePickerController以外，编辑图片和从相册中选取图片的功能我们都自己实现。</p>
-<h3 id="PhotoKit和UICollectionView"><a href="#PhotoKit和UICollectionView" class="headerlink" title="- PhotoKit和UICollectionView"></a>- PhotoKit和UICollectionView</h3><hr>
-<p><a href="http://ju.outofmemory.cn/entry/182306" target="_blank" rel="external">参考博客：iOS 开发之照片框架详解</a></p>
-<p>对于从相册选择图片的功能，我们可以采用PhotoKit来获取到图片的信息，并通过UICollectionView加以展示，这里主要给出PhotoKit的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">#import &lt;Photos/Photos.h&gt;</div><div class="line"></div><div class="line">PHFetchOptions *options = [[PHFetchOptions alloc]init];</div><div class="line">options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@&quot;creationDate&quot; ascending:YES]];</div><div class="line">PHFetchResult * results = [PHAsset fetchAssetsWithOptions:options];</div><div class="line">//...这样就取得了照片库中所有照片并将它们通过创建时间排序 当然这只是最简单的做法 还可以创建多个不同类别的相册</div><div class="line"></div><div class="line">//...然后我们要通过如下的代码取得照片</div><div class="line">PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc]init];</div><div class="line">requestOptions.resizeMode = PHImageRequestOptionsResizeModeExact;//这里指定了照片的清晰度</div><div class="line">[[PHImageManager defaultManager]requestImageForAsset:results[number]</div><div class="line">                                          targetSize:CGSizeMake(length, length)//指定了照片的大小</div><div class="line">                                         contentMode:PHImageContentModeDefault</div><div class="line">                                             options:requestOptions resultHandler:^(UIImage * result, NSDictionary * info) &#123;</div><div class="line">    //...在这里展示照片</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
-<h3 id="自定义编辑头像的界面"><a href="#自定义编辑头像的界面" class="headerlink" title="- 自定义编辑头像的界面"></a>- 自定义编辑头像的界面</h3><hr>
-<p>主要有两个方面</p>
-<ul>
-<li>展示图片 我采用的方法是向一个UIScrollView中添加一个UIImageView</li>
-<li>圆形选框 采用了两个CAShapeLayer，一个是选框的Layer，另一个是遮罩的Layer</li>
-</ul>
-<p>实现展示图片的功能首先需要了解UIScrollView中frame，contentSize和contentOffset的区别。同时，为了将图片限制在我们所画的边框内，关键是设置合理的minimumZoomScale（最小缩放比例）以及实时更新ContentSize，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line">- (void)imageConfiguration &#123;</div><div class="line">    self.imageView.frame = CGRectMake(WIDTH/2-LENGTH/2, HEIGHT/2-LENGTH/2-32, _imageSize.width, _imageSize.height);</div><div class="line">    //设置图片的位置</div><div class="line">    CGFloat zoomScale =[self zoomScaleWithSize:_imageSize];</div><div class="line">    //计算初始的zoomScale</div><div class="line">    CGFloat minimumZoomScale = [self minimumZoomScaleWithSize:_imageSize];</div><div class="line">    //计算最小的zoomScale</div><div class="line">    CGFloat maximumZoomScale = (minimumZoomScale &lt;= 1.2) ? 1.2 : minimumZoomScale;</div><div class="line">    //这里的1.2可以替换成其他值</div><div class="line">    self.scrollView.minimumZoomScale = minimumZoomScale;</div><div class="line">    self.scrollView.maximumZoomScale = maximumZoomScale;</div><div class="line">    self.scrollView.zoomScale = zoomScale;</div><div class="line">    self.scrollView.contentSize = CGSizeMake(_imageSize.width*zoomScale+WIDTH-LENGTH, _imageSize.height*zoomScale+HEIGHT-LENGTH-64);</div><div class="line">    //为了保证将图片限制在边框内初始的ContentSize</div><div class="line">    self.scrollView.contentOffset = CGPointMake(WIDTH/2-LENGTH/2, HEIGHT/2-LENGTH/2-32);</div><div class="line">    //WIDTH是屏幕宽度 HEIGHT是屏幕高度 LENGTH是边框变长</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (CGFloat)zoomScaleWithSize:(CGSize)size &#123;</div><div class="line">    CGFloat width = size.width;</div><div class="line">    CGFloat height = size.height;</div><div class="line">    CGFloat scale = (CGFloat)width/height;</div><div class="line">    CGFloat screenScale = (CGFloat)WIDTH/HEIGHT;</div><div class="line">    if (scale &gt; screenScale) &#123;</div><div class="line">        if ((CGFloat)WIDTH/width*height&gt;LENGTH) &#123;</div><div class="line">            return ((CGFloat)WIDTH / width);</div><div class="line">        &#125; else &#123;</div><div class="line">            return (LENGTH/height);</div><div class="line">        &#125;</div><div class="line">    &#125; else &#123;</div><div class="line">        if ((CGFloat)HEIGHT/height*width&gt;LENGTH) &#123;</div><div class="line">            return ((CGFloat)HEIGHT/height);</div><div class="line">        &#125; else &#123;</div><div class="line">            return (LENGTH/width);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//思路是通过比较宽高比确定让图片正好容纳在屏幕内的比例，同时还保证图片能够包括边框</div><div class="line"></div><div class="line">- (CGFloat)minimumZoomScaleWithSize:(CGSize)size &#123;</div><div class="line">    CGFloat width = size.width;</div><div class="line">    CGFloat height = size.height;</div><div class="line">    if ((LENGTH / height)&gt;(LENGTH / width)) &#123;</div><div class="line">        return (LENGTH / height);</div><div class="line">    &#125; else &#123;</div><div class="line">        return (LENGTH / width);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//只保证图片能够包括边框即可</div><div class="line"></div><div class="line">- (void)scrollViewDidZoom:(UIScrollView *)scrollView &#123;</div><div class="line">    self.scrollView.contentSize = CGSizeMake(_imageSize.width*self.scrollView.zoomScale+WIDTH-LENGTH, _imageSize.height*self.scrollView.zoomScale+HEIGHT-LENGTH-64);</div><div class="line">&#125;</div><div class="line">//UIScrollView代理 在缩放时能够正确的更新contentSize</div></pre></td></tr></table></figure>
-<p>圆形选框则比较简单，用一个CAShapeLayer即可实现，实现阴影遮罩（效果可以参考手机版QQ）则需要另一个CAShapeLayer，这里有一个问题，如果直接把遮罩设在self.view上，将会在页面切换的时候造成动画的不自然，我的解决方法是在self.view上添加一个UIView的实例contentView作为容器，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">self.contentView.layer.mask = self.maskLayer;</div><div class="line">[self.contentView.layer insertSublayer:self.borderLayer above:self.imageView.layer];</div><div class="line"></div><div class="line">- (CAShapeLayer *)borderLayer &#123;</div><div class="line">    if (!_borderLayer) &#123;</div><div class="line">        //...在此设置边框</div><div class="line">    &#125;</div><div class="line">        return _borderLayer;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (CAShapeLayer *)maskLayer &#123;</div><div class="line">    if (!_maskLayer) &#123;</div><div class="line">        _maskLayer = [CAShapeLayer layer];</div><div class="line">        [_maskLayer setFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];</div><div class="line">        [_maskLayer setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5].CGColor];</div><div class="line">        //确定阴影的明暗</div><div class="line">        //...setPath确定无阴影的范围</div><div class="line">    &#125;</div><div class="line">    return _maskLayer;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="修改导航栏的高度"><a href="#修改导航栏的高度" class="headerlink" title="- 修改导航栏的高度"></a>- 修改导航栏的高度</h3><hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (void)viewWillAppear:(BOOL)animated &#123;</div><div class="line">    [super viewWillAppear:animated];</div><div class="line">    CGRect navRect = self.navigationController.navigationBar.frame;</div><div class="line">    self.navigationController.navigationBar.frame = CGRectMake(navRect.origin.x, navRect.origin.y, navRect.size.width, 64);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)viewWillDisappear:(BOOL)animated &#123;</div><div class="line">    [super viewWillDisappear:animated];</div><div class="line">    CGRect navRect = self.navigationController.navigationBar.frame;</div><div class="line">    self.navigationController.navigationBar.frame = CGRectMake(navRect.origin.x, navRect.origin.y, navRect.size.width, 44);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="调整导航栏中Title和Button的垂直位置"><a href="#调整导航栏中Title和Button的垂直位置" class="headerlink" title="- 调整导航栏中Title和Button的垂直位置"></a>- 调整导航栏中Title和Button的垂直位置</h3><hr>
-<h4 id="Title"><a href="#Title" class="headerlink" title="Title:"></a>Title:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (void)viewWillAppear:(BOOL)animated &#123;</div><div class="line">    [super viewWillAppear:animated];</div><div class="line">    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:-10.0 forBarMetrics:UIBarMetricsDefault];</div><div class="line">    //-10.0可以根据需要调节</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)viewWillDisappear:(BOOL)animated &#123;</div><div class="line">    [super viewWillDisappear:animated];</div><div class="line">    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0.0 forBarMetrics:UIBarMetricsDefault];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="Button"><a href="#Button" class="headerlink" title="Button:"></a>Button:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[self.barButtonItem setBackgroundVerticalPositionAdjustment:-10.0 forBarMetrics:UIBarMetricsDefault];</div><div class="line">//－10.0可以根据需要调节</div></pre></td></tr></table></figure>
-<h3 id="隐藏状态栏"><a href="#隐藏状态栏" class="headerlink" title="- 隐藏状态栏"></a>- 隐藏状态栏</h3><hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (BOOL)prefersStatusBarHidden &#123;</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="UIScrollView不能缩放"><a href="#UIScrollView不能缩放" class="headerlink" title="- UIScrollView不能缩放"></a>- UIScrollView不能缩放</h3><hr>
-<p>需要实现代理方法<code>- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView</code>指定需要缩放的子控件</p>
-<h3 id="截取缩放过的UIImageView中的特定位置和大小的图片"><a href="#截取缩放过的UIImageView中的特定位置和大小的图片" class="headerlink" title="- 截取缩放过的UIImageView中的特定位置和大小的图片"></a>- 截取缩放过的UIImageView中的特定位置和大小的图片</h3><hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (UIImage *)imageWithZoomScale:(CGFloat)zoomScale &#123;</div><div class="line">    UIGraphicsBeginImageContextWithOptions(self.imageView.bounds.size, NO, zoomScale);</div><div class="line">    [self.imageView drawViewHierarchyInRect:self.imageView.bounds afterScreenUpdates:YES];</div><div class="line">    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();</div><div class="line">    UIGraphicsEndImageContext();</div><div class="line">    CGRect imageRect = //...在这里指定位置和大小</div><div class="line">    CGImageRef sourceImageRef = [image CGImage];</div><div class="line">    CGImageRef targetImageRef = CGImageCreateWithImageInRect(sourceImageRef, imageRect);</div><div class="line">    return [UIImage imageWithCGImage:targetImageRef];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2016/07/06/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-89-ef-bc-89/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -2000,7 +1991,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2017 CoSidian. All Rights Reserved.
+        Copyrights &copy; 2018 CoSidian. All Rights Reserved.
     </span>
 </footer>
 
@@ -2049,7 +2040,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-6vdiix6siapvwghon7lidx0gknpzcytesubc5zbclfpo3imycvj35gg9xww8.min.js"></script>
+<script src="/assets/js/script-i7zzex3jvqnxdf0lp2pg3bcyurjikigtrw9ljle5skc4mit2m7a13rwuyp8g.min.js"></script>
 <!--SCRIPTS END-->
 
 
