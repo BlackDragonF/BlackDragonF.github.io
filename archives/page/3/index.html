@@ -257,6 +257,93 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title" itemprop="headline">
                     
+                        <a class="link-unstyled" href="/2017/01/12/KMP-Knuth-Morris-Pratt-算法/">
+                            KMP(Knuth-Morris-Pratt)算法
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2017-01-12T12:14:58+08:00">
+	
+		    1月 12, 2017
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content" itemprop="articleBody">
+                    <blockquote>
+<p>KMP算法是著名并且高效的字符串匹配算法，该算法因Knuth，Morris与Pratt三人联合发表而得名。</p>
+</blockquote>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给定两个字符串S(n个字符)和W(m个字符)，求W在S中第一次出现的位置。</p>
+<h2 id="BF-Brute-Force-算法"><a href="#BF-Brute-Force-算法" class="headerlink" title="BF(Brute Force)算法"></a>BF(Brute Force)算法</h2><p>BF算法是普通的模式匹配的算法，该算法的思想是首先比较S和W的第一个字符，若匹配，则继续比较下一个字符，若不匹配，则从S的第二个字符和W的第一个字符开始，重复上述过程，直到S和W匹配。</p>
+<p>该算法的时间复杂度为 <strong>O(m*n)</strong></p>
+<h2 id="KMP-Knuth-Morris-Pratt-算法"><a href="#KMP-Knuth-Morris-Pratt-算法" class="headerlink" title="KMP(Knuth-Morris-Pratt)算法"></a>KMP(Knuth-Morris-Pratt)算法</h2><h3 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h3><p>在BF算法中，如果发生字符串失配，那么我们会从S的下一个字符开始<strong>重头</strong>开始匹配，而实际上，在发生失配时，W自身已经包含了足够的信息，以确定下一个匹配的位置，这就是KMP算法的核心思路。</p>
+<h3 id="算法实例"><a href="#算法实例" class="headerlink" title="算法实例"></a>算法实例</h3><p>不妨设字符串S为 <strong>ABC ABCDAB ABCDABCDABDE</strong>，W为 <strong>ABCDABD</strong>。</p>
+<p>首先我们从W和S的开头开始匹配，但是我们发现，S[3] = ‘ ‘而W[3] = ‘D’，发生了失配，但我们同时也发现，S[1]到S[3]不与W[0]——也就是’A’相匹配，因此下一次匹配我们直接从S[4]开始，与W[0]进行匹配。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">      |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W: ABCDABD</div><div class="line">      |</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">       |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:     ABCDABD</div><div class="line">       |</div></pre></td></tr></table></figure>
+<p>随后，我们发现S[10] = ‘ ‘与W[6] = ‘D’失配，注意到W[0]-W[1]与W[4]-W[5]均为”AB”，因此下一次匹配时，我们也不必直接从下一位开始匹配，而是可以从已匹配的尾部的”AB”处继续匹配。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">             |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:     ABCDABD</div><div class="line">             |</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">             |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:         ABCDABD</div><div class="line">             |</div></pre></td></tr></table></figure>
+<p>下图所示的情况与上述的情况类似，我们直接从尾部的”AB”处继续匹配。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">                    |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:            ABCDABD</div><div class="line">                    |</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">                    |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:                ABCDABD</div><div class="line">                    |</div></pre></td></tr></table></figure>
+<p>最终找出了完全匹配的位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">                        |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:                ABCDABD</div><div class="line">                        |</div></pre></td></tr></table></figure>
+<h3 id="部分匹配表（失配函数）"><a href="#部分匹配表（失配函数）" class="headerlink" title="部分匹配表（失配函数）"></a>部分匹配表（失配函数）</h3><p>部分匹配表中的部分匹配值指出了在发生失配时，可以跳过的无效字符数。</p>
+<p>我们首先需要了解两个概念：“前缀”和“后缀”。</p>
+<p>“前缀”指除了最后一个字符之外，一个字符串的全部头部组合；“后缀”指除了第一个字符之外，一个字符串的全部尾部组合。</p>
+<p>部分匹配值就是“前缀”和“后缀”的最长的共有元素的长度。</p>
+<p>部分匹配值的实质是，有时候，字符串的头部和尾部会有重复。这样，不能直接将字符串向后移动“字符串长度”位，而是应该移动“字符串长度-部分匹配值”位。</p>
+<h4 id="部分匹配表实例"><a href="#部分匹配表实例" class="headerlink" title="部分匹配表实例"></a>部分匹配表实例</h4><p>以”ABCDABD”为例——</p>
+<ul>
+<li>“A”的前缀和后缀都为{}，共有元素长度为0；</li>
+<li>“AB”的前缀为{“A”}，后缀为{“B”}，共有元素长度为0；</li>
+<li>“ABC”的前缀为{“A”, “AB”}，后缀为{“C”, “BC”}，共有元素长度为0；</li>
+<li>“ABCD”的前缀为{“A”, “AB”, “ABC”}，后缀为{“D”, “CD”, “BCD”}，共有元素长度为0；</li>
+<li>“ABCDA”的前缀为{“A”, “AB”, “ABC”, “ABCD”}，后缀为{“A”, “DA”, “CDA”, “BCDA”}，共有元素为{“A”}，长度为1；</li>
+<li>“ABCDAB”的前缀为{“A”, “AB”, “ABC”, “ABCD”, “ABCDA”}，后缀为{“B”, “AB”, “DAB”, “CDAB”, “BCDAB”}，共有元素为{“AB”}，长度为2；</li>
+<li>“ABCDABD”的前缀为{“A”, “AB”, “ABC”, “ABCD”, “ABCDA”, “ABCDAB”}，后缀为{“D”, “BD”, “ABD”, “DABD”, “CDABD”, “BCDABD”}，共有元素长度为0；</li>
+</ul>
+<h3 id="算法实现（C语言）"><a href="#算法实现（C语言）" class="headerlink" title="算法实现（C语言）"></a>算法实现（C语言）</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kmp</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * s, <span class="keyword">const</span> <span class="keyword">char</span> * w)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> s_idx = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> w_idx = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> s_len = <span class="built_in">strlen</span>(s);</div><div class="line">    <span class="keyword">int</span> w_len = <span class="built_in">strlen</span>(w);</div><div class="line">    <span class="keyword">int</span> next[w_len];</div><div class="line">    generate_next(w, next);</div><div class="line">    <span class="keyword">while</span> (s_idx &lt; s_len &amp;&amp; w_idx &lt; w_len) &#123;</div><div class="line">        <span class="keyword">if</span> (w_idx == <span class="number">-1</span> || s[s_idx] == w[w_idx]) &#123;</div><div class="line">            s_idx++;</div><div class="line">            w_idx++;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">             w_idx = next[w_idx];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (w_idx == w_len) &#123;</div><div class="line">         <span class="keyword">return</span> (s_idx - w_idx);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">         <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">generate_next</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * w, <span class="keyword">int</span> * next)</span> </span>&#123;</div><div class="line">     <span class="keyword">int</span> index = <span class="number">0</span>, k = <span class="number">-1</span>;</div><div class="line">     <span class="keyword">int</span> w_len = <span class="built_in">strlen</span>(w);</div><div class="line">     next[<span class="number">0</span>] = <span class="number">-1</span>;</div><div class="line">     <span class="keyword">while</span> (index &lt; w_len <span class="number">-1</span>) &#123;</div><div class="line">         <span class="keyword">if</span> (k == <span class="number">-1</span> || w[index] == w[k]) &#123;</div><div class="line">             ++k;</div><div class="line">             ++index;</div><div class="line">             next[index] = k;</div><div class="line">         &#125; <span class="keyword">else</span> &#123;</div><div class="line">             k = next[k];</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h3><p>注意到这里我们对于部分匹配表做了一些额外的处理，我们将部分匹配表的值向右移动了一位，并且将部分匹配表的第一个值置为了-1。</p>
+<p>这是因为字符串w的第一个字符串的特殊性决定的，因为w字符的第一个字符串失配后无法回退，只能从s字符串的下一个字符开始匹配。</p>
+<p>此外，在求解next数组的函数generate_next中还有一句k=next[k]，这实际上是字符串的自我匹配的过程，当0–k-1发生失配时，应当找到一个满足条件的j，从0–j-1之后继续匹配，直到找不到更小的字符串为止。</p>
+<h3 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h3><p><strong>O(m+n)</strong></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/v_july_v/article/details/7041827" target="_blank" rel="external">从头到尾彻底理解KMP</a></p>
+<p><a href="http://www.cnblogs.com/c-cloud/p/3224788.html" target="_blank" rel="external">【经典算法】——KMP，深入讲解next数组的求解</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/%E5%85%8B%E5%8A%AA%E6%96%AF-%E8%8E%AB%E9%87%8C%E6%96%AF-%E6%99%AE%E6%8B%89%E7%89%B9%E7%AE%97%E6%B3%95" target="_blank" rel="external">克努斯-莫里斯-普拉特算法</a></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><blockquote>
+<p>一直不能够深刻地理解KMP算法，即使是写完了这篇Blog，我仍然对于KMP算法有着有限的了解，所以不排除这篇Blog还会有后续的可能。</p>
+</blockquote>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/01/12/KMP-Knuth-Morris-Pratt-算法/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
                         <a class="link-unstyled" href="/2016/12/12/OSTEP学习笔记1/">
                             OSTEP学习笔记1
                         </a>
@@ -1003,87 +1090,6 @@
                     
                         <p>
                             <a href="/2016/04/03/c-e8-af-ad-e8-a8-80-e7-ac-ac-e4-b8-80-e6-ac-a1-e4-bd-9c-e4-b8-9a/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2016/02/09/e6-a0-91-e8-8e-93-e6-b4-be-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/">
-                            树莓派学习笔记（一）
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2016-02-09T17:31:01+08:00">
-	
-		    2月 09, 2016
-    	
-    </time>
-    
-        <span>发布在 </span>
-        
-    <a class="category-link" href="/categories/Raspberry/">Raspberry</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content" itemprop="articleBody">
-                    <p>寒假回家后买了一个树莓派来玩一玩，决定写博客来记录自己学到的东西。之前学习iOS的时候有很多时候都是单纯的解决了问题而没有归纳整理，结果到后面出现同样的问题的时候重复的在网上搜索，效率很低。这次尝试着记录自己的学习过程，看看效果如何。</p>
-<h2 id="第一步-准备"><a href="#第一步-准备" class="headerlink" title="第一步 准备"></a>第一步 准备</h2><p>首先我在JD上买了一个树莓派二代B型，然而到货了之后，我才发现，光有板子是没有用的。</p>
-<p>之后我还准备了以下物品</p>
-<p>16G MicroSD卡＊1（其实8G也足够了）</p>
-<p>SD卡读卡器＊1（MBA上没有这种MicroSD卡的插槽）</p>
-<p>5V2.1A的电源适配器＊1（除此以外供电也可以使用移动电源）</p>
-<p>安卓手机的连接线＊1</p>
-<p><span style="color: #ff0000;">无源</span>HDMI转VGA转接头＊1<span style="color: #ff0000;">（此处有伏笔）</span></p>
-<p>网线＊1</p>
-<p>加上家里的显示器＊1 USB鼠标＊1 USB键盘＊1</p>
-<p>然后将键盘鼠标插入USB接口、HDMI线，电源线接好，MicroSD卡插入板子背面的插槽中<br>到这里第一步就结束了。</p>
-<h2 id="第二步-安装系统"><a href="#第二步-安装系统" class="headerlink" title="第二步 安装系统"></a>第二步 安装系统</h2><p>1.下载树莓派镜像文件解压完约3G左右 <a href="https://www.raspberrypi.org/downloads/raspbian/" target="_blank" rel="external">树莓派镜像</a></p>
-<p>2.取下MicroSD卡并通过读卡器连接至电脑</p>
-<p>3.使用Win32 Disk Image 为MicroSD卡写入镜像文件（这里我是在Windows虚拟机下操作的）</p>
-<h2 id="第三步-启动树莓派"><a href="#第三步-启动树莓派" class="headerlink" title="第三步 启动树莓派"></a>第三步 启动树莓派</h2><p>按照第一步的最后组装完树莓派，打开电源，显示屏也亮了起来。OK，大功告成～</p>
-<p><span style="color: #ff0000;">然后第二天，我的树莓派就出现了问题…</span></p>
-<h2 id="问题-启动树莓派后-显示器显示无信号"><a href="#问题-启动树莓派后-显示器显示无信号" class="headerlink" title="问题 启动树莓派后 显示器显示无信号"></a>问题 启动树莓派后 显示器显示无信号</h2><p>1.我尝试了使用SDFormatter这个软件格式化了我的SD卡并重新写入系统镜像，失败</p>
-<p>2.根据上网查找的结果，修改MicroSD卡下Config.txt文件，失败</p>
-<p>3.最终发现是使用了<span style="color: #ff0000;">无源HDMI转VGA转接头</span>的问题，必须使用<span style="color: #ff0000;">有源的HDMI转VGA转接头</span></p>
-<p>以下引用网上给出的解释</p>
-<blockquote>
-<p>HDMI连接器的第18针是一个+5V的供电，但是根据HDMI规范，其仅最多提供50mA的电流。</p>
-<p>树莓派对第18针的供电，是将+5V输入，串接一个二极管D1(BAT54)作为保护送往18针。BAT54最高允许200mA电流（够宽松了其实）。</p>
-<p>但是市售不带电源的HDMI→VGA转换器，往往会从HDMI 18针吸取高至500mA的电流，这样就会远远超出D1的耐受能力，而最终烧毁D1。<br>于是目前（在新的有源转接头到货以及确认我的二极管有没有烧坏之前），只能（也最好）使用SSH的方式登陆树莓派了</p>
-</blockquote>
-<h2 id="通过SSH登陆树莓派"><a href="#通过SSH登陆树莓派" class="headerlink" title="通过SSH登陆树莓派"></a>通过SSH登陆树莓派</h2><p>其实我一直觉得，用ssh远程登录树莓派才显得比较Geek。</p>
-<p>1.使用网线连接树莓派和路由器</p>
-<p>2.在路由器的登陆页面（默认是192.168.1.1）找到你的树莓派设备，记下它的ip地址</p>
-<p>3.在linux下，通过ssh -l pi xxx.xxx.xxx.xxx( 树莓派的ip) 登陆树莓派，密码默认为raspberry</p>
-<p>4.作为测试，使用树莓派自带的gcc编译hello world</p>
-<p>成功</p>
-<p>&nbsp;</p>
-<p>最后再次提醒 <strong><span style="color: #ff0000;">请不要使用无源的HDMI转VGA转接头 请不要使用无源的HDMI转VGA转接头 请不要使用无源的HDMI转VGA转接头</span></strong></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2016/02/09/e6-a0-91-e8-8e-93-e6-b4-be-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>

@@ -256,6 +256,87 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title" itemprop="headline">
                     
+                        <a class="link-unstyled" href="/2016/02/09/e6-a0-91-e8-8e-93-e6-b4-be-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/">
+                            树莓派学习笔记（一）
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2016-02-09T17:31:01+08:00">
+	
+		    2月 09, 2016
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/Raspberry/">Raspberry</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content" itemprop="articleBody">
+                    <p>寒假回家后买了一个树莓派来玩一玩，决定写博客来记录自己学到的东西。之前学习iOS的时候有很多时候都是单纯的解决了问题而没有归纳整理，结果到后面出现同样的问题的时候重复的在网上搜索，效率很低。这次尝试着记录自己的学习过程，看看效果如何。</p>
+<h2 id="第一步-准备"><a href="#第一步-准备" class="headerlink" title="第一步 准备"></a>第一步 准备</h2><p>首先我在JD上买了一个树莓派二代B型，然而到货了之后，我才发现，光有板子是没有用的。</p>
+<p>之后我还准备了以下物品</p>
+<p>16G MicroSD卡＊1（其实8G也足够了）</p>
+<p>SD卡读卡器＊1（MBA上没有这种MicroSD卡的插槽）</p>
+<p>5V2.1A的电源适配器＊1（除此以外供电也可以使用移动电源）</p>
+<p>安卓手机的连接线＊1</p>
+<p><span style="color: #ff0000;">无源</span>HDMI转VGA转接头＊1<span style="color: #ff0000;">（此处有伏笔）</span></p>
+<p>网线＊1</p>
+<p>加上家里的显示器＊1 USB鼠标＊1 USB键盘＊1</p>
+<p>然后将键盘鼠标插入USB接口、HDMI线，电源线接好，MicroSD卡插入板子背面的插槽中<br>到这里第一步就结束了。</p>
+<h2 id="第二步-安装系统"><a href="#第二步-安装系统" class="headerlink" title="第二步 安装系统"></a>第二步 安装系统</h2><p>1.下载树莓派镜像文件解压完约3G左右 <a href="https://www.raspberrypi.org/downloads/raspbian/" target="_blank" rel="external">树莓派镜像</a></p>
+<p>2.取下MicroSD卡并通过读卡器连接至电脑</p>
+<p>3.使用Win32 Disk Image 为MicroSD卡写入镜像文件（这里我是在Windows虚拟机下操作的）</p>
+<h2 id="第三步-启动树莓派"><a href="#第三步-启动树莓派" class="headerlink" title="第三步 启动树莓派"></a>第三步 启动树莓派</h2><p>按照第一步的最后组装完树莓派，打开电源，显示屏也亮了起来。OK，大功告成～</p>
+<p><span style="color: #ff0000;">然后第二天，我的树莓派就出现了问题…</span></p>
+<h2 id="问题-启动树莓派后-显示器显示无信号"><a href="#问题-启动树莓派后-显示器显示无信号" class="headerlink" title="问题 启动树莓派后 显示器显示无信号"></a>问题 启动树莓派后 显示器显示无信号</h2><p>1.我尝试了使用SDFormatter这个软件格式化了我的SD卡并重新写入系统镜像，失败</p>
+<p>2.根据上网查找的结果，修改MicroSD卡下Config.txt文件，失败</p>
+<p>3.最终发现是使用了<span style="color: #ff0000;">无源HDMI转VGA转接头</span>的问题，必须使用<span style="color: #ff0000;">有源的HDMI转VGA转接头</span></p>
+<p>以下引用网上给出的解释</p>
+<blockquote>
+<p>HDMI连接器的第18针是一个+5V的供电，但是根据HDMI规范，其仅最多提供50mA的电流。</p>
+<p>树莓派对第18针的供电，是将+5V输入，串接一个二极管D1(BAT54)作为保护送往18针。BAT54最高允许200mA电流（够宽松了其实）。</p>
+<p>但是市售不带电源的HDMI→VGA转换器，往往会从HDMI 18针吸取高至500mA的电流，这样就会远远超出D1的耐受能力，而最终烧毁D1。<br>于是目前（在新的有源转接头到货以及确认我的二极管有没有烧坏之前），只能（也最好）使用SSH的方式登陆树莓派了</p>
+</blockquote>
+<h2 id="通过SSH登陆树莓派"><a href="#通过SSH登陆树莓派" class="headerlink" title="通过SSH登陆树莓派"></a>通过SSH登陆树莓派</h2><p>其实我一直觉得，用ssh远程登录树莓派才显得比较Geek。</p>
+<p>1.使用网线连接树莓派和路由器</p>
+<p>2.在路由器的登陆页面（默认是192.168.1.1）找到你的树莓派设备，记下它的ip地址</p>
+<p>3.在linux下，通过ssh -l pi xxx.xxx.xxx.xxx( 树莓派的ip) 登陆树莓派，密码默认为raspberry</p>
+<p>4.作为测试，使用树莓派自带的gcc编译hello world</p>
+<p>成功</p>
+<p>&nbsp;</p>
+<p>最后再次提醒 <strong><span style="color: #ff0000;">请不要使用无源的HDMI转VGA转接头 请不要使用无源的HDMI转VGA转接头 请不要使用无源的HDMI转VGA转接头</span></strong></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2016/02/09/e6-a0-91-e8-8e-93-e6-b4-be-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
                         <a class="link-unstyled" href="/2016/01/04/e5-8d-9a-e5-ae-a2-e4-b8-8a-e7-ba-bf/">
                             博客上线
                         </a>

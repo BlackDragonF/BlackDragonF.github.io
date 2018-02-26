@@ -6,22 +6,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="码龙的窝">
-    <title>归档: 2018/2 - 码龙的窝</title>
+    <title>MIT6.828操作系统工程Lab3-User Environments实验报告 - 码龙的窝</title>
     <meta name="author" content="CoSidian">
     
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <meta name="description" content="/* 0与1之风吹遍山谷 */">
+    <meta name="description" content="Lab3 - User Environments需要实现基本的内核功能，使得一个受保护的用户环境（进程）可以运行。在本实验中，需要让内核设置数据结构以追踪用户环境，创建一个单用户环境，加载程序镜像并执行。此外，内核还需要能处理用户环境的系统调用以及引发的异常。  实验准备根据官网，我们切换到分支lab3并且合并分支lab2，在合并的过程中，发生了冲突。 12user% git checkout">
+<meta name="keywords" content="操作系统,实验,用户环境">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="码龙的窝">
-<meta property="og:url" content="http://blog.codedragon.tech/archives/2018/02/index.html">
+<meta property="og:title" content="MIT6.828操作系统工程Lab3-User Environments实验报告">
+<meta property="og:url" content="http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/index.html">
 <meta property="og:site_name" content="码龙的窝">
-<meta property="og:description" content="/* 0与1之风吹遍山谷 */">
+<meta property="og:description" content="Lab3 - User Environments需要实现基本的内核功能，使得一个受保护的用户环境（进程）可以运行。在本实验中，需要让内核设置数据结构以追踪用户环境，创建一个单用户环境，加载程序镜像并执行。此外，内核还需要能处理用户环境的系统调用以及引发的异常。  实验准备根据官网，我们切换到分支lab3并且合并分支lab2，在合并的过程中，发生了冲突。 12user% git checkout">
+<meta property="og:updated_time" content="2018-02-26T08:44:19.150Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="码龙的窝">
-<meta name="twitter:description" content="/* 0与1之风吹遍山谷 */">
+<meta name="twitter:title" content="MIT6.828操作系统工程Lab3-User Environments实验报告">
+<meta name="twitter:description" content="Lab3 - User Environments需要实现基本的内核功能，使得一个受保护的用户环境（进程）可以运行。在本实验中，需要让内核设置数据结构以追踪用户环境，创建一个单用户环境，加载程序镜像并执行。此外，内核还需要能处理用户环境的系统调用以及引发的异常。  实验准备根据官网，我们切换到分支lab3并且合并分支lab2，在合并的过程中，发生了冲突。 12user% git checkout">
     
     
         
@@ -61,7 +63,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">码龙的窝</a>
@@ -85,7 +87,7 @@
         
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -243,26 +245,22 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
+            <div id="main" data-behavior="4"
                  class="
                         hasCoverMetaIn
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/">
-                            MIT6.828操作系统工程Lab3-User Environments实验报告
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title" itemprop="headline">
+            MIT6.828操作系统工程Lab3-User Environments实验报告
+        </h1>
+    
+    
+        <div class="post-meta">
     <time itemprop="datePublished" datetime="2018-02-23T19:12:13+08:00">
 	
 		    2月 23, 2018
@@ -277,10 +275,12 @@
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-content" itemprop="articleBody">
-                    <blockquote>
+    
+</div>
+    
+    <div class="post-content markdown" itemprop="articleBody">
+        <div class="main-content-wrap">
+            <blockquote>
 <p>Lab3 - User Environments需要实现基本的内核功能，使得一个受保护的用户环境（进程）可以运行。在本实验中，需要让内核设置数据结构以追踪用户环境，创建一个单用户环境，加载程序镜像并执行。此外，内核还需要能处理用户环境的系统调用以及引发的异常。</p>
 </blockquote>
 <h2 id="实验准备"><a href="#实验准备" class="headerlink" title="实验准备"></a>实验准备</h2><p>根据官网，我们切换到分支lab3并且合并分支lab2，在合并的过程中，发生了冲突。</p>
@@ -402,264 +402,109 @@
 <p>练习9和练习10的答案如下，仅供参考：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// In kern/trap.c, page_fault_handler():</span></div><div class="line"><span class="comment">// LAB 3: Your code here.</span></div><div class="line"><span class="keyword">if</span> ((tf-&gt;tf_cs &amp; <span class="number">3</span>) == <span class="number">0</span>) &#123;</div><div class="line">    <span class="comment">// code that causes page fault in kernel mode</span></div><div class="line">    panic(<span class="string">"page fault in kernel!"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// In kern/pmap.c, user_mem_check():</span></div><div class="line"><span class="function"><span class="keyword">int</span></span></div><div class="line"><span class="title">user_mem_check</span><span class="params">(struct Env *env, <span class="keyword">const</span> <span class="keyword">void</span> *va, <span class="keyword">size_t</span> len, <span class="keyword">int</span> perm)</span></div><div class="line">&#123;</div><div class="line">	<span class="comment">// LAB 3: Your code here.</span></div><div class="line">    <span class="keyword">if</span> ((<span class="keyword">uintptr_t</span>)va &gt;= ULIM) &#123;</div><div class="line">        <span class="comment">// condition 1 - below ULIM violated</span></div><div class="line">        user_mem_check_addr = (<span class="keyword">uintptr_t</span>)va;</div><div class="line">        <span class="keyword">return</span> -E_FAULT;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">uintptr_t</span> va_start = (<span class="keyword">uintptr_t</span>)ROUNDDOWN(va, PGSIZE);</div><div class="line">    <span class="keyword">uintptr_t</span> va_end = (<span class="keyword">uintptr_t</span>)ROUNDUP(va + len, PGSIZE);</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (; va_start &lt; va_end ; va_start += PGSIZE) &#123;</div><div class="line">        <span class="comment">// note we set page directory entry with less restrict</span></div><div class="line">        <span class="comment">// we will only test page table entry here</span></div><div class="line">        <span class="keyword">pte_t</span> * pgtable_entry_ptr = pgdir_walk(env-&gt;env_pgdir, (<span class="keyword">char</span> *)va_start, <span class="literal">false</span>);</div><div class="line">        <span class="keyword">if</span> ((*pgtable_entry_ptr &amp; (perm | PTE_P)) != (perm | PTE_P)) &#123;</div><div class="line">            <span class="comment">// condition 2 - permission violated</span></div><div class="line">            <span class="keyword">if</span> (va_start &lt;= (<span class="keyword">uintptr_t</span>)va) &#123;</div><div class="line">                <span class="comment">// va lie in the first page and not aligned, return va</span></div><div class="line">                user_mem_check_addr = (<span class="keyword">uintptr_t</span>)va;</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (va_start &gt;= (<span class="keyword">uintptr_t</span>)va + len) &#123;</div><div class="line">                <span class="comment">// va lie in the last page and exceed va + len, return va + len</span></div><div class="line">                user_mem_check_addr = (<span class="keyword">uintptr_t</span>)va + len;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">// return corresponding page's initial address</span></div><div class="line">                user_mem_check_addr = va_start;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="keyword">return</span> -E_FAULT;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// pass user memory check</span></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// In kern/syscall.c, syscall():</span></div><div class="line"><span class="keyword">case</span> SYS_cputs:</div><div class="line">    <span class="comment">// checks memory before use sys_cputs to dereference a1</span></div><div class="line">    user_mem_assert(curenv, (<span class="keyword">char</span> *)a1, (<span class="keyword">size_t</span>)a2, PTE_U);</div><div class="line">    <span class="comment">// call sys_cputs</span></div><div class="line">    sys_cputs((<span class="keyword">const</span> <span class="keyword">char</span> *)a1, (<span class="keyword">size_t</span>)a2);</div><div class="line">    <span class="keyword">break</span>;</div><div class="line"></div><div class="line"><span class="comment">// In kern/kdebug.c, debuginfo_eip():</span></div><div class="line"><span class="comment">// Make sure this memory is valid.</span></div><div class="line"><span class="comment">// Return -1 if it is not.  Hint: Call user_mem_check.</span></div><div class="line"><span class="comment">// LAB 3: Your code here.</span></div><div class="line"><span class="keyword">if</span> (user_mem_check(curenv, usd, <span class="keyword">sizeof</span>(struct UserStabData *), PTE_U) &lt; <span class="number">0</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Make sure the STABS and string table memory is valid.</span></div><div class="line"><span class="comment">// LAB 3: Your code here.</span></div><div class="line"><span class="keyword">if</span> ((user_mem_check(curenv, stabs, stab_end - stabs, PTE_U) &lt; <span class="number">0</span>) ||</div><div class="line">    (user_mem_check(curenv, stabstr, stabstr_end - stabstr, PTE_U) &lt; <span class="number">0</span>)) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>发生了页错误的原因还要观察<code>memlayout.h</code>，在<code>USTACKTOP</code>上方有一个位于<code>0xeebff000</code>的<code>User Exception Stack</code>，该虚拟地址没有映射任何的物理页。而在<code>mon_backtrace</code>的最后，访问到了位于此处的虚拟地址，因而导致了一个不可处理的页错误。</p>
 
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
             
+
         </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2018/02/20/MIT6-828操作系统工程Lab2-Memory-Management实验报告/">
-                            MIT6.828操作系统工程Lab2-Memory Management实验报告
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2018-02-20T22:12:33+08:00">
-	
-		    2月 20, 2018
-    	
-    </time>
-    
-        <span>发布在 </span>
-        
-    <a class="category-link" href="/categories/操作系统/">操作系统</a>
-
-
-    
-</div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/实验/">实验</a> <a class="tag tag--primary tag--small t-link" href="/tags/操作系统/">操作系统</a> <a class="tag tag--primary tag--small t-link" href="/tags/用户环境/">用户环境</a>
 
             </div>
-            
-                <div class="postShorten-content" itemprop="articleBody">
-                    <blockquote>
-<p>寒假在家终于有时间继续处理上学期没有做完的Labs，虽然效率偏低但总不是完全没有进展。<br>Lab2 - Memory Management主要包括了操作系统的内存管理，具体来说可以分为两部分。第一部分需要编写内核的物理内存分配器（Physical memory allocator），这会允许内核分配和释放内存。第二部分需要修改JOS的代码去实现一个虚拟内存，将虚拟地址映射到物理内存中。</p>
-</blockquote>
-<h2 id="实验准备"><a href="#实验准备" class="headerlink" title="实验准备"></a>实验准备</h2><p>根据实验官网的提示，我们依次切换到分支lab2并且合并分支lab1，在合并的过程中，没有发生冲突。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">user% git checkout -b lab2 origin/lab2</div><div class="line">user% git merge lab1</div></pre></td></tr></table></figure>
-<p>实验二包括如下的新文件：</p>
-<ul>
-<li>inc/memlayout.h 描述了虚拟地址空间的结构</li>
-<li>kern/pmap.c 需要修改、添加代码以完成实验</li>
-<li>kern/pmap.h 定义了PageInfo结构 用来管理物理页状态</li>
-<li>kern/kclock.h</li>
-<li>kern/kclock.c 操作电池供电的时钟以及CMOS RAM硬件</li>
-</ul>
-<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><h3 id="第一部分-Physical-Page-Management-物理页管理"><a href="#第一部分-Physical-Page-Management-物理页管理" class="headerlink" title="第一部分 Physical Page Management - 物理页管理"></a>第一部分 Physical Page Management - 物理页管理</h3><p>操作系统必须追踪物理内存以得知哪些内存是空闲的，以及哪些内存是正在被使用的。JOS使用页粒度管理PC的物理内存以便利用MMU映射和保护每一片被分配的内存。</p>
-<p>实验的第一部分需要完成一个物理页面分配器，该分配器维护了一个<code>struct PageInfo</code>的链表来追踪空闲的物理页面（也就是空闲链表），空闲链表我已经在CSAPP中有所了解，这里不再赘述。</p>
-<p>具体来说，需要完成kern/pmap.c中实现以下的函数：</p>
-<ul>
-<li>boot_alloc()</li>
-<li>mem_init() （完成直到check_page_free_list(1)为止）</li>
-<li>page_init()</li>
-<li>page_alloc()</li>
-<li>page_free()</li>
-</ul>
-<p>完成后可以启动JOS去观察<code>check_page_free_list()</code>以及<code>check_page_alloc()</code>函数是否成功以检查编写的分配器的正确性。</p>
-<p>第一部分的物理页面分配器总体来说难度不大，因为编写的分配器不像CSAPP中的malloc一样，需要处理空闲内存的合并以及拆分，分配器只需要以物理页面为固定的粒度管理所有的内存即可。</p>
-<p>在实际的Linux系统中，内核使用Buddy System快速地管理内存。</p>
-<p>练习1的代码如下，仅供参考:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// In boot_alloc():</span></div><div class="line"><span class="comment">// Allocate a chunk large enough to hold 'n' bytes, then update</span></div><div class="line"><span class="comment">// nextfree.  Make sure nextfree is kept aligned</span></div><div class="line"><span class="comment">// to a multiple of PGSIZE.</span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">// LAB 2: Your code here.</span></div><div class="line"><span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</div><div class="line">    <span class="comment">// return the address of next free page</span></div><div class="line">    <span class="keyword">return</span> nextfree;</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (n &gt; <span class="number">0</span>) &#123;</div><div class="line">    <span class="comment">// round up size to a multiple of PGSIZE</span></div><div class="line">    <span class="keyword">size_t</span> size = ROUNDUP(n, PGSIZE);</div><div class="line">    <span class="keyword">char</span> * addr = nextfree;</div><div class="line">    <span class="comment">// update address of next free page(still multiple of PGSIZE)</span></div><div class="line">    nextfree += size;</div><div class="line">    <span class="comment">// nextfree is a kernel virtual address, out out memory when it exceeds 4 MB</span></div><div class="line">	<span class="keyword">if</span> (nextfree &gt;= (<span class="keyword">char</span> *)KADDR(<span class="number">0x400000</span>)) &#123;</div><div class="line">        panic(<span class="string">"out of memory when booting!"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// return address</span></div><div class="line">    <span class="keyword">return</span> addr;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// In mem_init():</span></div><div class="line"><span class="comment">//////////////////////////////////////////////////////////////////////</span></div><div class="line"><span class="comment">// Allocate an array of npages 'struct PageInfo's and store it in 'pages'.</span></div><div class="line"><span class="comment">// The kernel uses this array to keep track of physical pages: for</span></div><div class="line"><span class="comment">// each physical page, there is a corresponding struct PageInfo in this</span></div><div class="line"><span class="comment">// array.  'npages' is the number of physical pages in memory.  Use memset</span></div><div class="line"><span class="comment">// to initialize all fields of each struct PageInfo to 0.</span></div><div class="line"><span class="comment">// Your code goes here:</span></div><div class="line"><span class="comment">// get size of pages</span></div><div class="line"><span class="keyword">uint32_t</span> pages_size = <span class="keyword">sizeof</span>(struct PageInfo) * npages;</div><div class="line"><span class="comment">// use boot_alloc to allocate memory</span></div><div class="line">pages = (struct PageInfo *) boot_alloc(pages_size);</div><div class="line"><span class="comment">// initialization</span></div><div class="line"><span class="built_in">memset</span>(pages, <span class="number">0</span>, pages_size);</div><div class="line"></div><div class="line"><span class="comment">// In page_init():</span></div><div class="line"><span class="keyword">size_t</span> i;</div><div class="line"></div><div class="line"><span class="comment">// initialize from page 1 to page npages_basemem - 1</span></div><div class="line"><span class="comment">// set pp_ref to 0, set pp_link to last page_free_list</span></div><div class="line"><span class="comment">// and then update page_free_list</span></div><div class="line"><span class="keyword">for</span>(i = <span class="number">1</span> ; i &lt; npages_basemem ; i++) &#123;</div><div class="line">    pages[i].pp_ref = <span class="number">0</span>;</div><div class="line">    pages[i].pp_link = page_free_list;</div><div class="line">    page_free_list = &amp;pages[i];</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// calculate next free page and initialize corresponding pages entry</span></div><div class="line"><span class="comment">// convert from kernel virtual address to physical address</span></div><div class="line"><span class="keyword">size_t</span> next_free_page = PADDR(boot_alloc(<span class="number">0</span>)) / PGSIZE;</div><div class="line">pages[next_free_page].pp_link = &amp;pages[npages_basemem - <span class="number">1</span>];</div><div class="line">page_free_list = &amp;pages[next_free_page];</div><div class="line"></div><div class="line"><span class="comment">// initialize remaining pages entry</span></div><div class="line"><span class="keyword">for</span> (i = next_free_page + <span class="number">1</span> ; i &lt; npages ; i++) &#123;</div><div class="line">    pages[i].pp_ref = <span class="number">0</span>;</div><div class="line">    pages[i].pp_link = page_free_list;</div><div class="line">    page_free_list = &amp;pages[i];</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// In page_alloc():</span></div><div class="line"><span class="function">struct PageInfo *</span></div><div class="line"><span class="title">page_alloc</span><span class="params">(<span class="keyword">int</span> alloc_flags)</span></div><div class="line">&#123;</div><div class="line">	<span class="comment">// get first element in free list</span></div><div class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">PageInfo</span> * <span class="title">page_ptr</span> = <span class="title">page_free_list</span>;</span></div><div class="line">	<span class="keyword">if</span> (page_ptr != <span class="literal">NULL</span>) &#123;</div><div class="line">		<span class="comment">// NOT out of memory</span></div><div class="line">		<span class="comment">// update free list</span></div><div class="line">		page_free_list = page_free_list-&gt;pp_link;</div><div class="line">		<span class="comment">// get kernal virtual address from given page</span></div><div class="line">		<span class="keyword">char</span> * addr = page2kva(page_ptr);</div><div class="line">		<span class="comment">// set pp_link to NULL to allow double-free bugs check</span></div><div class="line">		page_ptr-&gt;pp_link = <span class="literal">NULL</span>;</div><div class="line">		<span class="comment">// ALLOC_ZERO set, use memset to initialze physical page</span></div><div class="line">		<span class="keyword">if</span> (alloc_flags &amp; ALLOC_ZERO) &#123;</div><div class="line">			<span class="built_in">memset</span>(addr, <span class="number">0</span>, PGSIZE);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="comment">// return page</span></div><div class="line">		<span class="keyword">return</span> page_ptr;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// In page_free():</span></div><div class="line"><span class="function"><span class="keyword">void</span></span></div><div class="line"><span class="title">page_free</span><span class="params">(struct PageInfo *pp)</span></div><div class="line">&#123;</div><div class="line">	<span class="comment">// Fill this function in</span></div><div class="line">	<span class="comment">// Hint: You may want to panic if pp-&gt;pp_ref is nonzero or</span></div><div class="line">	<span class="comment">// pp-&gt;pp_link is not NULL.</span></div><div class="line"></div><div class="line">	<span class="comment">//check pp_ref and pp_link</span></div><div class="line">	<span class="keyword">if</span> (pp-&gt;pp_ref != <span class="number">0</span>) &#123;</div><div class="line">		panic(<span class="string">"page's reference count is non-zero!"</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">if</span> (pp-&gt;pp_link != <span class="literal">NULL</span>) &#123;</div><div class="line">		panic(<span class="string">"double free error when free page!"</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// return page to free list</span></div><div class="line">	pp-&gt;pp_link = page_free_list;</div><div class="line">	page_free_list = pp;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>然后我们启动JOS，在终端观察到如下输出：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Physical memory: 131072K available, base = 640K, extended = 130432K</div><div class="line">check_page_free_list() succeeded!</div><div class="line">check_page_alloc() succeeded!</div></pre></td></tr></table></figure></p>
-<p>证明内存分配器工作正常。</p>
-<h3 id="第二部分-Virtual-Memory-虚拟内存"><a href="#第二部分-Virtual-Memory-虚拟内存" class="headerlink" title="第二部分 Virtual Memory - 虚拟内存"></a>第二部分 Virtual Memory - 虚拟内存</h3><p>练习2：阅读<a href="https://pdos.csail.mit.edu/6.828/2017/readings/i386/toc.htm" target="_blank" rel="external">Intel 80386 Reference Manual</a>的第五章和第六章。主要阅读页翻译和页保护机制的部分。同时，也要对x86的分段机制有所了解。</p>
-<h4 id="虚拟地址、线性地址和物理地址"><a href="#虚拟地址、线性地址和物理地址" class="headerlink" title="虚拟地址、线性地址和物理地址"></a>虚拟地址、线性地址和物理地址</h4><p>在x86中，虚拟地址由段选择子和段内偏移组成，通过段翻译机制，得到线性地址。线性地址经过页翻译机制，得到物理地址。物理地址就是实际的内存位置。</p>
-<p>在实验1中，我们已经将线性地址<code>0-4M</code>映射到了虚拟地址<code>0-4M</code>和<code>KERNBASE-KERNBASE+4M</code>。在本实验中，我们要将物理内存的低256M映射到从<code>KERNBASE</code>开始的虚拟地址。此外，我们还要映射其他几个虚拟地址空间。（<code>KERNBASE</code>为<code>0xf0000000</code>）</p>
-<p>练习3：在QEMU监视器中使用<code>xp</code>命令检查物理内存<code>0x00100000</code>处的字，在gdb中使用<code>x</code>命令检查虚拟内存<code>0xf0100000</code>处的字，观察结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(qemu) xp 0x00100000</div><div class="line">0000000000100000: 0x1badb002</div><div class="line">(gdb) x/x 0xf0100000</div><div class="line">0xf0100000 &lt;_start+4026531828&gt;: 0x1badb002</div></pre></td></tr></table></figure><br>可以得出，物理地址0x00100000和虚拟地址0xf0100000上具有相同的数据。</p>
-<p><code>info pg</code>和<code>info mem</code>的输出如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">(qemu) info pg</div><div class="line">VPN range     Entry         Flags        Physical page</div><div class="line">[00000-003ff]  PDE[000]     ----A----P</div><div class="line">  [00000-00000]  PTE[000]     --------WP 00000</div><div class="line">  [00001-0009f]  PTE[001-09f] ---DA---WP 00001-0009f</div><div class="line">  [000a0-000b7]  PTE[0a0-0b7] --------WP 000a0-000b7</div><div class="line">  [000b8-000b8]  PTE[0b8]     ---DA---WP 000b8</div><div class="line">  [000b9-000ff]  PTE[0b9-0ff] --------WP 000b9-000ff</div><div class="line">  [00100-00103]  PTE[100-103] ----A---WP 00100-00103</div><div class="line">  [00104-00119]  PTE[104-119] --------WP 00104-00119</div><div class="line">  [0011a-0011a]  PTE[11a]     ---DA---WP 0011a</div><div class="line">  [0011b-0011c]  PTE[11b-11c] --------WP 0011b-0011c</div><div class="line">  [0011d-003ff]  PTE[11d-3ff] ---DA---WP 0011d-003ff</div><div class="line">[f0000-f03ff]  PDE[3c0]     ----A---WP</div><div class="line">  [f0000-f0000]  PTE[000]     --------WP 00000</div><div class="line">  [f0001-f009f]  PTE[001-09f] ---DA---WP 00001-0009f</div><div class="line">  [f00a0-f00b7]  PTE[0a0-0b7] --------WP 000a0-000b7</div><div class="line">  [f00b8-f00b8]  PTE[0b8]     ---DA---WP 000b8</div><div class="line">  [f00b9-f00ff]  PTE[0b9-0ff] --------WP 000b9-000ff</div><div class="line">  [f0100-f0103]  PTE[100-103] ----A---WP 00100-00103</div><div class="line">  [f0104-f0119]  PTE[104-119] --------WP 00104-00119</div><div class="line">  [f011a-f011a]  PTE[11a]     ---DA---WP 0011a</div><div class="line">  [f011b-f011c]  PTE[11b-11c] --------WP 0011b-0011c</div><div class="line">  [f011d-f03ff]  PTE[11d-3ff] ---DA---WP 0011d-003ff</div><div class="line"></div><div class="line">  (qemu) info mem</div><div class="line">  0000000000000000-0000000000400000 0000000000400000 -r-</div><div class="line">  00000000f0000000-00000000f0400000 0000000000400000 -rw</div></pre></td></tr></table></figure></p>
-<p>在JOS内核中，<code>uintptr_t</code>代表虚拟地址，<code>physaddr_t</code>代表物理地址，它们都只是<code>uint32_t</code>的别名。因此，不能直接对其（int类型）解引用，需要先将其转换成指针类型。<br>对物理地址的解引用是错误的，因为MMU会将其当做虚拟地址，你将无法得到正确的内存内容。</p>
-<p>问题1：<br>x的类型应当为<code>uintptr_t</code>，因为对其进行了解引用操作，所以x应当为虚拟地址。</p>
-<p>有些时候，内核必须要处理物理地址，这也是要把0-4M映射到KERNBASE-KERNBASE+4M的理由。<br>为了能使内核读写物理地址，必须要加上KERNBASE，可以通过宏KADDR(pa)实现。<br>同理，有时候需要能通过虚拟地址找到物理地址，需要减去KERNBASE，可以通过宏PADDR(va)实现。</p>
-<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><p>在未来的实验中我们很可能将同样的物理页映射到多个虚拟地址，你需要在<code>struct PageInfo</code>的<code>pp_ref</code>域中保持物理页被引用的次数，当引用计数归0，页面不再被使用，可以被释放。<br>总的来说，引用计数应当等于物理页面在<code>UTOP</code>之下出现的次数（<code>UTOP</code>之上的物理页面大多在启动时被内核分配并且永远不应当被释放，所以不需要对其进行引用计数）。<br>我们也会用引用计数来追踪指向页目录页的指针数，以及页目录对页表页的引用数。</p>
-<p>在使用<code>page_alloc()</code>时应当小心，返回页的<code>pp_ref</code>应当很快被递增，如被别的函数如(<code>page_insert()</code>)递增，在某些情况下，调用<code>page_insert()</code>的函数必须手动增加引用计数。</p>
-<p>在练习4中遇到的问题总结如下：</p>
-<ul>
-<li>pgdir_walk在设置页表项时应当使用物理地址，在返回指针时应当返回虚拟地址。这是因为此时实际的二级页表还未被设置应用，且0-4M被映射为只读，而KERNBASE-KERNBASE+4M被映射为可读可写。需要使用给出的宏而不要自己加减</li>
-<li>将PTE_P笔误成PTE_G</li>
-<li>在page_insert中提前将引用计数pp_ref自增就可以避免边界情况的错误</li>
-<li>pgdir_walk中对于页目录的设置可以更宽松，否则可能会对之后的实验产生影响</li>
-</ul>
-<p>练习4的代码如下，仅供参考：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// In pgdir_walk():</span></div><div class="line"><span class="keyword">pte_t</span> *</div><div class="line">pgdir_walk(<span class="keyword">pde_t</span> *pgdir, <span class="keyword">const</span> <span class="keyword">void</span> *va, <span class="keyword">int</span> create)</div><div class="line">&#123;</div><div class="line">	<span class="comment">// get page directory index and page directory entry</span></div><div class="line">	<span class="keyword">size_t</span> pgdir_index = PDX(va);</div><div class="line">	<span class="keyword">pde_t</span> pgdir_entry = pgdir[pgdir_index];</div><div class="line">	<span class="comment">// get page table index</span></div><div class="line">	<span class="keyword">size_t</span> pgtable_index = PTX(va);</div><div class="line">	<span class="keyword">if</span> ((pgdir_entry &amp; PTE_P) == <span class="number">1</span>) &#123;</div><div class="line">		<span class="comment">// page table page exists</span></div><div class="line">		<span class="comment">// get address of page table</span></div><div class="line">		<span class="keyword">pte_t</span> * pgtable = KADDR(PTE_ADDR(pgdir_entry));</div><div class="line">		<span class="keyword">return</span> (<span class="keyword">pte_t</span> *)(pgtable + pgtable_index);</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">		<span class="comment">// page table page doesn't exist</span></div><div class="line">		<span class="keyword">if</span> (create == <span class="literal">false</span>) &#123;</div><div class="line">			<span class="comment">// create flag is false, returns NULL</span></div><div class="line">			<span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">// allocate a new page table page</span></div><div class="line">			struct PageInfo * page = page_alloc(ALLOC_ZERO);</div><div class="line">			<span class="keyword">if</span> (page == <span class="literal">NULL</span>) &#123;</div><div class="line">				<span class="comment">// allocation fails</span></div><div class="line">				<span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				<span class="comment">// increase physical page's reference count</span></div><div class="line">				page-&gt;pp_ref++;</div><div class="line">				<span class="comment">// get physical address of physical page</span></div><div class="line">				<span class="keyword">physaddr_t</span> page_pa = page2pa(page);</div><div class="line">				<span class="comment">// insert page table into page directory</span></div><div class="line">				pgdir[pgdir_index] = page_pa | PTE_W | PTE_U | PTE_P;</div><div class="line">				<span class="comment">// NB: returns KERNEL VIRTUAL ADDRESS here, for 0-4M is NOT writable</span></div><div class="line">				<span class="keyword">return</span> (<span class="keyword">pte_t</span> *)page2kva(page) + pgtable_index;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// In boot_map_region():</span></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span></span></div><div class="line"><span class="title">boot_map_region</span><span class="params">(<span class="keyword">pde_t</span> *pgdir, <span class="keyword">uintptr_t</span> va, <span class="keyword">size_t</span> size, <span class="keyword">physaddr_t</span> pa, <span class="keyword">int</span> perm)</span></div><div class="line">&#123;</div><div class="line">	<span class="comment">// round up size</span></div><div class="line">	size = ROUNDUP(size, PGSIZE);</div><div class="line">	<span class="comment">// get the number of pages to be mapped</span></div><div class="line">	<span class="keyword">size_t</span> page_num = PGNUM(size);</div><div class="line"></div><div class="line">	<span class="keyword">size_t</span> i;</div><div class="line">	<span class="keyword">for</span> (i = <span class="number">0</span> ; i &lt; page_num ; i++) &#123;</div><div class="line">		<span class="comment">// iterate through to get each pte_t * through pgdir_walk given virtual address</span></div><div class="line">		<span class="keyword">pte_t</span> * pgtable_entry_ptr = pgdir_walk(pgdir,(<span class="keyword">char</span> *)(va + i * PGSIZE), <span class="literal">true</span>);</div><div class="line">		<span class="comment">// set pte_t according to physical address and permission flags</span></div><div class="line">		*pgtable_entry_ptr = (pa + i * PGSIZE) | perm | PTE_P;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// In page_lookup():</span></div><div class="line"><span class="function">struct PageInfo *</span></div><div class="line"><span class="title">page_lookup</span><span class="params">(<span class="keyword">pde_t</span> *pgdir, <span class="keyword">void</span> *va, <span class="keyword">pte_t</span> **pte_store)</span></div><div class="line">&#123;</div><div class="line">	<span class="comment">// Fill this function in</span></div><div class="line">	<span class="keyword">pte_t</span> * pgtable_entry_ptr = pgdir_walk(pgdir, va, <span class="literal">false</span>);</div><div class="line">	<span class="keyword">if</span> (pgtable_entry_ptr &amp;&amp; ((*pgtable_entry_ptr) &amp; PTE_P) == <span class="number">1</span>) &#123;</div><div class="line">		<span class="keyword">if</span> (pte_store != <span class="literal">NULL</span>) &#123;</div><div class="line">			<span class="comment">// pte_store not zero, store the address of pte of the page in it</span></div><div class="line">			*pte_store = pgtable_entry_ptr;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// converts from pa to page and returns</span></div><div class="line">		<span class="keyword">physaddr_t</span> pa = PTE_ADDR(*pgtable_entry_ptr);</div><div class="line">		<span class="keyword">return</span> pa2page(pa);</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">		<span class="comment">// no page mapped at va</span></div><div class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// In page_remove():</span></div><div class="line"><span class="function"><span class="keyword">void</span></span></div><div class="line"><span class="title">page_remove</span><span class="params">(<span class="keyword">pde_t</span> *pgdir, <span class="keyword">void</span> *va)</span></div><div class="line">&#123;</div><div class="line">	<span class="comment">// Fill this function in</span></div><div class="line">	<span class="keyword">pte_t</span> * pgtable_entry_ptr = <span class="literal">NULL</span>;</div><div class="line">	<span class="comment">// use page_lookup to get struct PageInfo</span></div><div class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">PageInfo</span> * <span class="title">page</span> = <span class="title">page_lookup</span>(<span class="title">pgdir</span>, <span class="title">va</span>, &amp;<span class="title">pgtable_entry_ptr</span>);</span></div><div class="line">	<span class="keyword">if</span> (page &amp;&amp; pgtable_entry_ptr) &#123;</div><div class="line">		<span class="comment">// if page mapped at va</span></div><div class="line">		<span class="comment">// decrease and try to free page</span></div><div class="line">		page_decref(page);</div><div class="line">		<span class="comment">// set page table entry to 0</span></div><div class="line">		*pgtable_entry_ptr = <span class="number">0</span>;</div><div class="line">		<span class="comment">// invalidate tlb</span></div><div class="line">		tlb_invalidate(pgdir, va);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// In page_insert():</span></div><div class="line"><span class="function"><span class="keyword">int</span></span></div><div class="line"><span class="title">page_insert</span><span class="params">(<span class="keyword">pde_t</span> *pgdir, struct PageInfo *pp, <span class="keyword">void</span> *va, <span class="keyword">int</span> perm)</span></div><div class="line">&#123;</div><div class="line">	<span class="comment">// Fill this function in</span></div><div class="line">	<span class="comment">// try to get pointer to page table entry, created if needed</span></div><div class="line">	<span class="keyword">pte_t</span> * pgtable_entry_ptr = pgdir_walk(pgdir, va, <span class="literal">true</span>);</div><div class="line">	<span class="keyword">if</span> (!pgtable_entry_ptr) &#123;</div><div class="line">		<span class="comment">// page table cannot be allocated</span></div><div class="line">		<span class="keyword">return</span> -E_NO_MEM;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// increase reference ahead of insertion to process CORNER CASE</span></div><div class="line">	pp-&gt;pp_ref++;</div><div class="line"></div><div class="line">	<span class="keyword">if</span> (((*pgtable_entry_ptr) &amp; PTE_P) != <span class="number">0</span>) &#123;</div><div class="line">		<span class="comment">// exists page mapped at va</span></div><div class="line">		<span class="comment">// remove page and invalidate tlb</span></div><div class="line">		page_remove(pgdir, va);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// get physical address of page</span></div><div class="line">	<span class="keyword">physaddr_t</span> pa = page2pa(pp);</div><div class="line">	<span class="comment">// insert page into page table</span></div><div class="line">	*pgtable_entry_ptr = pa | perm | PTE_P;</div><div class="line"></div><div class="line">	<span class="comment">// update permission flags of corresponding page directory</span></div><div class="line">	pgdir[PDX(va)] = pgdir[PDX(va)] | perm;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="第三部分-Kernel-Address-Space-内核地址空间"><a href="#第三部分-Kernel-Address-Space-内核地址空间" class="headerlink" title="第三部分 Kernel Address Space - 内核地址空间"></a>第三部分 Kernel Address Space - 内核地址空间</h3><p>JOS将32位的地址空间划为了两部分——用户环境（在Lab3中加载和运行）将控制低地址空间、而内核总是完全地控制高地址空间，由ULIM显式地划分地址空间。内核将占据约256M的地址空间。</p>
-<p>尽管内核和用户内存位于同一地址空间，我们仍然要在x86的页表中使用权限位去保证用户代码仅能访问低地址空间。否则用户代码可能会覆写内核数据，导致故障。此外，用户代码还可能能从窃取其他用户、内核的私有数据。<br>在JOS中，用户环境将不具有ULIM以上任何内存的权限；只有内核可以读写这些内存。对于[UTOP, ULIM)，内核和用户都仅能读而不能写，该段内存主要用于向用户暴露某些内核的只读数据结构；最后，UTOP以下的地址空间由用户环境使用，由用户环境自行设置这些内存的权限。</p>
-<p>练习5的代码如下，仅供参考：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//////////////////////////////////////////////////////////////////////</span></div><div class="line"><span class="comment">// Now we set up virtual memory</span></div><div class="line"></div><div class="line"><span class="comment">//////////////////////////////////////////////////////////////////////</span></div><div class="line"><span class="comment">// Map 'pages' read-only by the user at linear address UPAGES</span></div><div class="line"><span class="comment">// Permissions:</span></div><div class="line"><span class="comment">//    - the new image at UPAGES -- kernel R, user R</span></div><div class="line"><span class="comment">//      (ie. perm = PTE_U | PTE_P)</span></div><div class="line"><span class="comment">//    - pages itself -- kernel RW, user NONE</span></div><div class="line"><span class="comment">// Your code goes here:</span></div><div class="line">boot_map_region(kern_pgdir, UPAGES, pages_size, PADDR(pages), PTE_U | PTE_P);</div><div class="line"></div><div class="line"><span class="comment">//////////////////////////////////////////////////////////////////////</span></div><div class="line"><span class="comment">// Use the physical memory that 'bootstack' refers to as the kernel</span></div><div class="line"><span class="comment">// stack.  The kernel stack grows down from virtual address KSTACKTOP.</span></div><div class="line"><span class="comment">// We consider the entire range from [KSTACKTOP-PTSIZE, KSTACKTOP)</span></div><div class="line"><span class="comment">// to be the kernel stack, but break this into two pieces:</span></div><div class="line"><span class="comment">//     * [KSTACKTOP-KSTKSIZE, KSTACKTOP) -- backed by physical memory</span></div><div class="line"><span class="comment">//     * [KSTACKTOP-PTSIZE, KSTACKTOP-KSTKSIZE) -- not backed; so if</span></div><div class="line"><span class="comment">//       the kernel overflows its stack, it will fault rather than</span></div><div class="line"><span class="comment">//       overwrite memory.  Known as a "guard page".</span></div><div class="line"><span class="comment">//     Permissions: kernel RW, user NONE</span></div><div class="line"><span class="comment">// Your code goes here:</span></div><div class="line">boot_map_region(kern_pgdir, KSTACKTOP - KSTKSIZE, KSTKSIZE, PADDR(bootstack), PTE_W | PTE_P);</div><div class="line"></div><div class="line"><span class="comment">//////////////////////////////////////////////////////////////////////</span></div><div class="line"><span class="comment">// Map all of physical memory at KERNBASE.</span></div><div class="line"><span class="comment">// Ie.  the VA range [KERNBASE, 2^32) should map to</span></div><div class="line"><span class="comment">//      the PA range [0, 2^32 - KERNBASE)</span></div><div class="line"><span class="comment">// We might not have 2^32 - KERNBASE bytes of physical memory, but</span></div><div class="line"><span class="comment">// we just set up the mapping anyway.</span></div><div class="line"><span class="comment">// Permissions: kernel RW, user NONE</span></div><div class="line"><span class="comment">// Your code goes here:</span></div><div class="line">boot_map_region(kern_pgdir, KERNBASE, <span class="number">0xffffffff</span> - KERNBASE, <span class="number">0</span>, PTE_W | PTE_P);</div></pre></td></tr></table></figure></p>
-<p>问题2：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Enrty</th>
-<th style="text-align:center">Base Virtual Address</th>
-<th style="text-align:center">Points to (logically)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1023</td>
-<td style="text-align:center">0xFFC00000</td>
-<td style="text-align:center">Physical Memory</td>
-</tr>
-<tr>
-<td style="text-align:center">…</td>
-<td style="text-align:center">……….</td>
-<td style="text-align:center">…</td>
-</tr>
-<tr>
-<td style="text-align:center">960</td>
-<td style="text-align:center">0xF0000000</td>
-<td style="text-align:center">First 4 MB on Physical Memory</td>
-</tr>
-<tr>
-<td style="text-align:center">959</td>
-<td style="text-align:center">0xEFC00000</td>
-<td style="text-align:center">Kernel Stack</td>
-</tr>
-<tr>
-<td style="text-align:center">957</td>
-<td style="text-align:center">0xEF400000</td>
-<td style="text-align:center">Kernel Page Directory</td>
-</tr>
-<tr>
-<td style="text-align:center">956</td>
-<td style="text-align:center">0xEF000000</td>
-<td style="text-align:center">Pages</td>
-</tr>
-</tbody>
-</table>
-<p>问题3：<br>页保护机制实现了这一点，用户将不能访问未设置<code>PTE_U</code>的页（对于页目录和页表皆是如此）。</p>
-<p>问题4：<br>注意到pages最多只有4MB，而一个<code>struct PageInfo</code>为8字节（对齐），所以实际上最多只有512K个项，总大小为2GB。</p>
-<p>问题5：<br>使用了页表来管理虚拟内存，页表完整地映射了4GB的地址空间。使用pages追踪物理页面的情况，由于最初只映射了4MB，使得内存被限制在了2GB。</p>
-<p>问题6：<br>执行转换的代码在<code>entry.S</code>中，和32位保护模式时相似：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mov	$relocated, %eax</div><div class="line">jmp	*%eax</div></pre></td></tr></table></figure><br>实际的跳转是通过一次<code>jmp</code>实现的，得以继续执行的原因是我们不仅将0-4M映射到了<code>KERNBASE-KERNBASE+4M</code>的读写，同时也映射到了<code>0-4M</code>的只读。不这么做的话将出现无法处理的<code>SIGTRAP</code>信号而导致系统Triple Fault。<br>不通过转换就无法在高地址执行内核代码，将内核映射在高地址主要是为了完整地映射内核的约256M空间。</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/02/20/MIT6-828操作系统工程Lab2-Memory-Management实验报告/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2018/02/01/gcc4-6-1编译问题总结以及modules的使用/">
-                            gcc4.6.1编译问题总结以及modules的使用
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2018-02-01T17:13:52+08:00">
-	
-		    2月 01, 2018
-    	
-    </time>
-    
-        <span>发布在 </span>
-        
-    <a class="category-link" href="/categories/环境配置/">环境配置</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content" itemprop="articleBody">
-                    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在<a href="http://blog.codedragon.tech/2017/12/09/MIT6-828%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8BLab1-Booting-a-PC%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">MIT6.828操作系统工程Lab1-Booting a PC实验报告</a>中，出现了高版本gcc(&gt; 7.1.1-3)编译出的JOS内核不能使用的问题（Triple Fault）。此外，gcc无法编译生成32位的JOS内核。因此需要手动降级到低版本并且开启gcc-multilib。</p>
-<blockquote>
-<p>根据<a href="https://lists.archlinux.org/pipermail/arch-dev-public/2017-November/029034.html" target="_blank" rel="external">arch-dev-public</a>，gcc-multilib已经被合并至了core/gcc之中。当然仍然可以通过<a href="https://archive.archlinux.org/" target="_blank" rel="external">Arch Linux Archive</a>获取旧版本的gcc-multilib。</p>
-</blockquote>
-<p>然而Arch是一个崇尚“Modernity”的发行版（参考<a href="https://wiki.archlinux.org/index.php/Arch_Linux" target="_blank" rel="external">Arch之道</a>）：</p>
-<blockquote>
-<p>Arch尽全力保持软件处于最新的稳定版本，只要不出现系统软件包破损，都尽量用最新版本。</p>
-<p>Arch Linux strives to maintain the latest stable release versions of its software as long as systemic package breakage can be reasonably avoided.</p>
-</blockquote>
-<p>综合arch-dev-public对于gcc所做的改动和Arch之道，保持系统gcc为旧版本的gcc-multilib显然不是一个“优雅”的做法。最终，我决定按照<a href="https://pdos.csail.mit.edu/6.828/2017/tools.html" target="_blank" rel="external">6.828 Lab Tools</a>的指导，手动编译gcc 4.6.1作为JOS内核的交叉编译工具链。</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>编译gcc 4.6.1中遇到的问题以及解决方案总结如下：</p>
-<ol>
-<li>网站上给出的部分软件包的下载链接已经过期。</li>
-<li>网站上的教程默认将工具链安装在了/usr/local/下，这里为了管理上的方便没有采用默认的做法，而是将gcc直接安装在了home目录下（通过configure时的–prefix参数指定）。</li>
-<li>接2，使用./comfigure –help获取帮助。在某些包configure时，需要使用如–with-mpc=… –with-gmp=…等参数来告知相应包的位置。</li>
-<li>由于texinfo版本过高导致低版本的gcc不能正确编译，需要在configure时加上MAKEINFO=missing（当然，你也可以降级texinfo）。</li>
-<li>gcc 4.6.1的源码存在一个作用域错误问题。找到gcc/gengtype.c的write_field_root函数，将struct pair new;移动到函数的起始位置。</li>
-<li>编译gcc时出现了libmpc.so.2库找不到的问题。需要修改环境变量LD_LIBRARY_PATH并添加相应的目录，或者也可以在configure的时候用参数–libdir指定库位置。</li>
-<li>gcc 4.6.1的源码存在一个数组访问越界错误，具体参考<a href="https://gcc.gnu.org/viewcvs/gcc?view=revision&amp;revision=191606" target="_blank" rel="external">这里</a>。</li>
-</ol>
-<h2 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h2><h3 id="包管理软件与环境变量"><a href="#包管理软件与环境变量" class="headerlink" title="包管理软件与环境变量"></a>包管理软件与环境变量</h3><blockquote>
-<p>提一个简单的问题，当我们使用包管理软件（例如pacman）安装某个包（例如unzip）之后，在终端中输入unzip …即可解压zip文件。那么包管理软件究竟做了什么呢？</p>
-<p>如果是从yaourt安装AUR的包，情况又会发生什么变化呢？</p>
-</blockquote>
-<p>包管理软件主要管理各种包以及处理包与包之间的依赖问题。在安装包的时候，包管理软件从镜像源获取包，将包解压并且将内容复制到系统对应的位置。<br>诸如yaourt这样的包管理软件使用ABS（Arch Build System），根据pkgbuild文件的指导在本机下载源码、编译并打包，并且将生成的包安装到系统中。</p>
-<p>以unzip-natspec为例（这是一个可以识别zip编码格式的unzip版本），我们使用pacman查看包的内容以及对应的位置：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">pacman -Ql unzip-natspec                       </div><div class="line">unzip-natspec /usr/</div><div class="line">unzip-natspec /usr/bin/</div><div class="line">unzip-natspec /usr/bin/funzip</div><div class="line">unzip-natspec /usr/bin/unzip</div><div class="line">unzip-natspec /usr/bin/unzipsfx</div><div class="line">unzip-natspec /usr/bin/zipgrep</div><div class="line">unzip-natspec /usr/bin/zipinfo</div><div class="line">unzip-natspec /usr/share/</div><div class="line">unzip-natspec /usr/share/licenses/</div><div class="line">unzip-natspec /usr/share/licenses/unzip/</div><div class="line">unzip-natspec /usr/share/licenses/unzip/LICENSE</div><div class="line">unzip-natspec /usr/share/man/</div><div class="line">unzip-natspec /usr/share/man/man1/</div><div class="line">unzip-natspec /usr/share/man/man1/funzip.1.gz</div><div class="line">unzip-natspec /usr/share/man/man1/unzip.1.gz</div><div class="line">unzip-natspec /usr/share/man/man1/unzipsfx.1.gz</div><div class="line">unzip-natspec /usr/share/man/man1/zipgrep.1.g</div></pre></td></tr></table></figure>
-<p>可以看出unzip被放在/usr/bin目录下。可是为什么我们可以直接在终端中输入unzip …执行解压的命令而不是输入/usr/bin/unzip …呢？这就涉及到了环境变量PATH。</p>
-<p>环境变量是一个动态命名的值，用来影响计算机上进程运行的行为。PATH设置了一组包含可执行文件的目录。在输入unzip的时候，终端默认会在PATH所包含的目录中寻找unzip，如果找到了就执行它。我们使用echo命令打印当前终端的环境变量。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></div><div class="line">/home/user/intel/vtune_amplifier_2018.1.0.535340/bin64 /bin /usr/bin /usr/<span class="built_in">local</span>/bin /usr/<span class="built_in">local</span>/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /usr/lib/smlnj/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl</div></pre></td></tr></table></figure>
-<p>6.828网站上默认将工具链安装在了/usr/local目录下，而/usr/local/bin是位于环境变量PATH中的。<br>因此，我们的qemu以及make可以直接找到编译好的工具链并调用。<br>现在，我们将工具链安装在了一个不属于PATH的目录中。对于这种情况，我们必须使用某种方式（如shell脚本），将相应目录添加PATH中。</p>
-<p>对于我们编译的工具链，还需要设置环境变量LD_LIBRARY_PATH才可正常工作。LD_LIBRARY_PATH涉及linux的动态链接库（共享库），可以自行去搜索相关知识。</p>
-<p>当我们安装的程序变多，脚本也会越变越多，管理诸如PATH的环境变量也变得不方便。<br>我们的jos内核使用的工具链加上了“i386-jos-elf”的前缀。若没有该前缀，添加环境变量后，终端会优先使用gcc 4.6.1作为默认的gcc，这显然不是我们期望的结果。<br>因此，我们可能还需要写另一个脚本，将相应的目录从PATH中移除。</p>
-<p>此外，根据脚本的是否在终端启动时被执行，还可能出现不同终端环境不同的问题。</p>
-<p>那么，有没有一种方法可以快速方便的管理不同软件以及他们所需要的环境变量呢？Modules正是一个可行的方法。</p>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><a href="http://modules.sourceforge.net/" target="_blank" rel="external">Modules（Environment Modules）</a>通过modulefile动态地改变用户环境。可以在Arch中安装env-modules（AUR）以使用Modules。</p>
-<p>安装完毕后，需要编辑终端的配置文件来启用Modules。Modules的shell初始化放在/etc/modules/init文件夹下。</p>
-<p>Modules使用Tcl作为脚本语言，编写modulefile时可以直接man modulefile获取帮助。</p>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>给出管理jos工具链的modulefile，文件放置在/etc/modules/modulefiles文件夹下。使用module load jos加载环境，module unload jos取消环境。modulefile中的prepend-path扩展了环境变量PATH以及LD_LIBRARY_PATH。在调用unload的时候prepeng-path会自动被替换成remove-path。</p>
-<p>jos<br><figure class="highlight tcl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#%Module1.0</span></div><div class="line"><span class="comment">##</span></div><div class="line"><span class="comment">## modulefile</span></div><div class="line"><span class="comment">##</span></div><div class="line"><span class="keyword">proc</span><span class="title"> ModulesHelp</span> &#123;&#125; &#123;</div><div class="line">    <span class="keyword">puts</span> stderr <span class="string">"Adds cross compile toolchain(gcc 4.6.1 i386) for MIT jos to user environment"</span></div><div class="line">&#125;</div><div class="line">module-whatis <span class="string">"adds cross compile toolchain(gcc 4.6.1 i386) for MIT jos to user environment"</span></div><div class="line"><span class="keyword">set</span>     root_dir    /home/chenzhihao/<span class="number">6.828</span>/gcc</div><div class="line">prepend-path    PATH        $root_dir/bin</div><div class="line">prepend-path    LD_LIBRARY_PATH $root_dir/lib</div></pre></td></tr></table></figure></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/02/01/gcc4-6-1编译问题总结以及modules的使用/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
         
         
-        <li class="pagination-number">第 1 页 共 1 页</li>
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/20/MIT6-828操作系统工程Lab2-Memory-Management实验报告/" data-tooltip="MIT6.828操作系统工程Lab2-Memory Management实验报告" aria-label="下一篇: MIT6.828操作系统工程Lab2-Memory Management实验报告">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/" title="分享到 Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/" title="分享到 Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://service.weibo.com/share/share.php?&amp;title=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/" title="分享到 Weibo">
+                    <i class="fa fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/&amp;title=MIT6.828操作系统工程Lab3-User Environments实验报告" title="分享到 QQ">
+                    <i class="fa fa-qq" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/" title="分享到 Qzone">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+        
+    </div>
+</article>
 
 
 
@@ -670,6 +515,139 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/20/MIT6-828操作系统工程Lab2-Memory-Management实验报告/" data-tooltip="MIT6.828操作系统工程Lab2-Memory Management实验报告" aria-label="下一篇: MIT6.828操作系统工程Lab2-Memory Management实验报告">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/" title="分享到 Facebook">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/" title="分享到 Twitter">
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://service.weibo.com/share/share.php?&amp;title=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/" title="分享到 Weibo">
+                    <i class="fa fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/&amp;title=MIT6.828操作系统工程Lab3-User Environments实验报告" title="分享到 QQ">
+                    <i class="fa fa-qq" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/" title="分享到 Qzone">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-close"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i><span>分享到 Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/">
+                    <i class="fa fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="http://service.weibo.com/share/share.php?&amp;title=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/">
+                    <i class="fa fa-weibo" aria-hidden="true"></i><span>分享到 Weibo</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/&amp;title=MIT6.828操作系统工程Lab3-User Environments实验报告">
+                    <i class="fa fa-qq" aria-hidden="true"></i><span>分享到 QQ</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://blog.codedragon.tech/2018/02/23/MIT6-828操作系统工程Lab3-User-Environments实验报告/">
+                    <i class="fa fa-star" aria-hidden="true"></i><span>分享到 Qzone</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -716,6 +694,8 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-i7zzex3jvqnxdf0lp2pg3bcyurjikigtrw9ljle5skc4mit2m7a13rwuyp8g.min.js"></script>
 <!--SCRIPTS END-->
+
+    
 
 
 

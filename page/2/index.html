@@ -256,6 +256,70 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title" itemprop="headline">
                     
+                        <a class="link-unstyled" href="/2017/07/06/Arch下Hexo配置的问题总结/">
+                            Arch下Hexo配置的问题总结
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2017-07-06T20:29:45+08:00">
+	
+		    7月 06, 2017
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="/categories/杂谈/">杂谈</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content" itemprop="articleBody">
+                    <blockquote>
+<p>近期将主力环境从macOS切换至Arch Linux，然后将博客从原环境迁移至现环境，本来以为过程会比较简单，结果却还是踩了几个坑，现在将配置过程中遇到的问题记录并且总结如下。</p>
+</blockquote>
+<h2 id="在Arch-Linux中安装Git和Node-js"><a href="#在Arch-Linux中安装Git和Node-js" class="headerlink" title="在Arch Linux中安装Git和Node.js"></a>在Arch Linux中安装Git和Node.js</h2><p>根据<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">Hexo官方文档</a>的说明，安装Hexo需要的依赖为Git和Node.js。<br>Git的安装比较简单，使用Arch Linux的默认包管理器pacman即可安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pacman -S git</div></pre></td></tr></table></figure><br>Node.js官方文档推荐使用nvm安装，并且官方文档给出了安装脚本。<br>但是我的电脑使用的是伪fish——参考<a href="https://wiki.archlinux.org/index.php/Fish" target="_blank" rel="external">Arch Wiki</a>，我通过的是通过给terminal emulator添加参数的方式进入fish的。<br>因此，我的默认shell仍然是bash。而该安装脚本在检测到我的默认shell之后直接将相关的导出环境变量的命令添加至了.bashrc，导致了进入fish之后由于相关的环境变量丢失无法找到nvm命令的问题。</p>
+<ol>
+<li>第一种解决方法是采用Node.js的fish版安装脚本，该脚本托管在<a href="https://github.com/Alex7Kom/nvm-fish" target="_blank" rel="external">Github</a>上，但是该脚本目前已不再被MAINTAINED，需要自行承担风险。</li>
+<li>第二种解决方法是采用<a href="https://github.com/edc/bass" target="_blank" rel="external">bass</a>包装原始的nvm。</li>
+</ol>
+<p>对于第二种解决方法，我们首先使用官方文档的安装脚本安装nvm：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh</div></pre></td></tr></table></figure><br>然后我们按照Github上的教程手动安装bass：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/edc/bass.git</div><div class="line">$ cd bass</div><div class="line">$ make install</div></pre></td></tr></table></figure><br>最后我们建立如下的文件并重启终端，即可正常地在fish中使用nvm：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cat ~/.config/fish/functions/nvm.fish</div><div class="line">function nvm</div><div class="line">    bass source ~/.nvm/nvm.sh --no-use &apos;;&apos; nvm $argv</div><div class="line">end</div></pre></td></tr></table></figure><br>使用nvm安装Node.js最新版本的命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ nvm install v8.1.3</div></pre></td></tr></table></figure><br>最后我们安装hexo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install -g hexo-cli</div></pre></td></tr></table></figure></p>
+<h2 id="hexo-server报EMFILE错误"><a href="#hexo-server报EMFILE错误" class="headerlink" title="hexo server报EMFILE错误"></a>hexo server报EMFILE错误</h2><p>报错内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Error: EMFILE, too many open files</div></pre></td></tr></table></figure><br>Hexo官网的<a href="https://hexo.io/zh-cn/docs/troubleshooting.html" target="_blank" rel="external">问题解答</a>中给出了如下描述：<br>虽然 Node.js 有非阻塞 I/O，同步 I/O 的数量仍被系统所限制，在生成大量静态文件的时候，您可能会碰到 EMFILE 错误，您可以尝试提高同步 I/O 的限制数量来解决此问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ulimit -n 10000</div></pre></td></tr></table></figure><br>但是当我尝试使用ulimit的时候，却报了如下的错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Permission denied when changing resource of type &apos;Maximum number of open file descriptors&apos;</div></pre></td></tr></table></figure><br>在这之后进行了如下的尝试：</p>
+<ol>
+<li>使用sudo无法运行ulimit，后su至root运行，虽然没有报错，但是使用<code>ulimit -n</code>查看发现修改失败。</li>
+<li>尝试添加参数-S和-H，没有效果。</li>
+<li>最后根据<a href="https://bbs.archlinux.org/viewtopic.php?id=202694" target="_blank" rel="external">Arch Forum</a>上的回答，修改了<code>/etc/security/limits.conf</code>文件并重启电脑，问题解决。</li>
+</ol>
+<h2 id="hexo-server报ENOSPC错误"><a href="#hexo-server报ENOSPC错误" class="headerlink" title="hexo server报ENOSPC错误"></a>hexo server报ENOSPC错误</h2><p>Hexo官网的<a href="https://hexo.io/zh-cn/docs/troubleshooting.html" target="_blank" rel="external">问题解答</a>中给出了如下描述：<br>它可以用过运行 <code>$ npm dedupe</code> 来解决，如果不起作用的话，可以尝试在 Linux 终端中运行下列命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</div></pre></td></tr></table></figure><br>这将会提高你能监视的文件数量。<br><code>$ npm dedupe</code>没有解决问题，最后使用上述的命令解决了问题。（注意在fish中，<code>&#39;&amp;&amp;&#39;</code>要用<code>&#39;COMMAND; and COMMAND&#39;</code>来替代）</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/07/06/Arch下Hexo配置的问题总结/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
                         <a class="link-unstyled" href="/2017/05/16/深入理解计算机系统BufferLab实验报告/">
                             深入理解计算机系统BufferLab实验报告
                         </a>
@@ -1877,93 +1941,6 @@
                     
                         <p>
                             <a href="/2017/02/12/寒假总结/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
-                    
-                        <a class="link-unstyled" href="/2017/01/12/KMP-Knuth-Morris-Pratt-算法/">
-                            KMP(Knuth-Morris-Pratt)算法
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2017-01-12T12:14:58+08:00">
-	
-		    1月 12, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content" itemprop="articleBody">
-                    <blockquote>
-<p>KMP算法是著名并且高效的字符串匹配算法，该算法因Knuth，Morris与Pratt三人联合发表而得名。</p>
-</blockquote>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>给定两个字符串S(n个字符)和W(m个字符)，求W在S中第一次出现的位置。</p>
-<h2 id="BF-Brute-Force-算法"><a href="#BF-Brute-Force-算法" class="headerlink" title="BF(Brute Force)算法"></a>BF(Brute Force)算法</h2><p>BF算法是普通的模式匹配的算法，该算法的思想是首先比较S和W的第一个字符，若匹配，则继续比较下一个字符，若不匹配，则从S的第二个字符和W的第一个字符开始，重复上述过程，直到S和W匹配。</p>
-<p>该算法的时间复杂度为 <strong>O(m*n)</strong></p>
-<h2 id="KMP-Knuth-Morris-Pratt-算法"><a href="#KMP-Knuth-Morris-Pratt-算法" class="headerlink" title="KMP(Knuth-Morris-Pratt)算法"></a>KMP(Knuth-Morris-Pratt)算法</h2><h3 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h3><p>在BF算法中，如果发生字符串失配，那么我们会从S的下一个字符开始<strong>重头</strong>开始匹配，而实际上，在发生失配时，W自身已经包含了足够的信息，以确定下一个匹配的位置，这就是KMP算法的核心思路。</p>
-<h3 id="算法实例"><a href="#算法实例" class="headerlink" title="算法实例"></a>算法实例</h3><p>不妨设字符串S为 <strong>ABC ABCDAB ABCDABCDABDE</strong>，W为 <strong>ABCDABD</strong>。</p>
-<p>首先我们从W和S的开头开始匹配，但是我们发现，S[3] = ‘ ‘而W[3] = ‘D’，发生了失配，但我们同时也发现，S[1]到S[3]不与W[0]——也就是’A’相匹配，因此下一次匹配我们直接从S[4]开始，与W[0]进行匹配。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">      |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W: ABCDABD</div><div class="line">      |</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">       |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:     ABCDABD</div><div class="line">       |</div></pre></td></tr></table></figure>
-<p>随后，我们发现S[10] = ‘ ‘与W[6] = ‘D’失配，注意到W[0]-W[1]与W[4]-W[5]均为”AB”，因此下一次匹配时，我们也不必直接从下一位开始匹配，而是可以从已匹配的尾部的”AB”处继续匹配。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">             |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:     ABCDABD</div><div class="line">             |</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">             |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:         ABCDABD</div><div class="line">             |</div></pre></td></tr></table></figure>
-<p>下图所示的情况与上述的情况类似，我们直接从尾部的”AB”处继续匹配。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">                    |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:            ABCDABD</div><div class="line">                    |</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">                    |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:                ABCDABD</div><div class="line">                    |</div></pre></td></tr></table></figure>
-<p>最终找出了完全匹配的位置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">                        |</div><div class="line">S: ABC ABCDAB ABCDABCDABDE</div><div class="line">W:                ABCDABD</div><div class="line">                        |</div></pre></td></tr></table></figure>
-<h3 id="部分匹配表（失配函数）"><a href="#部分匹配表（失配函数）" class="headerlink" title="部分匹配表（失配函数）"></a>部分匹配表（失配函数）</h3><p>部分匹配表中的部分匹配值指出了在发生失配时，可以跳过的无效字符数。</p>
-<p>我们首先需要了解两个概念：“前缀”和“后缀”。</p>
-<p>“前缀”指除了最后一个字符之外，一个字符串的全部头部组合；“后缀”指除了第一个字符之外，一个字符串的全部尾部组合。</p>
-<p>部分匹配值就是“前缀”和“后缀”的最长的共有元素的长度。</p>
-<p>部分匹配值的实质是，有时候，字符串的头部和尾部会有重复。这样，不能直接将字符串向后移动“字符串长度”位，而是应该移动“字符串长度-部分匹配值”位。</p>
-<h4 id="部分匹配表实例"><a href="#部分匹配表实例" class="headerlink" title="部分匹配表实例"></a>部分匹配表实例</h4><p>以”ABCDABD”为例——</p>
-<ul>
-<li>“A”的前缀和后缀都为{}，共有元素长度为0；</li>
-<li>“AB”的前缀为{“A”}，后缀为{“B”}，共有元素长度为0；</li>
-<li>“ABC”的前缀为{“A”, “AB”}，后缀为{“C”, “BC”}，共有元素长度为0；</li>
-<li>“ABCD”的前缀为{“A”, “AB”, “ABC”}，后缀为{“D”, “CD”, “BCD”}，共有元素长度为0；</li>
-<li>“ABCDA”的前缀为{“A”, “AB”, “ABC”, “ABCD”}，后缀为{“A”, “DA”, “CDA”, “BCDA”}，共有元素为{“A”}，长度为1；</li>
-<li>“ABCDAB”的前缀为{“A”, “AB”, “ABC”, “ABCD”, “ABCDA”}，后缀为{“B”, “AB”, “DAB”, “CDAB”, “BCDAB”}，共有元素为{“AB”}，长度为2；</li>
-<li>“ABCDABD”的前缀为{“A”, “AB”, “ABC”, “ABCD”, “ABCDA”, “ABCDAB”}，后缀为{“D”, “BD”, “ABD”, “DABD”, “CDABD”, “BCDABD”}，共有元素长度为0；</li>
-</ul>
-<h3 id="算法实现（C语言）"><a href="#算法实现（C语言）" class="headerlink" title="算法实现（C语言）"></a>算法实现（C语言）</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kmp</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * s, <span class="keyword">const</span> <span class="keyword">char</span> * w)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> s_idx = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> w_idx = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> s_len = <span class="built_in">strlen</span>(s);</div><div class="line">    <span class="keyword">int</span> w_len = <span class="built_in">strlen</span>(w);</div><div class="line">    <span class="keyword">int</span> next[w_len];</div><div class="line">    generate_next(w, next);</div><div class="line">    <span class="keyword">while</span> (s_idx &lt; s_len &amp;&amp; w_idx &lt; w_len) &#123;</div><div class="line">        <span class="keyword">if</span> (w_idx == <span class="number">-1</span> || s[s_idx] == w[w_idx]) &#123;</div><div class="line">            s_idx++;</div><div class="line">            w_idx++;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">             w_idx = next[w_idx];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (w_idx == w_len) &#123;</div><div class="line">         <span class="keyword">return</span> (s_idx - w_idx);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">         <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">generate_next</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * w, <span class="keyword">int</span> * next)</span> </span>&#123;</div><div class="line">     <span class="keyword">int</span> index = <span class="number">0</span>, k = <span class="number">-1</span>;</div><div class="line">     <span class="keyword">int</span> w_len = <span class="built_in">strlen</span>(w);</div><div class="line">     next[<span class="number">0</span>] = <span class="number">-1</span>;</div><div class="line">     <span class="keyword">while</span> (index &lt; w_len <span class="number">-1</span>) &#123;</div><div class="line">         <span class="keyword">if</span> (k == <span class="number">-1</span> || w[index] == w[k]) &#123;</div><div class="line">             ++k;</div><div class="line">             ++index;</div><div class="line">             next[index] = k;</div><div class="line">         &#125; <span class="keyword">else</span> &#123;</div><div class="line">             k = next[k];</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h3><p>注意到这里我们对于部分匹配表做了一些额外的处理，我们将部分匹配表的值向右移动了一位，并且将部分匹配表的第一个值置为了-1。</p>
-<p>这是因为字符串w的第一个字符串的特殊性决定的，因为w字符的第一个字符串失配后无法回退，只能从s字符串的下一个字符开始匹配。</p>
-<p>此外，在求解next数组的函数generate_next中还有一句k=next[k]，这实际上是字符串的自我匹配的过程，当0–k-1发生失配时，应当找到一个满足条件的j，从0–j-1之后继续匹配，直到找不到更小的字符串为止。</p>
-<h3 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h3><p><strong>O(m+n)</strong></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/v_july_v/article/details/7041827" target="_blank" rel="external">从头到尾彻底理解KMP</a></p>
-<p><a href="http://www.cnblogs.com/c-cloud/p/3224788.html" target="_blank" rel="external">【经典算法】——KMP，深入讲解next数组的求解</a></p>
-<p><a href="https://zh.wikipedia.org/wiki/%E5%85%8B%E5%8A%AA%E6%96%AF-%E8%8E%AB%E9%87%8C%E6%96%AF-%E6%99%AE%E6%8B%89%E7%89%B9%E7%AE%97%E6%B3%95" target="_blank" rel="external">克努斯-莫里斯-普拉特算法</a></p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><blockquote>
-<p>一直不能够深刻地理解KMP算法，即使是写完了这篇Blog，我仍然对于KMP算法有着有限的了解，所以不排除这篇Blog还会有后续的可能。</p>
-</blockquote>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2017/01/12/KMP-Knuth-Morris-Pratt-算法/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
