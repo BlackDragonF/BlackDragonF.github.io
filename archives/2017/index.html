@@ -405,7 +405,7 @@
 <p>在6.828中，使用硬盘的传统引导机制。这意味这引导必须满足512个Bytes的限制。引导由一个汇编文件boot/boot.S，以及一个C语言文件boot/main.c组成。</p>
 <hr>
 <p>为了理解boot.S，需要以下的知识储备。</p>
-<h4 id="实模式和保护模式"><a href="#实模式和保护模式" class="headerlink" title="实模式和保护模式"></a>实模式和保护模式</h4><h5 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h5><p>实模式是为了与8086兼容而设置的。在实模式下，处理器相当于一个快速的8086处理器。当处理器被加电或者复位时以实模式启动。</p>
+<h4 id="实模式和保护模式"><a href="#实模式和保护模式" class="headerlink" title="实模式和保护模式"></a>实模式和保护模式</h4><p>实模式是为了与8086兼容而设置的。在实模式下，处理器相当于一个快速的8086处理器。当处理器被加电或者复位时以实模式启动。</p>
 <ul>
 <li>实模式下各寄存器以实模式的初始化值工作；</li>
 <li>实模式的地址空间总共为20位（1MB）；</li>
@@ -513,7 +513,8 @@
 <p>最后我们在monitor.c中添加相关cprintf代码，并重新编译测试。最终如图所示：</p>
 <img src="/2017/12/09/MIT6-828操作系统工程Lab1-Booting-a-PC实验报告/lab1_final.png" alt="lab1_final.png" title="">
 <p>有关于实验指导中提到的打开vga硬件的graphics mode使得控制台绘制文本到图形帧缓冲区的实现，由于时间和难度原因，这里暂时跳过。</p>
-<h2 id="实验小结"><a href="#实验小结" class="headerlink" title="实验小结"></a>实验小结</h2><p>第一个实验总体来说更偏重于概念的理解、工具的使用而不是实际的代码。</p>
+<h2 id="实验小结"><a href="#实验小结" class="headerlink" title="实验小结"></a>实验小结</h2><p>最终执行<code>make grade</code>，评分脚本的输出如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">running JOS: (1.2s)</div><div class="line">  <span class="built_in">printf</span>: OK</div><div class="line">  backtrace count: OK</div><div class="line">  backtrace arguments: OK</div><div class="line">  backtrace symbols: OK</div><div class="line">  backtrace lines: OK</div><div class="line">Score: 50/50</div></pre></td></tr></table></figure><br>至此，实验一结束。</p>
+<p>第一个实验总体来说更偏重于概念的理解、工具的使用而不是实际的代码。</p>
 <p>尽管如此，大量的概念也浪费了我很多时间去理解。MIT的6.828同清华的ucore操作系统实验相比提供了相当多的reference（ucore的阅读材料几乎都是现成的），这也对文档阅读和信息检索能力有了更高的要求。</p>
 
                     
