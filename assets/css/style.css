@@ -3261,14 +3261,27 @@ li.fancybox-thumbs-loading {
   font-weight: 700;
   src: local("Merriweather Bold Italic"), local("Merriweather-BoldItalic"), url(https://fonts.gstatic.com/s/merriweather/v8/EYh7Vl4ywhowqULgRdYwII1kRdeHIFWYEsp6A2f99b0.ttf) format("truetype"); }
 
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Noto Sans SC"), local("NotoSansSC-Regular"), url(https://fonts.gstatic.com/ea/notosanssc/v1/NotoSansSC-Regular.woff) format("woff"); }
+
+@font-face {
+  font-family: 'Source Code Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Source Code Pro"), local("SourceCodePro-Regular"), url(http://fonts-gstatic.googlefonts.net/s/sourcecodepro/v6/mrl8jkM18OlOQN8JLgasD9V_2ngZ8dMf8fLgjYEouxg.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215; }
+
 html {
   font-family: "Open Sans", sans-serif;
   font-size: 10px;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
-  tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  tap-highlight-color: rgba(0, 0, 0, 0); }
 
 body {
   width: 100%;
@@ -3374,7 +3387,7 @@ pre > code {
   width: 100%;
   box-sizing: border-box;
   padding: 15px;
-  font-family: Menlo, Consolas, monospace;
+  font-family: Source Code Pro, monospace;
   border: none;
   margin: 0;
   cursor: text;
@@ -3385,7 +3398,7 @@ pre > code {
 code {
   font-size: 1.5rem;
   display: inline-block;
-  font-family: Menlo, Consolas, monospace;
+  font-family: "Source Code Pro", monospace;
   font-weight: 400;
   background-color: #f7f8f8;
   padding: 0 10px; }
@@ -4663,7 +4676,7 @@ blockquote {
 
 .caption {
   display: block;
-  font-family: "Merriweather", serif;
+  font-family: "Noto Sans SC";
   font-size: 1.3rem;
   color: #81929d;
   text-align: center;
@@ -4691,7 +4704,7 @@ figure.highlight,
   .codeblock .code,
   .codeblock .tag {
     background-color: inherit;
-    font-family: Menlo, Consolas, monospace;
+    font-family: Source Code Pro, monospace;
     border: none;
     padding: 0;
     margin: 0;
@@ -4750,7 +4763,7 @@ figure.highlight,
 
 .gist .line,
 .gist .line-number {
-  font-family: Menlo, Consolas, monospace;
+  font-family: "Source Code Pro", monospace;
   font-size: 1em;
   margin: 0 0 5px 0; }
 
@@ -5130,7 +5143,7 @@ a.fancybox {
   .post .post-content {
     text-rendering: optimizelegibility;
     letter-spacing: -0.3px;
-    font-family: "Merriweather", serif;
+    font-family: "Noto Sans SC";
     color: #5d686f;
     margin-top: 20px;
     font-weight: 400;
@@ -5416,7 +5429,7 @@ a.fancybox {
   .postShorten .postShorten-content {
     text-rendering: optimizelegibility;
     letter-spacing: -0.3px;
-    font-family: "Merriweather", serif;
+    font-family: "Noto Sans SC";
     color: #5d686f;
     font-weight: 400;
     overflow: hidden;
