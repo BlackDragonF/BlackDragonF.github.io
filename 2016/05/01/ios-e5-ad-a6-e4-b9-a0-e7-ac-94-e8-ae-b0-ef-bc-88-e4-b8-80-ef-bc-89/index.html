@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="码龙的窝">
     <title>iOS学习笔记（一） - 码龙的窝</title>
-    <meta name="author" content="CoSidian">
+    <meta name="author" content="码龙黑曜">
+    
+        <meta name="keywords" content="博客,iOS,Computer Science,码龙,">
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
-    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg"},"articleBody":"\n最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下：自定义cell分割线首先设置 tableView.separatorStyle = UITableViewCellSeparatorStyleNone;\n然后在自定义的cell的实现文件内实现如下的方法\n123456789101112- (void)drawSeparator&#123;    _separatorlineLayer = [CAShapeLayer layer];    CGMutablePathRef separatorShapePath = CGPathCreateMutable();    [_separatorLayer setFillColor:[UIColor clearColor].CGColor];    [_separatorLayer setStrokeColor:[UIColor headlineColor].CGColor];    _separatorLayer.lineWidth = 0.5f;    CGPathMoveToPoint(separatorShapePath, NULL, 0.0f, 0.0f);    CGPathAddLineToPoint(separatorShapePath, NULL, WIDTH, 0.0f);    [_headlineLayer setPath:separatorShapePath];    CGPathRelease(separatorShapePath);    [self.contentView.layer addSublayer:_separatorLineLayer];&#125;\n其中，_separatorLayer是CAShapeLayer的实例，setStrokeColor方法设定了线的颜色，CGPathMoveToPoint和CGPathAddLineToPoint设定了线的起始点。\n同理，可以类似地实现画点或者更为复杂形状的效果。\niOS8之后cell的动态高度计算首先使用autolayout布局，且确保cell的contentView至少top和bottom都和cell内部的View建立了约束。之后添加如下代码\n12tableView.estimatedRowHeight = 60.0f;tableView.rowHeight = UITableViewAutomaticDimension;\n需要注意的是，必须要为tebleView的estimiatedRowHeight属性设定值。\n返回键盘的高度1234567891011121314151617181920212223- (void)viewDidLoad&#123;    [super viewDidLoad];    //注册通知    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];&#125;- (void)dealloc &#123;    //移除通知    [[NSNotificationCenter defaultCenter]removeObserver:self];&#125;- (void)keyboardWillShow:(NSNotification *)notification&#123;    //键盘弹出时调用    NSDictionary * userInfo = [notification userInfo];    NSValue * frameValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];    CGRect keyboardRect = [frameValue CGRectValue];    NSInteger height = keyboardRect.size.height;&#125;- (void)keyboardWillHide:(NSNotification *)notification&#123;    //键盘隐藏时调用&#125;\nheight中储存的即为当前键盘的高度\n小心block导致的retain cycle如果在block中需要访问本类的实例变量，需要使用\n__weak UIViewController * weakSelf = self;\nself持有了block，而block通过捕获self来访问实例变量，导致保留换的产生，通过__weak打破保留环。\n","dateCreated":"2016-05-01T02:02:30+08:00","dateModified":"2018-05-11T06:05:24+08:00","datePublished":"2016-05-01T02:02:30+08:00","description":"","headline":"iOS学习笔记（一）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://blog.codedragon.tech/2016/05/01/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/"},"publisher":{"@type":"Organization","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg","logo":{"@type":"ImageObject","url":"avatar.jpg"}},"url":"http://blog.codedragon.tech/2016/05/01/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/","keywords":"问题, 踩坑, iOS, OC"}</script>
     <meta name="description" content="最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下：自定义cell分割线首先设置 tableView.separatorStyle = UITableViewCellSeparatorStyleNone; 然后在自定义的cell的实现文件内实现如下的方法 123456789101112- (void)drawSeparator&amp;#123;    _se">
 <meta name="keywords" content="问题,踩坑,iOS,OC">
 <meta property="og:type" content="blog">
@@ -20,7 +21,8 @@
 <meta property="og:url" content="http://blog.codedragon.tech/2016/05/01/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/index.html">
 <meta property="og:site_name" content="码龙的窝">
 <meta property="og:description" content="最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下：自定义cell分割线首先设置 tableView.separatorStyle = UITableViewCellSeparatorStyleNone; 然后在自定义的cell的实现文件内实现如下的方法 123456789101112- (void)drawSeparator&amp;#123;    _se">
-<meta property="og:updated_time" content="2016-12-12T08:59:44.000Z">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2018-05-10T22:05:24.390Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS学习笔记（一）">
 <meta name="twitter:description" content="最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下：自定义cell分割线首先设置 tableView.separatorStyle = UITableViewCellSeparatorStyleNone; 然后在自定义的cell的实现文件内实现如下的方法 123456789101112- (void)drawSeparator&amp;#123;    _se">
@@ -35,7 +37,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-gtvt1lbvzeqmr99zec4y42qrxw5ogq1gul5orw7somyh6cv5ckqsrl4abr9a.min.css">
+    <link rel="stylesheet" href="/assets/css/style-j4w0tbtf1olriqsnfyv4egntpbdblucqpyraoqqnvawa2vd6l4m8ljtn2yes.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -94,9 +96,9 @@
                 <a href="/#about">
                     <img class="sidebar-profile-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
                 </a>
-                <h4 class="sidebar-profile-name">CoSidian</h4>
+                <h4 class="sidebar-profile-name">码龙黑曜</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+                    <h5 class="sidebar-profile-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </h5>
                 
             </div>
@@ -199,7 +201,7 @@
                     
                         <a  class="sidebar-button-link " href="https://t.me/Cosidian" target="_blank" rel="noopener" title="Telegram">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-paper-plane" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-lg fa-telegram" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Telegram</span>
                     </a>
             </li>
@@ -229,7 +231,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/friendly-links"
+                             href="/links"
                             
                             title="友情链接"
                         >
@@ -242,13 +244,13 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/book-recommend"
+                             href="/resources"
                             
-                            title="图书推荐"
+                            title="学习资源"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-book" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">图书推荐</span>
+                        <i class="sidebar-button-icon fa fa-lg fa-share-alt" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">学习资源</span>
                     </a>
             </li>
             
@@ -263,18 +265,18 @@
                         hasCoverMetaIn
                         ">
                 
-<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+<article class="post">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title" itemprop="headline">
+        <h1 class="post-title">
             iOS学习笔记（一）
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2016-05-01T02:02:30+08:00">
+    <time datetime="2016-05-01T02:02:30+08:00">
 	
 		    5月 01, 2016
     	
@@ -290,19 +292,20 @@
 
     
 </div>
+
     
-    <div class="post-content markdown" itemprop="articleBody">
+    <div class="post-content markdown">
         <div class="main-content-wrap">
             <hr>
 <h3 id="最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下："><a href="#最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下：" class="headerlink" title="最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下："></a>最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下：</h3><h4 id="自定义cell分割线"><a href="#自定义cell分割线" class="headerlink" title="自定义cell分割线"></a>自定义cell分割线</h4><p>首先设置 <code>tableView.separatorStyle = UITableViewCellSeparatorStyleNone;</code></p>
 <p>然后在自定义的cell的实现文件内实现如下的方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (void)drawSeparator&#123;</div><div class="line">    _separatorlineLayer = [CAShapeLayer layer];</div><div class="line">    CGMutablePathRef separatorShapePath = CGPathCreateMutable();</div><div class="line">    [_separatorLayer setFillColor:[UIColor clearColor].CGColor];</div><div class="line">    [_separatorLayer setStrokeColor:[UIColor headlineColor].CGColor];</div><div class="line">    _separatorLayer.lineWidth = 0.5f;</div><div class="line">    CGPathMoveToPoint(separatorShapePath, NULL, 0.0f, 0.0f);</div><div class="line">    CGPathAddLineToPoint(separatorShapePath, NULL, WIDTH, 0.0f);</div><div class="line">    [_headlineLayer setPath:separatorShapePath];</div><div class="line">    CGPathRelease(separatorShapePath);</div><div class="line">    [self.contentView.layer addSublayer:_separatorLineLayer];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)drawSeparator&#123;</span><br><span class="line">    _separatorlineLayer = [CAShapeLayer layer];</span><br><span class="line">    CGMutablePathRef separatorShapePath = CGPathCreateMutable();</span><br><span class="line">    [_separatorLayer setFillColor:[UIColor clearColor].CGColor];</span><br><span class="line">    [_separatorLayer setStrokeColor:[UIColor headlineColor].CGColor];</span><br><span class="line">    _separatorLayer.lineWidth = 0.5f;</span><br><span class="line">    CGPathMoveToPoint(separatorShapePath, NULL, 0.0f, 0.0f);</span><br><span class="line">    CGPathAddLineToPoint(separatorShapePath, NULL, WIDTH, 0.0f);</span><br><span class="line">    [_headlineLayer setPath:separatorShapePath];</span><br><span class="line">    CGPathRelease(separatorShapePath);</span><br><span class="line">    [self.contentView.layer addSublayer:_separatorLineLayer];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其中，<code>_separatorLayer</code>是<code>CAShapeLayer</code>的实例，<code>setStrokeColor</code>方法设定了线的颜色，<code>CGPathMoveToPoint</code>和<code>CGPathAddLineToPoint</code>设定了线的起始点。</p>
 <p>同理，可以类似地实现画点或者更为复杂形状的效果。</p>
 <h4 id="iOS8之后cell的动态高度计算"><a href="#iOS8之后cell的动态高度计算" class="headerlink" title="iOS8之后cell的动态高度计算"></a>iOS8之后cell的动态高度计算</h4><p>首先使用autolayout布局，且确保cell的contentView至少top和bottom都和cell内部的View建立了约束。之后添加如下代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tableView.estimatedRowHeight = 60.0f;</div><div class="line">tableView.rowHeight = UITableViewAutomaticDimension;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tableView.estimatedRowHeight = 60.0f;</span><br><span class="line">tableView.rowHeight = UITableViewAutomaticDimension;</span><br></pre></td></tr></table></figure>
 <p>需要注意的是，必须要为tebleView的estimiatedRowHeight属性设定值。</p>
-<h4 id="返回键盘的高度"><a href="#返回键盘的高度" class="headerlink" title="返回键盘的高度"></a>返回键盘的高度</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">- (void)viewDidLoad&#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">    //注册通知</div><div class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];</div><div class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)dealloc &#123;</div><div class="line">    //移除通知</div><div class="line">    [[NSNotificationCenter defaultCenter]removeObserver:self];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)keyboardWillShow:(NSNotification *)notification&#123;</div><div class="line">    //键盘弹出时调用</div><div class="line">    NSDictionary * userInfo = [notification userInfo];</div><div class="line">    NSValue * frameValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];</div><div class="line">    CGRect keyboardRect = [frameValue CGRectValue];</div><div class="line">    NSInteger height = keyboardRect.size.height;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)keyboardWillHide:(NSNotification *)notification&#123;</div><div class="line">    //键盘隐藏时调用</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="返回键盘的高度"><a href="#返回键盘的高度" class="headerlink" title="返回键盘的高度"></a>返回键盘的高度</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad&#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    //注册通知</span><br><span class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];</span><br><span class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dealloc &#123;</span><br><span class="line">    //移除通知</span><br><span class="line">    [[NSNotificationCenter defaultCenter]removeObserver:self];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)keyboardWillShow:(NSNotification *)notification&#123;</span><br><span class="line">    //键盘弹出时调用</span><br><span class="line">    NSDictionary * userInfo = [notification userInfo];</span><br><span class="line">    NSValue * frameValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];</span><br><span class="line">    CGRect keyboardRect = [frameValue CGRectValue];</span><br><span class="line">    NSInteger height = keyboardRect.size.height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)keyboardWillHide:(NSNotification *)notification&#123;</span><br><span class="line">    //键盘隐藏时调用</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>height中储存的即为当前键盘的高度</p>
 <h4 id="小心block导致的retain-cycle"><a href="#小心block导致的retain-cycle" class="headerlink" title="小心block导致的retain cycle"></a>小心block导致的retain cycle</h4><p>如果在block中需要访问本类的实例变量，需要使用</p>
 <p><code>__weak UIViewController * weakSelf = self;</code></p>
@@ -347,7 +350,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -397,7 +400,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -417,7 +420,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 CoSidian. All Rights Reserved.
+        Copyrights &copy; 2018 码龙黑曜. All Rights Reserved.
     </span>
 </footer>
 
@@ -449,7 +452,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -499,7 +502,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -573,16 +576,16 @@
         
             <img id="about-card-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
         
-            <h4 id="about-card-name">CoSidian</h4>
+            <h4 id="about-card-name">码龙黑曜</h4>
         
-            <div id="about-card-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+            <div id="about-card-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>本科在读</p>
+                <p>华中科技大学 本科在读</p>
 
             </div>
         
@@ -590,7 +593,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker"></i>
                 <br/>
-                HUST, Wuhan, China
+                Wuhan, China
             </div>
         
     </div>
@@ -600,7 +603,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-i7zzex3jvqnxdf0lp2pg3bcyurjikigtrw9ljle5skc4mit2m7a13rwuyp8g.min.js"></script>
+<script src="/assets/js/script-feiabjni254mgbxiozwsjblcsiodjqohurk0dcfkq0aooroewq6bvkdnadrg.min.js"></script>
 <!--SCRIPTS END-->
 
     

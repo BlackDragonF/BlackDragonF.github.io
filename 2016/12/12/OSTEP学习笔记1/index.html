@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="码龙的窝">
     <title>OSTEP学习笔记1 - 码龙的窝</title>
-    <meta name="author" content="CoSidian">
+    <meta name="author" content="码龙黑曜">
+    
+        <meta name="keywords" content="博客,iOS,Computer Science,码龙,">
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
-    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg"},"articleBody":"\n最近开始看Operating Systems: Three Easy Pieces这本书，感觉光看书还是不够，还是需要将学习到的东西整理和归纳，以加深自己对于操作系统的理解。\n\nCPU的虚拟化基本概念进程进程(Process)是操作系统对于一个正在运行的程序的抽象\n进程API大体上可以分为创建(Create)，销毁(Destroy)，等待(Wait)，杂项控制(Miscellaneous Control)包括挂起等以及状态查询(Status)。\nUnix下的进程APIfork() wait() 以及 exec()\n进程状态进程的状态大体上可以分为运行(Running)，就绪(Ready)以及阻塞(Blocked)。\n\n运行(Running)，进程正在被处理器运行，这意味着，处理器正在执行指令。\n就绪(Ready)，进程已经准备好去运行，但是出于某种原因，操作系统决定不在当前的时刻运行该进程。\n阻塞(Blocked)，在阻塞状态，进程已经执行了某种其他的操作以至于在该操作完成前该进程不能就绪，如：进程对于磁盘的IO请求。\n\n进程表操作系统通常会使用进程表管理所有的进程，包括追踪每一个进程的寄存器，起始内存，内存大小，PID，父进程，已打开的文件，进程状态等。\n机制:Limited Direct Execution(LDE)直接执行即系统直接将进程运行在CPU上以最大化效率，限制即不能直接让进程取得对硬件以及系统所有的控制。\n限制操作当进程需要执行IO请求等限制操作时，不应该使得进程获得整个操作系统的控制权限。因此引入了Protected Control Transfer的概念。\nProtected Control Transfer引入两种处理器模式：User Mode和Kernal Mode\n\nUser Mode - 在User Mode下，运行在该模式下的代码受到了严格的限制。比如，在该模式下，进程无法发起IO请求，并且也无法执行所有的限制指令。\nKernal Mode - 在Kernal Mode下，由操作系统执行指令，执行的指令没有任何限制，包括IO请求以及所有的限制指令都可以被执行。\n\nSystem Call - 用户程序通过执行System Call去执行限制指令如访问文件系统，与其他进程通信或是分配内存。为了执行System Call，用户程序需要执行一个特殊的Trap指令，Trap指令同时地跳转至内核并且提升至Kernal Mode，一旦进入了内核，系统就可以执行任何限制指令，并且完成调用进程需要完成的任务。完成后，系统调用一个特殊的Return-From-Trap指令，跳转回用户程序并且降低至User Mode。\n\n在执行Trap指令时，系统需要额外的开销以保证执行Return-From-Trap指令时跳转正确，例如，在x86下，系统会将PC及其他几个寄存器存入每个进程的内核栈。\n\n此外，内核需要在引导时建立Trap Table以保证用户程序程序执行Trap指令后能跳转至对应的指令。操作系统通知硬件Trap Handlers的位置，通知之后，直到下次引导之前，硬件都会知道对应handlers的位置，这样，当System Call或是其他异常被抛出时，硬件能对应作出正确的反应。\n\n显然，建立Trap Table的指令也是限制指令。\n\n进程间切换进程的切换需要操作系统的介入，但是当用户程序在CPU上执行时，操作系统并不在运行，那么，操作系统要如何重新获得对CPU的控制呢？\n合作方法：等待System Calls在这种方法下，操作系统相信系统进程能正确的执行，长时间运行的进程理应周期性的放弃CPU，从而操作系统能决定运行其他的任务。\n大多数进程通过发起System Calls的方法转移CPU的控制权 - 在发起System Call，执行了Trap指令后，操作系统就获得了CPU的控制权。\n\n那么，当程序错误的执行死循环之后，操作系统还能拿到CPU的控制权吗？\n\n非合作方法：系统直接控制CPUTimer Interrupt - 通过对定时器装置编程使得其每隔特定的时间（通常是毫秒级）发起中断。在这种情况下，当前执行的进程会被停止，并且操作系统中一个预先配置的Interrupt Handler会被执行，这样，操作系统就重新取得了对CPU的控制。\n保存和恢复上下文通常，当系统决定切换进程时，操作系统会执行一段底层代码(Context Switch)。从概念上来说，Context Switch会保存当前进程的若干寄存器的值，并且恢复待执行的进程的寄存器的值（例如，从内核栈中），这样，当Return-From-Trap指令执行时，系统得以恢复另一个进程的运行。\n在Timer Interrupt的LDE Protocal中（例如），存在着两种类型的寄存器保存／恢复，在中断产生时，由硬件隐式的将寄存器的值存入当前进程的内核栈中，而在操作系统决定从当前进程切换至待执行进程时，由软件（操作系统）显式的将当前进程的寄存器的值（如PC，栈指针）存入当前进程的进程结构中（例如，进程控制块），并且从带切换进程的进程结构中恢复对应寄存器的值，这样，当执行Return-From-Trap指令后，由硬件隐式的从切换进程的内核栈中恢复寄存器的值，就好像刚才的Trap是由切换后进程执行的一样。\n并发性\n如果当一个System Call被发起时，发生了一个Timer Interrupt怎么办？\n\n简单的做法是，在处理中断时，禁止其他中断的传入。更加复杂的机制留至并发行部分讨论。\n调度器负载假设将正在运行在系统上的进程称为负载。为了简化调度过程，首先做出如下的假设：\n\n每一个任务(Job)运行同样的时间\n所有的任务都在同样的时间到达\n所有的任务都仅使用CPU(不执行I/O)\n每一个任务的运行时间都已知\n\n我们会在稍后的讨论中放宽这些限制\n调度指标我们用调度指标衡量调度器的好坏，我们将使用以下两个指标：\n\n周转时间(Turnaround Time) 周转时间是指完成时间与到达时间的差，周转时间是衡量性能性能的指标。\n响应时间(Response Time) 响应时间是指任务第一次运行的时间与到达时间的差，响应时间是衡量公平性的指标。\n\n先进先出(First In First Out)该调度方法有时又被称作先到先得(First Come First Served)，即先到达的方法先被CPU运行。\n假设有3个任务，每个任务都运行10s，那么它们的平均周转时间为(10+20+30)/3=20s下面我们放宽假设1，即现在每一个任务运行的时间不必相同。\n同样地，假设有3个任务，A运行100s而B和C运行10s，如果A先运行，然后运行B，最后运行C，那么现在的平均周转时间为(100+110+120)/3=110s，这就是护送效应(Convoy Effect)，即由于A的运行时间过长，而导致运行时间较短的B和C需要等待较长的时间。\n提出如下的新规则——\n最短任务优先(Shortest Job First)为此，我们提出一种新的规则称为最短任务优先，该规则同样易于理解，即首先执行最短的任务，然后次短的任务，以此类推。\n同样地假设A、B、C三个任务，其中A运行100s，而B和C运行10s，在SJF下，系统会先运行B和C，再运行A，平均周转时间为(10+20+120)/3=50s，远好于FIFO下相同假设的结果。\n下面我们放宽假设2，即每一个任务有可能在任意时间到达。\n假设A、B、C三个任务，其中A运行100s，在0s时到达，B和C运行10s，在10s时到达，在SJF下，平均周转时间为(100+(110-10)+(120-10))/3=103.33s，这是我们不愿意看到的结果，我们仍然需要改进调度算法——\n最短完成时间优先(Shortest Time-to-Completion First)SJF是一种非抢占(Non-preemptive)的调度器，而STCF是一种允许抢占的调度器，在上述的例子中，当B或者C到达时，调度器允许B或者C抢占A——即操作系统从任务A切换至任务B或者任务C（通过上下文切换），从而达到提升性能的目的。\n在上例中，若采用STCF，平均周转时间为((120-0)+(20-10)+(30-10))/3=50s，远好于103.33s这一结果。\n事实上，如果任务长度已知，任务仅使用CPU资源，且周转时间是唯一指标的话，STCF是最佳的调度算法，下面我们来讨论另一个指标——响应时间。\n考虑到响应时间，上述的算法表现都不尽如人意，在上例中，用户要至少要等待10s才能得到任务C的响应，而这显然是对于交互不友好的，我们需要引入新的调度算法来解决这个问题——\n轮循(Round Robin)轮循的基本思想按照时间分片(Time Slice)或者说调度量子(Scheduling Quantum)来循环执行任务而不是运行任务直到完成。\n假设有A、B、C三个任务，它们同时到达系统而且均运行5s，假设时间分片为1s，在这种情况下，操作系统首先运行A，1s后切换到B，B运行1s后再切换到C，然后再循环回A。这样，平均响应时间为(0+1+2)/3=1s；而在SJF下，平均响应时间为(0+5+10)/3=5s。\n\n需要权衡时间分片的大小，如果时间分片过小，那么操作系统执行上下文切换的开销会显著增加。\n\n在RR下，平均周转时间会变得非常糟糕。事实上，公平性和性能在调度中是矛盾的，任何注重公平性的调度算法（即拥有良好的响应时间）在性能上（即周转时间）都会表现的很差。这是固有的权衡，鱼和熊掌不可兼得。\n合并I/O接下来我们放宽假设3，即任务除了使用CPU外，还可能执行I/O请求，在发起了I/O请求后，任务将不会使用CPU，并且将处于阻塞的状态以等待I/O完成。\n调度器需要决定I/O请求启动时是否切换至另一个任务，以及I/O完成时是执行当前任务还是切换回之前阻塞的任务。\n假设我们正试图建立一个STCF调度器，假设A和B两个任务均运行50ms，并且A每10ms会发起一个花费10ms的I/O请求。在这种情况下，通常的解决方法是将A划分为5个独立的子任务，这样，当A发起I/O请求并且阻塞之后，B就可以被执行，而当I/O完成后，新的A的子任务会抢占B而继续执行。\n上述的做法允许了重叠(Overlap)的发生，系统得以更好的利用处理器资源。\n多级反馈队列(Multi-Level Feedback Queue)最后，我们将放宽限制4，即系统不知道每个任务的运行时间。在这种情况下，我们将引入最有名的调度器之一——多级反馈队列来解决该问题。多级反馈队列试图在提升性能（即缩短平均周转时间）的同时最小化任务的响应时间。首先，我们将介绍有关多级反馈队列的最基本的概念。\nMLFQ:基本规则多级反馈队列(MLFQ)具有一系列相互独立的队列(Queue)，每一个队列都对应着不同的优先级(Priority Level)，在同一时间，一个任务只会处在一个队列中。\nMLFQ根据优先级决定运行哪一个任务：即具有更高优先级的任务会被运行。\n同时，考虑到可能会有多个任务处于同一个队列，即有可能出现相同优先级的情况，在这种情况下，MLFQ以轮循的方式运行这些任务。\n因此我们得到了如下的基本规则：\n\n如果A的优先级大于B的优先级，运行A(B不运行)\n如果A和B的优先级相同，以轮循的方式运行A和B\n\n假设两个任务A和B，A和B位于最高的优先级，而C和D位于次高的优先级，那么我们会发现，A和B会一直被运行，而C和D将永远无法被运行。\n尝试1:如何改变优先级MLFQ依据已经观察到的结果确定一个任务的优先级：如果一个任务在一个相当长的周期内一直在使用CPU，那么MLFQ会降低它的优先级，如果一个任务周期性的放弃CPU而等待用户的输入，那么MLFQ会维持它的优先级，因为这样的任务是一个活跃的任务。\n因此我们得到了如下的规则：\n\n当一个任务进入系统时，它将会被放置在优先级最高的队列\na如果一个任务在运行中占用了一个完整的时间分片，那么它的优先级会被降低\nb如果一个任务在时间分片用完前放弃了CPU，那么它的优先级维持不变\n\n在上述的规则中，我们考虑如下的两个问题：\n\n如果有太多的活跃任务，那么他们会占用所有的CPU时间，那么，长时间运行的任务将永远不会得到任何的CPU时间。\n程序可以以在时间分片用完前“故意”地放弃CPU以欺骗操作系统而使得其保持高优先级\n\n尝试2:优先级提高我们引入如下的规则来解决上面提到的问题1：\n\n在某个时间周期S之后，将系统中所有的任务提升至优先级最高的队列\n\n通过该规则，过多的活跃进程并不会完全占用CPU的时间，此外，当一个程序从不活跃转变为活跃时也能够及时得得到响应的CPU时间。\n尝试3:更好的计量我们引入如下的规则来解决上面提到的问题2:\n\n一旦某个任务用完了在给定优先级下的分配时间，无论它已经放弃了多少次CPU，降低它的优先级。\n\n这么做避免了一个任务欺骗操作系统，避免了其通过不公正的手段分享CPU的时间。\n","dateCreated":"2016-12-12T22:54:45+08:00","dateModified":"2018-05-11T06:05:24+08:00","datePublished":"2016-12-12T22:54:45+08:00","description":"","headline":"OSTEP学习笔记1","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://blog.codedragon.tech/2016/12/12/OSTEP学习笔记1/"},"publisher":{"@type":"Organization","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg","logo":{"@type":"ImageObject","url":"avatar.jpg"}},"url":"http://blog.codedragon.tech/2016/12/12/OSTEP学习笔记1/","keywords":"操作系统, 虚拟化, CPU"}</script>
     <meta name="description" content="最近开始看Operating Systems: Three Easy Pieces这本书，感觉光看书还是不够，还是需要将学习到的东西整理和归纳，以加深自己对于操作系统的理解。  CPU的虚拟化基本概念进程进程(Process)是操作系统对于一个正在运行的程序的抽象 进程API大体上可以分为创建(Create)，销毁(Destroy)，等待(Wait)，杂项控制(Miscellaneous Con">
 <meta name="keywords" content="操作系统,虚拟化,CPU">
 <meta property="og:type" content="blog">
@@ -20,7 +21,8 @@
 <meta property="og:url" content="http://blog.codedragon.tech/2016/12/12/OSTEP学习笔记1/index.html">
 <meta property="og:site_name" content="码龙的窝">
 <meta property="og:description" content="最近开始看Operating Systems: Three Easy Pieces这本书，感觉光看书还是不够，还是需要将学习到的东西整理和归纳，以加深自己对于操作系统的理解。  CPU的虚拟化基本概念进程进程(Process)是操作系统对于一个正在运行的程序的抽象 进程API大体上可以分为创建(Create)，销毁(Destroy)，等待(Wait)，杂项控制(Miscellaneous Con">
-<meta property="og:updated_time" content="2016-12-21T13:24:52.000Z">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2018-05-10T22:05:24.387Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OSTEP学习笔记1">
 <meta name="twitter:description" content="最近开始看Operating Systems: Three Easy Pieces这本书，感觉光看书还是不够，还是需要将学习到的东西整理和归纳，以加深自己对于操作系统的理解。  CPU的虚拟化基本概念进程进程(Process)是操作系统对于一个正在运行的程序的抽象 进程API大体上可以分为创建(Create)，销毁(Destroy)，等待(Wait)，杂项控制(Miscellaneous Con">
@@ -35,7 +37,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-gtvt1lbvzeqmr99zec4y42qrxw5ogq1gul5orw7somyh6cv5ckqsrl4abr9a.min.css">
+    <link rel="stylesheet" href="/assets/css/style-j4w0tbtf1olriqsnfyv4egntpbdblucqpyraoqqnvawa2vd6l4m8ljtn2yes.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -94,9 +96,9 @@
                 <a href="/#about">
                     <img class="sidebar-profile-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
                 </a>
-                <h4 class="sidebar-profile-name">CoSidian</h4>
+                <h4 class="sidebar-profile-name">码龙黑曜</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+                    <h5 class="sidebar-profile-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </h5>
                 
             </div>
@@ -199,7 +201,7 @@
                     
                         <a  class="sidebar-button-link " href="https://t.me/Cosidian" target="_blank" rel="noopener" title="Telegram">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-paper-plane" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-lg fa-telegram" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Telegram</span>
                     </a>
             </li>
@@ -229,7 +231,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/friendly-links"
+                             href="/links"
                             
                             title="友情链接"
                         >
@@ -242,13 +244,13 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/book-recommend"
+                             href="/resources"
                             
-                            title="图书推荐"
+                            title="学习资源"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-book" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">图书推荐</span>
+                        <i class="sidebar-button-icon fa fa-lg fa-share-alt" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">学习资源</span>
                     </a>
             </li>
             
@@ -263,18 +265,18 @@
                         hasCoverMetaIn
                         ">
                 
-<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+<article class="post">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title" itemprop="headline">
+        <h1 class="post-title">
             OSTEP学习笔记1
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2016-12-12T22:54:45+08:00">
+    <time datetime="2016-12-12T22:54:45+08:00">
 	
 		    12月 12, 2016
     	
@@ -290,8 +292,9 @@
 
     
 </div>
+
     
-    <div class="post-content markdown" itemprop="articleBody">
+    <div class="post-content markdown">
         <div class="main-content-wrap">
             <blockquote>
 <p>最近开始看Operating Systems: Three Easy Pieces这本书，感觉光看书还是不够，还是需要将学习到的东西整理和归纳，以加深自己对于操作系统的理解。</p>
@@ -441,7 +444,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -491,7 +494,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -511,7 +514,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 CoSidian. All Rights Reserved.
+        Copyrights &copy; 2018 码龙黑曜. All Rights Reserved.
     </span>
 </footer>
 
@@ -543,7 +546,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -593,7 +596,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -667,16 +670,16 @@
         
             <img id="about-card-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
         
-            <h4 id="about-card-name">CoSidian</h4>
+            <h4 id="about-card-name">码龙黑曜</h4>
         
-            <div id="about-card-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+            <div id="about-card-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>本科在读</p>
+                <p>华中科技大学 本科在读</p>
 
             </div>
         
@@ -684,7 +687,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker"></i>
                 <br/>
-                HUST, Wuhan, China
+                Wuhan, China
             </div>
         
     </div>
@@ -694,7 +697,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-i7zzex3jvqnxdf0lp2pg3bcyurjikigtrw9ljle5skc4mit2m7a13rwuyp8g.min.js"></script>
+<script src="/assets/js/script-feiabjni254mgbxiozwsjblcsiodjqohurk0dcfkq0aooroewq6bvkdnadrg.min.js"></script>
 <!--SCRIPTS END-->
 
     

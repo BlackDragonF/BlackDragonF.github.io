@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="码龙的窝">
     <title>树莓派学习笔记（一） - 码龙的窝</title>
-    <meta name="author" content="CoSidian">
+    <meta name="author" content="码龙黑曜">
+    
+        <meta name="keywords" content="博客,iOS,Computer Science,码龙,">
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
-    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg"},"articleBody":"寒假回家后买了一个树莓派来玩一玩，决定写博客来记录自己学到的东西。之前学习iOS的时候有很多时候都是单纯的解决了问题而没有归纳整理，结果到后面出现同样的问题的时候重复的在网上搜索，效率很低。这次尝试着记录自己的学习过程，看看效果如何。\n第一步 准备首先我在JD上买了一个树莓派二代B型，然而到货了之后，我才发现，光有板子是没有用的。\n之后我还准备了以下物品\n16G MicroSD卡＊1（其实8G也足够了）\nSD卡读卡器＊1（MBA上没有这种MicroSD卡的插槽）\n5V2.1A的电源适配器＊1（除此以外供电也可以使用移动电源）\n安卓手机的连接线＊1\n无源HDMI转VGA转接头＊1（此处有伏笔）\n网线＊1\n加上家里的显示器＊1 USB鼠标＊1 USB键盘＊1\n然后将键盘鼠标插入USB接口、HDMI线，电源线接好，MicroSD卡插入板子背面的插槽中到这里第一步就结束了。\n第二步 安装系统1.下载树莓派镜像文件解压完约3G左右 树莓派镜像\n2.取下MicroSD卡并通过读卡器连接至电脑\n3.使用Win32 Disk Image 为MicroSD卡写入镜像文件（这里我是在Windows虚拟机下操作的）\n第三步 启动树莓派按照第一步的最后组装完树莓派，打开电源，显示屏也亮了起来。OK，大功告成～\n然后第二天，我的树莓派就出现了问题…\n问题 启动树莓派后 显示器显示无信号1.我尝试了使用SDFormatter这个软件格式化了我的SD卡并重新写入系统镜像，失败\n2.根据上网查找的结果，修改MicroSD卡下Config.txt文件，失败\n3.最终发现是使用了无源HDMI转VGA转接头的问题，必须使用有源的HDMI转VGA转接头\n以下引用网上给出的解释\n\nHDMI连接器的第18针是一个+5V的供电，但是根据HDMI规范，其仅最多提供50mA的电流。\n树莓派对第18针的供电，是将+5V输入，串接一个二极管D1(BAT54)作为保护送往18针。BAT54最高允许200mA电流（够宽松了其实）。\n但是市售不带电源的HDMI→VGA转换器，往往会从HDMI 18针吸取高至500mA的电流，这样就会远远超出D1的耐受能力，而最终烧毁D1。于是目前（在新的有源转接头到货以及确认我的二极管有没有烧坏之前），只能（也最好）使用SSH的方式登陆树莓派了\n\n通过SSH登陆树莓派其实我一直觉得，用ssh远程登录树莓派才显得比较Geek。\n1.使用网线连接树莓派和路由器\n2.在路由器的登陆页面（默认是192.168.1.1）找到你的树莓派设备，记下它的ip地址\n3.在linux下，通过ssh -l pi xxx.xxx.xxx.xxx( 树莓派的ip) 登陆树莓派，密码默认为raspberry\n4.作为测试，使用树莓派自带的gcc编译hello world\n成功\n&nbsp;\n最后再次提醒 请不要使用无源的HDMI转VGA转接头 请不要使用无源的HDMI转VGA转接头 请不要使用无源的HDMI转VGA转接头\n","dateCreated":"2016-02-09T17:31:01+08:00","dateModified":"2018-05-11T06:05:24+08:00","datePublished":"2016-02-09T17:31:01+08:00","description":"","headline":"树莓派学习笔记（一）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://blog.codedragon.tech/2016/02/09/e6-a0-91-e8-8e-93-e6-b4-be-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/"},"publisher":{"@type":"Organization","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg","logo":{"@type":"ImageObject","url":"avatar.jpg"}},"url":"http://blog.codedragon.tech/2016/02/09/e6-a0-91-e8-8e-93-e6-b4-be-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/","keywords":"Raspberry, 学习笔记, 树莓派"}</script>
     <meta name="description" content="寒假回家后买了一个树莓派来玩一玩，决定写博客来记录自己学到的东西。之前学习iOS的时候有很多时候都是单纯的解决了问题而没有归纳整理，结果到后面出现同样的问题的时候重复的在网上搜索，效率很低。这次尝试着记录自己的学习过程，看看效果如何。 第一步 准备首先我在JD上买了一个树莓派二代B型，然而到货了之后，我才发现，光有板子是没有用的。 之后我还准备了以下物品 16G MicroSD卡＊1（其实8G也足">
 <meta name="keywords" content="Raspberry,学习笔记,树莓派">
 <meta property="og:type" content="blog">
@@ -20,7 +21,8 @@
 <meta property="og:url" content="http://blog.codedragon.tech/2016/02/09/e6-a0-91-e8-8e-93-e6-b4-be-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/index.html">
 <meta property="og:site_name" content="码龙的窝">
 <meta property="og:description" content="寒假回家后买了一个树莓派来玩一玩，决定写博客来记录自己学到的东西。之前学习iOS的时候有很多时候都是单纯的解决了问题而没有归纳整理，结果到后面出现同样的问题的时候重复的在网上搜索，效率很低。这次尝试着记录自己的学习过程，看看效果如何。 第一步 准备首先我在JD上买了一个树莓派二代B型，然而到货了之后，我才发现，光有板子是没有用的。 之后我还准备了以下物品 16G MicroSD卡＊1（其实8G也足">
-<meta property="og:updated_time" content="2016-12-12T08:21:58.000Z">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2018-05-10T22:05:24.390Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派学习笔记（一）">
 <meta name="twitter:description" content="寒假回家后买了一个树莓派来玩一玩，决定写博客来记录自己学到的东西。之前学习iOS的时候有很多时候都是单纯的解决了问题而没有归纳整理，结果到后面出现同样的问题的时候重复的在网上搜索，效率很低。这次尝试着记录自己的学习过程，看看效果如何。 第一步 准备首先我在JD上买了一个树莓派二代B型，然而到货了之后，我才发现，光有板子是没有用的。 之后我还准备了以下物品 16G MicroSD卡＊1（其实8G也足">
@@ -35,7 +37,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-gtvt1lbvzeqmr99zec4y42qrxw5ogq1gul5orw7somyh6cv5ckqsrl4abr9a.min.css">
+    <link rel="stylesheet" href="/assets/css/style-j4w0tbtf1olriqsnfyv4egntpbdblucqpyraoqqnvawa2vd6l4m8ljtn2yes.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -94,9 +96,9 @@
                 <a href="/#about">
                     <img class="sidebar-profile-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
                 </a>
-                <h4 class="sidebar-profile-name">CoSidian</h4>
+                <h4 class="sidebar-profile-name">码龙黑曜</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+                    <h5 class="sidebar-profile-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </h5>
                 
             </div>
@@ -199,7 +201,7 @@
                     
                         <a  class="sidebar-button-link " href="https://t.me/Cosidian" target="_blank" rel="noopener" title="Telegram">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-paper-plane" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-lg fa-telegram" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Telegram</span>
                     </a>
             </li>
@@ -229,7 +231,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/friendly-links"
+                             href="/links"
                             
                             title="友情链接"
                         >
@@ -242,13 +244,13 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/book-recommend"
+                             href="/resources"
                             
-                            title="图书推荐"
+                            title="学习资源"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-book" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">图书推荐</span>
+                        <i class="sidebar-button-icon fa fa-lg fa-share-alt" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">学习资源</span>
                     </a>
             </li>
             
@@ -263,18 +265,18 @@
                         hasCoverMetaIn
                         ">
                 
-<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+<article class="post">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title" itemprop="headline">
+        <h1 class="post-title">
             树莓派学习笔记（一）
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2016-02-09T17:31:01+08:00">
+    <time datetime="2016-02-09T17:31:01+08:00">
 	
 		    2月 09, 2016
     	
@@ -290,8 +292,9 @@
 
     
 </div>
+
     
-    <div class="post-content markdown" itemprop="articleBody">
+    <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>寒假回家后买了一个树莓派来玩一玩，决定写博客来记录自己学到的东西。之前学习iOS的时候有很多时候都是单纯的解决了问题而没有归纳整理，结果到后面出现同样的问题的时候重复的在网上搜索，效率很低。这次尝试着记录自己的学习过程，看看效果如何。</p>
 <h2 id="第一步-准备"><a href="#第一步-准备" class="headerlink" title="第一步 准备"></a>第一步 准备</h2><p>首先我在JD上买了一个树莓派二代B型，然而到货了之后，我才发现，光有板子是没有用的。</p>
@@ -304,7 +307,7 @@
 <p>网线＊1</p>
 <p>加上家里的显示器＊1 USB鼠标＊1 USB键盘＊1</p>
 <p>然后将键盘鼠标插入USB接口、HDMI线，电源线接好，MicroSD卡插入板子背面的插槽中<br>到这里第一步就结束了。</p>
-<h2 id="第二步-安装系统"><a href="#第二步-安装系统" class="headerlink" title="第二步 安装系统"></a>第二步 安装系统</h2><p>1.下载树莓派镜像文件解压完约3G左右 <a href="https://www.raspberrypi.org/downloads/raspbian/" target="_blank" rel="external">树莓派镜像</a></p>
+<h2 id="第二步-安装系统"><a href="#第二步-安装系统" class="headerlink" title="第二步 安装系统"></a>第二步 安装系统</h2><p>1.下载树莓派镜像文件解压完约3G左右 <a href="https://www.raspberrypi.org/downloads/raspbian/" target="_blank" rel="noopener">树莓派镜像</a></p>
 <p>2.取下MicroSD卡并通过读卡器连接至电脑</p>
 <p>3.使用Win32 Disk Image 为MicroSD卡写入镜像文件（这里我是在Windows虚拟机下操作的）</p>
 <h2 id="第三步-启动树莓派"><a href="#第三步-启动树莓派" class="headerlink" title="第三步 启动树莓派"></a>第三步 启动树莓派</h2><p>按照第一步的最后组装完树莓派，打开电源，显示屏也亮了起来。OK，大功告成～</p>
@@ -366,7 +369,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -416,7 +419,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -436,7 +439,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 CoSidian. All Rights Reserved.
+        Copyrights &copy; 2018 码龙黑曜. All Rights Reserved.
     </span>
 </footer>
 
@@ -468,7 +471,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -518,7 +521,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -592,16 +595,16 @@
         
             <img id="about-card-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
         
-            <h4 id="about-card-name">CoSidian</h4>
+            <h4 id="about-card-name">码龙黑曜</h4>
         
-            <div id="about-card-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+            <div id="about-card-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>本科在读</p>
+                <p>华中科技大学 本科在读</p>
 
             </div>
         
@@ -609,7 +612,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker"></i>
                 <br/>
-                HUST, Wuhan, China
+                Wuhan, China
             </div>
         
     </div>
@@ -619,7 +622,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-i7zzex3jvqnxdf0lp2pg3bcyurjikigtrw9ljle5skc4mit2m7a13rwuyp8g.min.js"></script>
+<script src="/assets/js/script-feiabjni254mgbxiozwsjblcsiodjqohurk0dcfkq0aooroewq6bvkdnadrg.min.js"></script>
 <!--SCRIPTS END-->
 
     

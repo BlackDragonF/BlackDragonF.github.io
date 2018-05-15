@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="码龙的窝">
     <title>gcc4.6.1编译问题总结以及modules的使用 - 码龙的窝</title>
-    <meta name="author" content="CoSidian">
+    <meta name="author" content="码龙黑曜">
+    
+        <meta name="keywords" content="博客,iOS,Computer Science,码龙,">
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
-    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg"},"articleBody":"前言在MIT6.828操作系统工程Lab1-Booting a PC实验报告中，出现了高版本gcc(&gt; 7.1.1-3)编译出的JOS内核不能使用的问题（Triple Fault）。此外，gcc无法编译生成32位的JOS内核。因此需要手动降级到低版本并且开启gcc-multilib。\n\n根据arch-dev-public，gcc-multilib已经被合并至了core/gcc之中。当然仍然可以通过Arch Linux Archive获取旧版本的gcc-multilib。\n\n然而Arch是一个崇尚“Modernity”的发行版（参考Arch之道）：\n\nArch尽全力保持软件处于最新的稳定版本，只要不出现系统软件包破损，都尽量用最新版本。\nArch Linux strives to maintain the latest stable release versions of its software as long as systemic package breakage can be reasonably avoided.\n\n综合arch-dev-public对于gcc所做的改动和Arch之道，保持系统gcc为旧版本的gcc-multilib显然不是一个“优雅”的做法。最终，我决定按照6.828 Lab Tools的指导，手动编译gcc 4.6.1作为JOS内核的交叉编译工具链。\n问题编译gcc 4.6.1中遇到的问题以及解决方案总结如下：\n\n网站上给出的部分软件包的下载链接已经过期。\n网站上的教程默认将工具链安装在了/usr/local/下，这里为了管理上的方便没有采用默认的做法，而是将gcc直接安装在了home目录下（通过configure时的–prefix参数指定）。\n接2，使用./comfigure –help获取帮助。在某些包configure时，需要使用如–with-mpc=… –with-gmp=…等参数来告知相应包的位置。\n由于texinfo版本过高导致低版本的gcc不能正确编译，需要在configure时加上MAKEINFO=missing（当然，你也可以降级texinfo）。\ngcc 4.6.1的源码存在一个作用域错误问题。找到gcc/gengtype.c的write_field_root函数，将struct pair new;移动到函数的起始位置。\n编译gcc时出现了libmpc.so.2库找不到的问题。需要修改环境变量LD_LIBRARY_PATH并添加相应的目录，或者也可以在configure的时候用参数–libdir指定库位置。\ngcc 4.6.1的源码存在一个数组访问越界错误，具体参考这里。\n\nModules包管理软件与环境变量\n提一个简单的问题，当我们使用包管理软件（例如pacman）安装某个包（例如unzip）之后，在终端中输入unzip …即可解压zip文件。那么包管理软件究竟做了什么呢？\n\n\n如果是从yaourt安装AUR的包，情况又会发生什么变化呢？\n\n包管理软件主要管理各种包以及处理包与包之间的依赖问题。在安装包的时候，包管理软件从镜像源获取包，将包解压并且将内容复制到系统对应的位置。诸如yaourt这样的包管理软件使用ABS（Arch Build System），根据pkgbuild文件的指导在本机下载源码、编译并打包，并且将生成的包安装到系统中。\n以unzip-natspec为例（这是一个可以识别zip编码格式的unzip版本），我们使用pacman查看包的内容以及对应的位置：\n123456789101112131415161718pacman -Ql unzip-natspec                       unzip-natspec /usr/unzip-natspec /usr/bin/unzip-natspec /usr/bin/funzipunzip-natspec /usr/bin/unzipunzip-natspec /usr/bin/unzipsfxunzip-natspec /usr/bin/zipgrepunzip-natspec /usr/bin/zipinfounzip-natspec /usr/share/unzip-natspec /usr/share/licenses/unzip-natspec /usr/share/licenses/unzip/unzip-natspec /usr/share/licenses/unzip/LICENSEunzip-natspec /usr/share/man/unzip-natspec /usr/share/man/man1/unzip-natspec /usr/share/man/man1/funzip.1.gzunzip-natspec /usr/share/man/man1/unzip.1.gzunzip-natspec /usr/share/man/man1/unzipsfx.1.gzunzip-natspec /usr/share/man/man1/zipgrep.1.g\n可以看出unzip被放在/usr/bin目录下。可是为什么我们可以直接在终端中输入unzip …执行解压的命令而不是输入/usr/bin/unzip …呢？这就涉及到了环境变量PATH。\n环境变量是一个动态命名的值，用来影响计算机上进程运行的行为。PATH设置了一组包含可执行文件的目录。在输入unzip的时候，终端默认会在PATH所包含的目录中寻找unzip，如果找到了就执行它。我们使用echo命令打印当前终端的环境变量。\n12echo $PATH/home/user/intel/vtune_amplifier_2018.1.0.535340/bin64 /bin /usr/bin /usr/local/bin /usr/local/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /usr/lib/smlnj/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl\n6.828网站上默认将工具链安装在了/usr/local目录下，而/usr/local/bin是位于环境变量PATH中的。因此，我们的qemu以及make可以直接找到编译好的工具链并调用。现在，我们将工具链安装在了一个不属于PATH的目录中。对于这种情况，我们必须使用某种方式（如shell脚本），将相应目录添加PATH中。\n对于我们编译的工具链，还需要设置环境变量LD_LIBRARY_PATH才可正常工作。LD_LIBRARY_PATH涉及linux的动态链接库（共享库），可以自行去搜索相关知识。\n当我们安装的程序变多，脚本也会越变越多，管理诸如PATH的环境变量也变得不方便。我们的jos内核使用的工具链加上了“i386-jos-elf”的前缀。若没有该前缀，添加环境变量后，终端会优先使用gcc 4.6.1作为默认的gcc，这显然不是我们期望的结果。因此，我们可能还需要写另一个脚本，将相应的目录从PATH中移除。\n此外，根据脚本的是否在终端启动时被执行，还可能出现不同终端环境不同的问题。\n那么，有没有一种方法可以快速方便的管理不同软件以及他们所需要的环境变量呢？Modules正是一个可行的方法。\n简介Modules（Environment Modules）通过modulefile动态地改变用户环境。可以在Arch中安装env-modules（AUR）以使用Modules。\n安装完毕后，需要编辑终端的配置文件来启用Modules。Modules的shell初始化放在/etc/modules/init文件夹下。\nModules使用Tcl作为脚本语言，编写modulefile时可以直接man modulefile获取帮助。\n实例给出管理jos工具链的modulefile，文件放置在/etc/modules/modulefiles文件夹下。使用module load jos加载环境，module unload jos取消环境。modulefile中的prepend-path扩展了环境变量PATH以及LD_LIBRARY_PATH。在调用unload的时候prepeng-path会自动被替换成remove-path。\njos1234567891011#%Module1.0#### modulefile##proc ModulesHelp &#123;&#125; &#123;    puts stderr \"Adds cross compile toolchain(gcc 4.6.1 i386) for MIT jos to user environment\"&#125;module-whatis \"adds cross compile toolchain(gcc 4.6.1 i386) for MIT jos to user environment\"set     root_dir    /home/chenzhihao/6.828/gccprepend-path    PATH        $root_dir/binprepend-path    LD_LIBRARY_PATH $root_dir/lib\n","dateCreated":"2018-02-01T17:13:52+08:00","dateModified":"2018-05-11T06:05:24+08:00","datePublished":"2018-02-01T17:13:52+08:00","description":"","headline":"gcc4.6.1编译问题总结以及modules的使用","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://blog.codedragon.tech/2018/02/01/gcc4-6-1编译问题总结以及modules的使用/"},"publisher":{"@type":"Organization","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg","logo":{"@type":"ImageObject","url":"avatar.jpg"}},"url":"http://blog.codedragon.tech/2018/02/01/gcc4-6-1编译问题总结以及modules的使用/","keywords":"gcc, modules, 运维"}</script>
     <meta name="description" content="前言在MIT6.828操作系统工程Lab1-Booting a PC实验报告中，出现了高版本gcc(&amp;gt; 7.1.1-3)编译出的JOS内核不能使用的问题（Triple Fault）。此外，gcc无法编译生成32位的JOS内核。因此需要手动降级到低版本并且开启gcc-multilib。  根据arch-dev-public，gcc-multilib已经被合并至了core/gcc之中。当然仍然可">
 <meta name="keywords" content="gcc,modules,运维">
 <meta property="og:type" content="blog">
@@ -20,7 +21,8 @@
 <meta property="og:url" content="http://blog.codedragon.tech/2018/02/01/gcc4-6-1编译问题总结以及modules的使用/index.html">
 <meta property="og:site_name" content="码龙的窝">
 <meta property="og:description" content="前言在MIT6.828操作系统工程Lab1-Booting a PC实验报告中，出现了高版本gcc(&amp;gt; 7.1.1-3)编译出的JOS内核不能使用的问题（Triple Fault）。此外，gcc无法编译生成32位的JOS内核。因此需要手动降级到低版本并且开启gcc-multilib。  根据arch-dev-public，gcc-multilib已经被合并至了core/gcc之中。当然仍然可">
-<meta property="og:updated_time" content="2018-02-03T15:47:52.066Z">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2018-05-10T22:05:24.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gcc4.6.1编译问题总结以及modules的使用">
 <meta name="twitter:description" content="前言在MIT6.828操作系统工程Lab1-Booting a PC实验报告中，出现了高版本gcc(&amp;gt; 7.1.1-3)编译出的JOS内核不能使用的问题（Triple Fault）。此外，gcc无法编译生成32位的JOS内核。因此需要手动降级到低版本并且开启gcc-multilib。  根据arch-dev-public，gcc-multilib已经被合并至了core/gcc之中。当然仍然可">
@@ -35,7 +37,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-gtvt1lbvzeqmr99zec4y42qrxw5ogq1gul5orw7somyh6cv5ckqsrl4abr9a.min.css">
+    <link rel="stylesheet" href="/assets/css/style-j4w0tbtf1olriqsnfyv4egntpbdblucqpyraoqqnvawa2vd6l4m8ljtn2yes.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -94,9 +96,9 @@
                 <a href="/#about">
                     <img class="sidebar-profile-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
                 </a>
-                <h4 class="sidebar-profile-name">CoSidian</h4>
+                <h4 class="sidebar-profile-name">码龙黑曜</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+                    <h5 class="sidebar-profile-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </h5>
                 
             </div>
@@ -199,7 +201,7 @@
                     
                         <a  class="sidebar-button-link " href="https://t.me/Cosidian" target="_blank" rel="noopener" title="Telegram">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-paper-plane" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-lg fa-telegram" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Telegram</span>
                     </a>
             </li>
@@ -229,7 +231,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/friendly-links"
+                             href="/links"
                             
                             title="友情链接"
                         >
@@ -242,13 +244,13 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/book-recommend"
+                             href="/resources"
                             
-                            title="图书推荐"
+                            title="学习资源"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-book" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">图书推荐</span>
+                        <i class="sidebar-button-icon fa fa-lg fa-share-alt" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">学习资源</span>
                     </a>
             </li>
             
@@ -263,18 +265,18 @@
                         hasCoverMetaIn
                         ">
                 
-<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+<article class="post">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title" itemprop="headline">
+        <h1 class="post-title">
             gcc4.6.1编译问题总结以及modules的使用
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2018-02-01T17:13:52+08:00">
+    <time datetime="2018-02-01T17:13:52+08:00">
 	
 		    2月 01, 2018
     	
@@ -290,19 +292,20 @@
 
     
 </div>
+
     
-    <div class="post-content markdown" itemprop="articleBody">
+    <div class="post-content markdown">
         <div class="main-content-wrap">
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在<a href="http://blog.codedragon.tech/2017/12/09/MIT6-828%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8BLab1-Booting-a-PC%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">MIT6.828操作系统工程Lab1-Booting a PC实验报告</a>中，出现了高版本gcc(&gt; 7.1.1-3)编译出的JOS内核不能使用的问题（Triple Fault）。此外，gcc无法编译生成32位的JOS内核。因此需要手动降级到低版本并且开启gcc-multilib。</p>
 <blockquote>
-<p>根据<a href="https://lists.archlinux.org/pipermail/arch-dev-public/2017-November/029034.html" target="_blank" rel="external">arch-dev-public</a>，gcc-multilib已经被合并至了core/gcc之中。当然仍然可以通过<a href="https://archive.archlinux.org/" target="_blank" rel="external">Arch Linux Archive</a>获取旧版本的gcc-multilib。</p>
+<p>根据<a href="https://lists.archlinux.org/pipermail/arch-dev-public/2017-November/029034.html" target="_blank" rel="noopener">arch-dev-public</a>，gcc-multilib已经被合并至了core/gcc之中。当然仍然可以通过<a href="https://archive.archlinux.org/" target="_blank" rel="noopener">Arch Linux Archive</a>获取旧版本的gcc-multilib。</p>
 </blockquote>
-<p>然而Arch是一个崇尚“Modernity”的发行版（参考<a href="https://wiki.archlinux.org/index.php/Arch_Linux" target="_blank" rel="external">Arch之道</a>）：</p>
+<p>然而Arch是一个崇尚“Modernity”的发行版（参考<a href="https://wiki.archlinux.org/index.php/Arch_Linux" target="_blank" rel="noopener">Arch之道</a>）：</p>
 <blockquote>
 <p>Arch尽全力保持软件处于最新的稳定版本，只要不出现系统软件包破损，都尽量用最新版本。</p>
 <p>Arch Linux strives to maintain the latest stable release versions of its software as long as systemic package breakage can be reasonably avoided.</p>
 </blockquote>
-<p>综合arch-dev-public对于gcc所做的改动和Arch之道，保持系统gcc为旧版本的gcc-multilib显然不是一个“优雅”的做法。最终，我决定按照<a href="https://pdos.csail.mit.edu/6.828/2017/tools.html" target="_blank" rel="external">6.828 Lab Tools</a>的指导，手动编译gcc 4.6.1作为JOS内核的交叉编译工具链。</p>
+<p>综合arch-dev-public对于gcc所做的改动和Arch之道，保持系统gcc为旧版本的gcc-multilib显然不是一个“优雅”的做法。最终，我决定按照<a href="https://pdos.csail.mit.edu/6.828/2017/tools.html" target="_blank" rel="noopener">6.828 Lab Tools</a>的指导，手动编译gcc 4.6.1作为JOS内核的交叉编译工具链。</p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>编译gcc 4.6.1中遇到的问题以及解决方案总结如下：</p>
 <ol>
 <li>网站上给出的部分软件包的下载链接已经过期。</li>
@@ -311,28 +314,30 @@
 <li>由于texinfo版本过高导致低版本的gcc不能正确编译，需要在configure时加上MAKEINFO=missing（当然，你也可以降级texinfo）。</li>
 <li>gcc 4.6.1的源码存在一个作用域错误问题。找到gcc/gengtype.c的write_field_root函数，将struct pair new;移动到函数的起始位置。</li>
 <li>编译gcc时出现了libmpc.so.2库找不到的问题。需要修改环境变量LD_LIBRARY_PATH并添加相应的目录，或者也可以在configure的时候用参数–libdir指定库位置。</li>
-<li>gcc 4.6.1的源码存在一个数组访问越界错误，具体参考<a href="https://gcc.gnu.org/viewcvs/gcc?view=revision&amp;revision=191606" target="_blank" rel="external">这里</a>。</li>
+<li>gcc 4.6.1的源码存在一个数组访问越界错误，具体参考<a href="https://gcc.gnu.org/viewcvs/gcc?view=revision&amp;revision=191606" target="_blank" rel="noopener">这里</a>。</li>
 </ol>
 <h2 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h2><h3 id="包管理软件与环境变量"><a href="#包管理软件与环境变量" class="headerlink" title="包管理软件与环境变量"></a>包管理软件与环境变量</h3><blockquote>
 <p>提一个简单的问题，当我们使用包管理软件（例如pacman）安装某个包（例如unzip）之后，在终端中输入unzip …即可解压zip文件。那么包管理软件究竟做了什么呢？</p>
+</blockquote>
+<blockquote>
 <p>如果是从yaourt安装AUR的包，情况又会发生什么变化呢？</p>
 </blockquote>
 <p>包管理软件主要管理各种包以及处理包与包之间的依赖问题。在安装包的时候，包管理软件从镜像源获取包，将包解压并且将内容复制到系统对应的位置。<br>诸如yaourt这样的包管理软件使用ABS（Arch Build System），根据pkgbuild文件的指导在本机下载源码、编译并打包，并且将生成的包安装到系统中。</p>
 <p>以unzip-natspec为例（这是一个可以识别zip编码格式的unzip版本），我们使用pacman查看包的内容以及对应的位置：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">pacman -Ql unzip-natspec                       </div><div class="line">unzip-natspec /usr/</div><div class="line">unzip-natspec /usr/bin/</div><div class="line">unzip-natspec /usr/bin/funzip</div><div class="line">unzip-natspec /usr/bin/unzip</div><div class="line">unzip-natspec /usr/bin/unzipsfx</div><div class="line">unzip-natspec /usr/bin/zipgrep</div><div class="line">unzip-natspec /usr/bin/zipinfo</div><div class="line">unzip-natspec /usr/share/</div><div class="line">unzip-natspec /usr/share/licenses/</div><div class="line">unzip-natspec /usr/share/licenses/unzip/</div><div class="line">unzip-natspec /usr/share/licenses/unzip/LICENSE</div><div class="line">unzip-natspec /usr/share/man/</div><div class="line">unzip-natspec /usr/share/man/man1/</div><div class="line">unzip-natspec /usr/share/man/man1/funzip.1.gz</div><div class="line">unzip-natspec /usr/share/man/man1/unzip.1.gz</div><div class="line">unzip-natspec /usr/share/man/man1/unzipsfx.1.gz</div><div class="line">unzip-natspec /usr/share/man/man1/zipgrep.1.g</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">pacman -Ql unzip-natspec                       </span><br><span class="line">unzip-natspec /usr/</span><br><span class="line">unzip-natspec /usr/bin/</span><br><span class="line">unzip-natspec /usr/bin/funzip</span><br><span class="line">unzip-natspec /usr/bin/unzip</span><br><span class="line">unzip-natspec /usr/bin/unzipsfx</span><br><span class="line">unzip-natspec /usr/bin/zipgrep</span><br><span class="line">unzip-natspec /usr/bin/zipinfo</span><br><span class="line">unzip-natspec /usr/share/</span><br><span class="line">unzip-natspec /usr/share/licenses/</span><br><span class="line">unzip-natspec /usr/share/licenses/unzip/</span><br><span class="line">unzip-natspec /usr/share/licenses/unzip/LICENSE</span><br><span class="line">unzip-natspec /usr/share/man/</span><br><span class="line">unzip-natspec /usr/share/man/man1/</span><br><span class="line">unzip-natspec /usr/share/man/man1/funzip.1.gz</span><br><span class="line">unzip-natspec /usr/share/man/man1/unzip.1.gz</span><br><span class="line">unzip-natspec /usr/share/man/man1/unzipsfx.1.gz</span><br><span class="line">unzip-natspec /usr/share/man/man1/zipgrep.1.g</span><br></pre></td></tr></table></figure>
 <p>可以看出unzip被放在/usr/bin目录下。可是为什么我们可以直接在终端中输入unzip …执行解压的命令而不是输入/usr/bin/unzip …呢？这就涉及到了环境变量PATH。</p>
 <p>环境变量是一个动态命名的值，用来影响计算机上进程运行的行为。PATH设置了一组包含可执行文件的目录。在输入unzip的时候，终端默认会在PATH所包含的目录中寻找unzip，如果找到了就执行它。我们使用echo命令打印当前终端的环境变量。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></div><div class="line">/home/user/intel/vtune_amplifier_2018.1.0.535340/bin64 /bin /usr/bin /usr/<span class="built_in">local</span>/bin /usr/<span class="built_in">local</span>/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /usr/lib/smlnj/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">/home/user/intel/vtune_amplifier_2018.1.0.535340/bin64 /bin /usr/bin /usr/<span class="built_in">local</span>/bin /usr/<span class="built_in">local</span>/sbin /usr/lib/jvm/default/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl /usr/lib/smlnj/bin /usr/bin/site_perl /usr/bin/vendor_perl /usr/bin/core_perl</span><br></pre></td></tr></table></figure>
 <p>6.828网站上默认将工具链安装在了/usr/local目录下，而/usr/local/bin是位于环境变量PATH中的。<br>因此，我们的qemu以及make可以直接找到编译好的工具链并调用。<br>现在，我们将工具链安装在了一个不属于PATH的目录中。对于这种情况，我们必须使用某种方式（如shell脚本），将相应目录添加PATH中。</p>
 <p>对于我们编译的工具链，还需要设置环境变量LD_LIBRARY_PATH才可正常工作。LD_LIBRARY_PATH涉及linux的动态链接库（共享库），可以自行去搜索相关知识。</p>
 <p>当我们安装的程序变多，脚本也会越变越多，管理诸如PATH的环境变量也变得不方便。<br>我们的jos内核使用的工具链加上了“i386-jos-elf”的前缀。若没有该前缀，添加环境变量后，终端会优先使用gcc 4.6.1作为默认的gcc，这显然不是我们期望的结果。<br>因此，我们可能还需要写另一个脚本，将相应的目录从PATH中移除。</p>
 <p>此外，根据脚本的是否在终端启动时被执行，还可能出现不同终端环境不同的问题。</p>
 <p>那么，有没有一种方法可以快速方便的管理不同软件以及他们所需要的环境变量呢？Modules正是一个可行的方法。</p>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><a href="http://modules.sourceforge.net/" target="_blank" rel="external">Modules（Environment Modules）</a>通过modulefile动态地改变用户环境。可以在Arch中安装env-modules（AUR）以使用Modules。</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><a href="http://modules.sourceforge.net/" target="_blank" rel="noopener">Modules（Environment Modules）</a>通过modulefile动态地改变用户环境。可以在Arch中安装env-modules（AUR）以使用Modules。</p>
 <p>安装完毕后，需要编辑终端的配置文件来启用Modules。Modules的shell初始化放在/etc/modules/init文件夹下。</p>
 <p>Modules使用Tcl作为脚本语言，编写modulefile时可以直接man modulefile获取帮助。</p>
 <h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>给出管理jos工具链的modulefile，文件放置在/etc/modules/modulefiles文件夹下。使用module load jos加载环境，module unload jos取消环境。modulefile中的prepend-path扩展了环境变量PATH以及LD_LIBRARY_PATH。在调用unload的时候prepeng-path会自动被替换成remove-path。</p>
-<p>jos<br><figure class="highlight tcl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#%Module1.0</span></div><div class="line"><span class="comment">##</span></div><div class="line"><span class="comment">## modulefile</span></div><div class="line"><span class="comment">##</span></div><div class="line"><span class="keyword">proc</span><span class="title"> ModulesHelp</span> &#123;&#125; &#123;</div><div class="line">    <span class="keyword">puts</span> stderr <span class="string">"Adds cross compile toolchain(gcc 4.6.1 i386) for MIT jos to user environment"</span></div><div class="line">&#125;</div><div class="line">module-whatis <span class="string">"adds cross compile toolchain(gcc 4.6.1 i386) for MIT jos to user environment"</span></div><div class="line"><span class="keyword">set</span>     root_dir    /home/chenzhihao/<span class="number">6.828</span>/gcc</div><div class="line">prepend-path    PATH        $root_dir/bin</div><div class="line">prepend-path    LD_LIBRARY_PATH $root_dir/lib</div></pre></td></tr></table></figure></p>
+<p>jos<br><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#%Module1.0</span></span><br><span class="line"><span class="comment">##</span></span><br><span class="line"><span class="comment">## modulefile</span></span><br><span class="line"><span class="comment">##</span></span><br><span class="line"><span class="keyword">proc</span><span class="title"> ModulesHelp</span> &#123;&#125; &#123;</span><br><span class="line">    <span class="keyword">puts</span> stderr <span class="string">"Adds cross compile toolchain(gcc 4.6.1 i386) for MIT jos to user environment"</span></span><br><span class="line">&#125;</span><br><span class="line">module-whatis <span class="string">"adds cross compile toolchain(gcc 4.6.1 i386) for MIT jos to user environment"</span></span><br><span class="line"><span class="keyword">set</span>     root_dir    /home/chenzhihao/<span class="number">6.828</span>/gcc</span><br><span class="line">prepend-path    PATH        $root_dir/bin</span><br><span class="line">prepend-path    LD_LIBRARY_PATH $root_dir/lib</span><br></pre></td></tr></table></figure></p>
 
             
 
@@ -373,7 +378,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -423,7 +428,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -443,7 +448,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 CoSidian. All Rights Reserved.
+        Copyrights &copy; 2018 码龙黑曜. All Rights Reserved.
     </span>
 </footer>
 
@@ -475,7 +480,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -525,7 +530,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -599,16 +604,16 @@
         
             <img id="about-card-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
         
-            <h4 id="about-card-name">CoSidian</h4>
+            <h4 id="about-card-name">码龙黑曜</h4>
         
-            <div id="about-card-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+            <div id="about-card-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>本科在读</p>
+                <p>华中科技大学 本科在读</p>
 
             </div>
         
@@ -616,7 +621,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker"></i>
                 <br/>
-                HUST, Wuhan, China
+                Wuhan, China
             </div>
         
     </div>
@@ -626,7 +631,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-i7zzex3jvqnxdf0lp2pg3bcyurjikigtrw9ljle5skc4mit2m7a13rwuyp8g.min.js"></script>
+<script src="/assets/js/script-feiabjni254mgbxiozwsjblcsiodjqohurk0dcfkq0aooroewq6bvkdnadrg.min.js"></script>
 <!--SCRIPTS END-->
 
     

@@ -7,19 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="码龙的窝">
     <title>C语言第四次作业 - 码龙的窝</title>
-    <meta name="author" content="CoSidian">
+    <meta name="author" content="码龙黑曜">
+    
+        <meta name="keywords" content="博客,iOS,Computer Science,码龙,">
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
-    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg"},"articleBody":"第一题1234567891011121314151617181920212223242526272829303132333435#include &lt;stdio.h&gt;;void swap(int *a, int *b);int main (void)&#123;    int number[10];    int i, j;//循环变量    while (scanf(&quot;%d&quot;, &amp;amp;number[0]) != EOF)    &#123;        for (i = 1 ; i &amp;lt; 10 ; i++)            scanf(&quot;%d&quot;, &amp;amp;number[i]);        for (i = 0 ; i &amp;lt; 9 ; i++)        &#123;            for (j = 0 ; j &amp;lt;= 8 - i ; j++)            &#123;                if (number[j] &amp;gt; number[j+1])                    swap(&amp;amp;number[j], &amp;amp;number[j+1]);            &#125;        &#125;        for (i = 0 ; i &amp;lt; 10 ; i++)        &#123;            if (i != 0) printf(&quot;-&amp;gt;&quot;);            printf(&quot;%d&quot;, number[i]);        &#125;        putchar(&apos;\\n&apos;);    &#125;    return 0;&#125;void swap(int *a, int *b)&#123;    int temp;    temp = *a;    *a = *b;    *b = temp;    return;&#125;\n第二题1234567891011121314151617#include &lt;stdio.h&gt;;int main (void)&#123;    long number;    char currentByte;    int count;    while (scanf(&quot;%ld&quot;, &amp;amp;number) != EOF)    &#123;        for (count = 7 ; count &amp;gt;= 0 ; count--)        &#123;            currentByte = (((0xf &amp;lt;&amp;lt; (count * 4)) &amp;amp; number) &amp;gt;&amp;gt; (count * 4)) &amp;amp; 0xf;            printf(&quot;%hd(%c) &quot;, currentByte, currentByte);        &#125;        putchar(&apos;\\n&apos;);    &#125;    return 0;&#125;\n第三题1234567891011121314151617181920212223242526272829303132333435363738394041424344#include &lt;stdio.h&gt;;void swapArray(int a[], int n);void swap(int *a, int *b);int main (void)&#123;    int number[100];    int totalNumber, individualNumber;    int count, i;//循环变量    scanf(&quot;%d&quot;, &amp;amp;totalNumber);    for (count = 0 ; count &amp;lt; totalNumber; count++)    &#123;        scanf(&quot;%d&quot;, &amp;amp;individualNumber);        for (i = 0 ; i &amp;lt; individualNumber ; i++)            scanf(&quot;%d&quot;, &amp;amp;number[i]);        swapArray(number, individualNumber);        for (i = 0 ; i &amp;lt; individualNumber ; i++)        &#123;            if (i != 0) putchar(&apos; &apos;);            printf(&quot;%d&quot;, number[i]);        &#125;        putchar(&apos;\\n&apos;);    &#125;    return 0;&#125;void swapArray(int a[], int n)&#123;    int startIndex = 0;    int endIndex = n - 1;    while (startIndex &amp;lt;= endIndex)    &#123;        swap(&amp;amp;a[startIndex], &amp;amp;a[endIndex]);        startIndex++;        endIndex--;    &#125;    return;&#125;void swap(int *a, int *b)&#123;    int temp;    temp = *a;    *a = *b;    *b = temp;    return;&#125;\n第四题1234567891011121314151617181920212223242526272829303132333435363738394041424344454647#include &lt;stdio.h&gt;;void swap(int *a, int *b);void moveArray(int a[], int n, int m);//轮移数组,其中n为总个数,m为轮移次数int main (void)&#123;    int number[22];    int individualNumber, middleNumber;    int i;//循环变量    while ((scanf(&quot;%d&quot;, &amp;amp;individualNumber), individualNumber) != 0)    &#123;        scanf(&quot;%d&quot;, &amp;amp;middleNumber);        for (i = 0 ; i &amp;lt; individualNumber ; i++)            scanf(&quot;%d&quot;, &amp;amp;number[i]);        moveArray(number, individualNumber, middleNumber);        for (i = 0 ; i &amp;lt; individualNumber ; i++)        &#123;            if (i != 0) putchar(&apos; &apos;);            printf(&quot;%d&quot;, number[i]);        &#125;        putchar(&apos;\\n&apos;);    &#125;    return 0;&#125;void moveArray(int a[], int n, int m)&#123;    if (m == 0)    &#123;        return;    &#125;    else    &#123;        int temp, count;        temp = a[0];        for (count = 0 ; count &amp;lt; n - 1 ; count++)            a[count] = a[count+1];        a[n-1] = temp;        moveArray(a, n, --m);    &#125;&#125;void swap(int *a, int *b)&#123;    int temp;    temp = *a;    *a = *b;    *b = temp;    return;&#125;\n","dateCreated":"2016-05-18T12:26:20+08:00","dateModified":"2018-05-11T06:05:24+08:00","datePublished":"2016-05-18T12:26:20+08:00","description":"","headline":"C语言第四次作业","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://blog.codedragon.tech/2016/05/18/79-2/"},"publisher":{"@type":"Organization","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg","logo":{"@type":"ImageObject","url":"avatar.jpg"}},"url":"http://blog.codedragon.tech/2016/05/18/79-2/"}</script>
     <meta name="description" content="第一题1234567891011121314151617181920212223242526272829303132333435#include &amp;lt;stdio.h&amp;gt;;void swap(int *a, int *b);int main (void)&amp;#123;    int number[10];    int i, j;//循环变量    while (scanf(&amp;quot;%d&amp;">
+<meta name="keywords" content="博客,iOS,Computer Science,码龙">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="C语言第四次作业">
 <meta property="og:url" content="http://blog.codedragon.tech/2016/05/18/79-2/index.html">
 <meta property="og:site_name" content="码龙的窝">
 <meta property="og:description" content="第一题1234567891011121314151617181920212223242526272829303132333435#include &amp;lt;stdio.h&amp;gt;;void swap(int *a, int *b);int main (void)&amp;#123;    int number[10];    int i, j;//循环变量    while (scanf(&amp;quot;%d&amp;">
-<meta property="og:updated_time" content="2016-12-12T08:28:45.000Z">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2018-05-10T22:05:24.383Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C语言第四次作业">
 <meta name="twitter:description" content="第一题1234567891011121314151617181920212223242526272829303132333435#include &amp;lt;stdio.h&amp;gt;;void swap(int *a, int *b);int main (void)&amp;#123;    int number[10];    int i, j;//循环变量    while (scanf(&amp;quot;%d&amp;">
@@ -34,7 +37,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-gtvt1lbvzeqmr99zec4y42qrxw5ogq1gul5orw7somyh6cv5ckqsrl4abr9a.min.css">
+    <link rel="stylesheet" href="/assets/css/style-j4w0tbtf1olriqsnfyv4egntpbdblucqpyraoqqnvawa2vd6l4m8ljtn2yes.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -93,9 +96,9 @@
                 <a href="/#about">
                     <img class="sidebar-profile-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
                 </a>
-                <h4 class="sidebar-profile-name">CoSidian</h4>
+                <h4 class="sidebar-profile-name">码龙黑曜</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+                    <h5 class="sidebar-profile-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </h5>
                 
             </div>
@@ -198,7 +201,7 @@
                     
                         <a  class="sidebar-button-link " href="https://t.me/Cosidian" target="_blank" rel="noopener" title="Telegram">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-paper-plane" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-lg fa-telegram" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Telegram</span>
                     </a>
             </li>
@@ -228,7 +231,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/friendly-links"
+                             href="/links"
                             
                             title="友情链接"
                         >
@@ -241,13 +244,13 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/book-recommend"
+                             href="/resources"
                             
-                            title="图书推荐"
+                            title="学习资源"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-book" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">图书推荐</span>
+                        <i class="sidebar-button-icon fa fa-lg fa-share-alt" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">学习资源</span>
                     </a>
             </li>
             
@@ -262,18 +265,18 @@
                         hasCoverMetaIn
                         ">
                 
-<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+<article class="post">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title" itemprop="headline">
+        <h1 class="post-title">
             C语言第四次作业
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2016-05-18T12:26:20+08:00">
+    <time datetime="2016-05-18T12:26:20+08:00">
 	
 		    5月 18, 2016
     	
@@ -289,13 +292,14 @@
 
     
 </div>
+
     
-    <div class="post-content markdown" itemprop="articleBody">
+    <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h2 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;;</div><div class="line">void swap(int *a, int *b);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">    int number[10];</div><div class="line">    int i, j;//循环变量</div><div class="line">    while (scanf(&quot;%d&quot;, &amp;amp;number[0]) != EOF)</div><div class="line">    &#123;</div><div class="line">        for (i = 1 ; i &amp;lt; 10 ; i++)</div><div class="line">            scanf(&quot;%d&quot;, &amp;amp;number[i]);</div><div class="line">        for (i = 0 ; i &amp;lt; 9 ; i++)</div><div class="line">        &#123;</div><div class="line">            for (j = 0 ; j &amp;lt;= 8 - i ; j++)</div><div class="line">            &#123;</div><div class="line">                if (number[j] &amp;gt; number[j+1])</div><div class="line">                    swap(&amp;amp;number[j], &amp;amp;number[j+1]);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        for (i = 0 ; i &amp;lt; 10 ; i++)</div><div class="line">        &#123;</div><div class="line">            if (i != 0) printf(&quot;-&amp;gt;&quot;);</div><div class="line">            printf(&quot;%d&quot;, number[i]);</div><div class="line">        &#125;</div><div class="line">        putchar(&apos;\n&apos;);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line">void swap(int *a, int *b)</div><div class="line">&#123;</div><div class="line">    int temp;</div><div class="line">    temp = *a;</div><div class="line">    *a = *b;</div><div class="line">    *b = temp;</div><div class="line">    return;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">    long number;</div><div class="line">    char currentByte;</div><div class="line">    int count;</div><div class="line">    while (scanf(&quot;%ld&quot;, &amp;amp;number) != EOF)</div><div class="line">    &#123;</div><div class="line">        for (count = 7 ; count &amp;gt;= 0 ; count--)</div><div class="line">        &#123;</div><div class="line">            currentByte = (((0xf &amp;lt;&amp;lt; (count * 4)) &amp;amp; number) &amp;gt;&amp;gt; (count * 4)) &amp;amp; 0xf;</div><div class="line">            printf(&quot;%hd(%c) &quot;, currentByte, currentByte);</div><div class="line">        &#125;</div><div class="line">        putchar(&apos;\n&apos;);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;;</div><div class="line">void swapArray(int a[], int n);</div><div class="line">void swap(int *a, int *b);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">    int number[100];</div><div class="line">    int totalNumber, individualNumber;</div><div class="line">    int count, i;//循环变量</div><div class="line">    scanf(&quot;%d&quot;, &amp;amp;totalNumber);</div><div class="line">    for (count = 0 ; count &amp;lt; totalNumber; count++)</div><div class="line">    &#123;</div><div class="line">        scanf(&quot;%d&quot;, &amp;amp;individualNumber);</div><div class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</div><div class="line">            scanf(&quot;%d&quot;, &amp;amp;number[i]);</div><div class="line">        swapArray(number, individualNumber);</div><div class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</div><div class="line">        &#123;</div><div class="line">            if (i != 0) putchar(&apos; &apos;);</div><div class="line">            printf(&quot;%d&quot;, number[i]);</div><div class="line">        &#125;</div><div class="line">        putchar(&apos;\n&apos;);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line">void swapArray(int a[], int n)</div><div class="line">&#123;</div><div class="line">    int startIndex = 0;</div><div class="line">    int endIndex = n - 1;</div><div class="line">    while (startIndex &amp;lt;= endIndex)</div><div class="line">    &#123;</div><div class="line">        swap(&amp;amp;a[startIndex], &amp;amp;a[endIndex]);</div><div class="line">        startIndex++;</div><div class="line">        endIndex--;</div><div class="line">    &#125;</div><div class="line">    return;</div><div class="line">&#125;</div><div class="line">void swap(int *a, int *b)</div><div class="line">&#123;</div><div class="line">    int temp;</div><div class="line">    temp = *a;</div><div class="line">    *a = *b;</div><div class="line">    *b = temp;</div><div class="line">    return;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="第四题"><a href="#第四题" class="headerlink" title="第四题"></a>第四题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;;</div><div class="line">void swap(int *a, int *b);</div><div class="line">void moveArray(int a[], int n, int m);//轮移数组,其中n为总个数,m为轮移次数</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">    int number[22];</div><div class="line">    int individualNumber, middleNumber;</div><div class="line">    int i;//循环变量</div><div class="line">    while ((scanf(&quot;%d&quot;, &amp;amp;individualNumber), individualNumber) != 0)</div><div class="line">    &#123;</div><div class="line">        scanf(&quot;%d&quot;, &amp;amp;middleNumber);</div><div class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</div><div class="line">            scanf(&quot;%d&quot;, &amp;amp;number[i]);</div><div class="line">        moveArray(number, individualNumber, middleNumber);</div><div class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</div><div class="line">        &#123;</div><div class="line">            if (i != 0) putchar(&apos; &apos;);</div><div class="line">            printf(&quot;%d&quot;, number[i]);</div><div class="line">        &#125;</div><div class="line">        putchar(&apos;\n&apos;);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line">void moveArray(int a[], int n, int m)</div><div class="line">&#123;</div><div class="line">    if (m == 0)</div><div class="line">    &#123;</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line">    else</div><div class="line">    &#123;</div><div class="line">        int temp, count;</div><div class="line">        temp = a[0];</div><div class="line">        for (count = 0 ; count &amp;lt; n - 1 ; count++)</div><div class="line">            a[count] = a[count+1];</div><div class="line">        a[n-1] = temp;</div><div class="line">        moveArray(a, n, --m);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">void swap(int *a, int *b)</div><div class="line">&#123;</div><div class="line">    int temp;</div><div class="line">    temp = *a;</div><div class="line">    *a = *b;</div><div class="line">    *b = temp;</div><div class="line">    return;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+            <h2 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;;</span><br><span class="line">void swap(int *a, int *b);</span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int number[10];</span><br><span class="line">    int i, j;//循环变量</span><br><span class="line">    while (scanf(&quot;%d&quot;, &amp;amp;number[0]) != EOF)</span><br><span class="line">    &#123;</span><br><span class="line">        for (i = 1 ; i &amp;lt; 10 ; i++)</span><br><span class="line">            scanf(&quot;%d&quot;, &amp;amp;number[i]);</span><br><span class="line">        for (i = 0 ; i &amp;lt; 9 ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            for (j = 0 ; j &amp;lt;= 8 - i ; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                if (number[j] &amp;gt; number[j+1])</span><br><span class="line">                    swap(&amp;amp;number[j], &amp;amp;number[j+1]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        for (i = 0 ; i &amp;lt; 10 ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            if (i != 0) printf(&quot;-&amp;gt;&quot;);</span><br><span class="line">            printf(&quot;%d&quot;, number[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&apos;\n&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">void swap(int *a, int *b)</span><br><span class="line">&#123;</span><br><span class="line">    int temp;</span><br><span class="line">    temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;;</span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    long number;</span><br><span class="line">    char currentByte;</span><br><span class="line">    int count;</span><br><span class="line">    while (scanf(&quot;%ld&quot;, &amp;amp;number) != EOF)</span><br><span class="line">    &#123;</span><br><span class="line">        for (count = 7 ; count &amp;gt;= 0 ; count--)</span><br><span class="line">        &#123;</span><br><span class="line">            currentByte = (((0xf &amp;lt;&amp;lt; (count * 4)) &amp;amp; number) &amp;gt;&amp;gt; (count * 4)) &amp;amp; 0xf;</span><br><span class="line">            printf(&quot;%hd(%c) &quot;, currentByte, currentByte);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&apos;\n&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;;</span><br><span class="line">void swapArray(int a[], int n);</span><br><span class="line">void swap(int *a, int *b);</span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int number[100];</span><br><span class="line">    int totalNumber, individualNumber;</span><br><span class="line">    int count, i;//循环变量</span><br><span class="line">    scanf(&quot;%d&quot;, &amp;amp;totalNumber);</span><br><span class="line">    for (count = 0 ; count &amp;lt; totalNumber; count++)</span><br><span class="line">    &#123;</span><br><span class="line">        scanf(&quot;%d&quot;, &amp;amp;individualNumber);</span><br><span class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</span><br><span class="line">            scanf(&quot;%d&quot;, &amp;amp;number[i]);</span><br><span class="line">        swapArray(number, individualNumber);</span><br><span class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            if (i != 0) putchar(&apos; &apos;);</span><br><span class="line">            printf(&quot;%d&quot;, number[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&apos;\n&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">void swapArray(int a[], int n)</span><br><span class="line">&#123;</span><br><span class="line">    int startIndex = 0;</span><br><span class="line">    int endIndex = n - 1;</span><br><span class="line">    while (startIndex &amp;lt;= endIndex)</span><br><span class="line">    &#123;</span><br><span class="line">        swap(&amp;amp;a[startIndex], &amp;amp;a[endIndex]);</span><br><span class="line">        startIndex++;</span><br><span class="line">        endIndex--;</span><br><span class="line">    &#125;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line">void swap(int *a, int *b)</span><br><span class="line">&#123;</span><br><span class="line">    int temp;</span><br><span class="line">    temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="第四题"><a href="#第四题" class="headerlink" title="第四题"></a>第四题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;;</span><br><span class="line">void swap(int *a, int *b);</span><br><span class="line">void moveArray(int a[], int n, int m);//轮移数组,其中n为总个数,m为轮移次数</span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int number[22];</span><br><span class="line">    int individualNumber, middleNumber;</span><br><span class="line">    int i;//循环变量</span><br><span class="line">    while ((scanf(&quot;%d&quot;, &amp;amp;individualNumber), individualNumber) != 0)</span><br><span class="line">    &#123;</span><br><span class="line">        scanf(&quot;%d&quot;, &amp;amp;middleNumber);</span><br><span class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</span><br><span class="line">            scanf(&quot;%d&quot;, &amp;amp;number[i]);</span><br><span class="line">        moveArray(number, individualNumber, middleNumber);</span><br><span class="line">        for (i = 0 ; i &amp;lt; individualNumber ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            if (i != 0) putchar(&apos; &apos;);</span><br><span class="line">            printf(&quot;%d&quot;, number[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&apos;\n&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">void moveArray(int a[], int n, int m)</span><br><span class="line">&#123;</span><br><span class="line">    if (m == 0)</span><br><span class="line">    &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        int temp, count;</span><br><span class="line">        temp = a[0];</span><br><span class="line">        for (count = 0 ; count &amp;lt; n - 1 ; count++)</span><br><span class="line">            a[count] = a[count+1];</span><br><span class="line">        a[n-1] = temp;</span><br><span class="line">        moveArray(a, n, --m);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">void swap(int *a, int *b)</span><br><span class="line">&#123;</span><br><span class="line">    int temp;</span><br><span class="line">    temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
             
 
@@ -329,7 +333,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -379,7 +383,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -399,7 +403,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 CoSidian. All Rights Reserved.
+        Copyrights &copy; 2018 码龙黑曜. All Rights Reserved.
     </span>
 </footer>
 
@@ -431,7 +435,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -481,7 +485,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -555,16 +559,16 @@
         
             <img id="about-card-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
         
-            <h4 id="about-card-name">CoSidian</h4>
+            <h4 id="about-card-name">码龙黑曜</h4>
         
-            <div id="about-card-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+            <div id="about-card-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>本科在读</p>
+                <p>华中科技大学 本科在读</p>
 
             </div>
         
@@ -572,7 +576,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker"></i>
                 <br/>
-                HUST, Wuhan, China
+                Wuhan, China
             </div>
         
     </div>
@@ -582,7 +586,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-i7zzex3jvqnxdf0lp2pg3bcyurjikigtrw9ljle5skc4mit2m7a13rwuyp8g.min.js"></script>
+<script src="/assets/js/script-feiabjni254mgbxiozwsjblcsiodjqohurk0dcfkq0aooroewq6bvkdnadrg.min.js"></script>
 <!--SCRIPTS END-->
 
     

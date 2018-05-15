@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="码龙的窝">
     <title>迁移说明 - 码龙的窝</title>
-    <meta name="author" content="CoSidian">
+    <meta name="author" content="码龙黑曜">
+    
+        <meta name="keywords" content="博客,iOS,Computer Science,码龙,">
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
-    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg"},"articleBody":"博客历史\n本博客自2016年1月4日上线。最早部署于BlackDragon的阿里云上，使用的是WordPress框架，服务器则采用了LAMP环境，DNS解析至一级域名。\n博客自上线后曾频繁的出现无法连接至数据库的情况，经过检查可能的原因是Apache占用的内存过大以至于MySQL服务被杀。后采用LNMP环境。\n2016年12月12日，将博客整个导出至Hexo并且部署至Github Pages，DNS解析至二级域名blog，原服务器与域名停止解析。\n\n博客迁移\n博客迁移的原因在目前，我仍然希望这个博客的内容能被更多的人关注到，也希望能和更多的人交流，所以向Google和Baidu分别提交了Sitemap。但是因国内Baidu仍然作为主要的搜索引擎，加上Github屏蔽了Baidu的爬虫，无法让博客的Sitemap被Baidu抓取并索引，在进行了尝试后决定将博客迁移。\n\n在遇到上述问题时，我首先尝试了将hexo生成的博客部署到Github以及Coding两个代码仓库，并通过DNS解析将国内和国外的访问分别解析至Coding和Github，并解决了问题。\n但是个人觉得这样做不够优雅，经过考虑还是决定将博客重新迁移至自己的阿里云，使用CentOS7作为Server，Nginx作为Web Server，同时将Github的Repo作为Mirror。\n博客于2017年5月11日完成迁移，又于2017年5月12日完成相应的优化调整。\n现在你可以访问\n\nblog.duskdragon.com 主站点\nblackdragonf.github.io 备份站点\n\n\n这个博客的意义这个博客不是技术博客（目前），因为我现在并没有足够的技能去支持一个技术博客。我现在仅仅是作为一个学习者记录在学习过程中遇到的各种问题，并且将学到的知识加以总结。欢迎任何的技术交流以及错误指正。如果我所记录的题目的解答或是实验的报告能够给同样还在学习的你带来帮助，这就是对我最大的鼓励。\n\n迁移过程中遇到的问题\n在配置iptables时，我在没有开放22端口的情况下将INPUT的默认策略设置为DROP，直接导致了ssh断开连接，不得不重置了阿里云。\n/home下的用户文件夹默认不具有读和执行权限，而我的html根目录放在家目录下，这导致了我在部署nginx时出现了403 Forbidden的错误。\n\n优化调整本次迁移博客同时对于博客做出了以下优化及调整：\n\n将背景图片从PNG格式改为JPG格式，减少网页加载的时间\n之前为了美观采用了WQY字体，但是将字体作为资源文件大大延长了加载的时间，现在博客的中文字体采用了Google Fonts中的Noto Sans SC\n\n","dateCreated":"2017-05-12T17:36:25+08:00","dateModified":"2018-05-11T06:05:24+08:00","datePublished":"2017-05-12T17:36:25+08:00","description":"","headline":"迁移说明","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://blog.codedragon.tech/2017/05/12/迁移说明/"},"publisher":{"@type":"Organization","name":"码龙黑曜","sameAs":["https://github.com/BlackDragonF","https://t.me/Cosidian","http://steamcommunity.com/id/BlackDragonF/","mailto:obsidiandragon2016@gmail.com"],"image":"avatar.jpg","logo":{"@type":"ImageObject","url":"avatar.jpg"}},"url":"http://blog.codedragon.tech/2017/05/12/迁移说明/","keywords":"通知"}</script>
     <meta name="description" content="博客历史 本博客自2016年1月4日上线。最早部署于BlackDragon的阿里云上，使用的是WordPress框架，服务器则采用了LAMP环境，DNS解析至一级域名。 博客自上线后曾频繁的出现无法连接至数据库的情况，经过检查可能的原因是Apache占用的内存过大以至于MySQL服务被杀。后采用LNMP环境。 2016年12月12日，将博客整个导出至Hexo并且部署至Github Pages，DN">
 <meta name="keywords" content="通知">
 <meta property="og:type" content="blog">
@@ -20,7 +21,8 @@
 <meta property="og:url" content="http://blog.codedragon.tech/2017/05/12/迁移说明/index.html">
 <meta property="og:site_name" content="码龙的窝">
 <meta property="og:description" content="博客历史 本博客自2016年1月4日上线。最早部署于BlackDragon的阿里云上，使用的是WordPress框架，服务器则采用了LAMP环境，DNS解析至一级域名。 博客自上线后曾频繁的出现无法连接至数据库的情况，经过检查可能的原因是Apache占用的内存过大以至于MySQL服务被杀。后采用LNMP环境。 2016年12月12日，将博客整个导出至Hexo并且部署至Github Pages，DN">
-<meta property="og:updated_time" content="2017-05-14T16:30:19.000Z">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2018-05-10T22:05:24.400Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="迁移说明">
 <meta name="twitter:description" content="博客历史 本博客自2016年1月4日上线。最早部署于BlackDragon的阿里云上，使用的是WordPress框架，服务器则采用了LAMP环境，DNS解析至一级域名。 博客自上线后曾频繁的出现无法连接至数据库的情况，经过检查可能的原因是Apache占用的内存过大以至于MySQL服务被杀。后采用LNMP环境。 2016年12月12日，将博客整个导出至Hexo并且部署至Github Pages，DN">
@@ -35,7 +37,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-gtvt1lbvzeqmr99zec4y42qrxw5ogq1gul5orw7somyh6cv5ckqsrl4abr9a.min.css">
+    <link rel="stylesheet" href="/assets/css/style-j4w0tbtf1olriqsnfyv4egntpbdblucqpyraoqqnvawa2vd6l4m8ljtn2yes.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -94,9 +96,9 @@
                 <a href="/#about">
                     <img class="sidebar-profile-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
                 </a>
-                <h4 class="sidebar-profile-name">CoSidian</h4>
+                <h4 class="sidebar-profile-name">码龙黑曜</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+                    <h5 class="sidebar-profile-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </h5>
                 
             </div>
@@ -199,7 +201,7 @@
                     
                         <a  class="sidebar-button-link " href="https://t.me/Cosidian" target="_blank" rel="noopener" title="Telegram">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-paper-plane" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-lg fa-telegram" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Telegram</span>
                     </a>
             </li>
@@ -229,7 +231,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/friendly-links"
+                             href="/links"
                             
                             title="友情链接"
                         >
@@ -242,13 +244,13 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/book-recommend"
+                             href="/resources"
                             
-                            title="图书推荐"
+                            title="学习资源"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-book" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">图书推荐</span>
+                        <i class="sidebar-button-icon fa fa-lg fa-share-alt" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">学习资源</span>
                     </a>
             </li>
             
@@ -263,18 +265,18 @@
                         hasCoverMetaIn
                         ">
                 
-<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+<article class="post">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title" itemprop="headline">
+        <h1 class="post-title">
             迁移说明
         </h1>
     
     
         <div class="post-meta">
-    <time itemprop="datePublished" datetime="2017-05-12T17:36:25+08:00">
+    <time datetime="2017-05-12T17:36:25+08:00">
 	
 		    5月 12, 2017
     	
@@ -290,8 +292,9 @@
 
     
 </div>
+
     
-    <div class="post-content markdown" itemprop="articleBody">
+    <div class="post-content markdown">
         <div class="main-content-wrap">
             <h2 id="博客历史"><a href="#博客历史" class="headerlink" title="博客历史"></a>博客历史</h2><ul>
 <li>本博客自2016年1月4日上线。最早部署于BlackDragon的阿里云上，使用的是WordPress框架，服务器则采用了LAMP环境，DNS解析至一级域名。</li>
@@ -306,8 +309,8 @@
 <p>博客于2017年5月11日完成迁移，又于2017年5月12日完成相应的优化调整。</p>
 <p>现在你可以访问</p>
 <ul>
-<li><a href="http://blog.duskdragon.com" target="_blank" rel="external">blog.duskdragon.com</a> 主站点</li>
-<li><a href="https://blackdragonf.github.io/" target="_blank" rel="external">blackdragonf.github.io</a> 备份站点</li>
+<li><a href="http://blog.duskdragon.com" target="_blank" rel="noopener">blog.duskdragon.com</a> 主站点</li>
+<li><a href="https://blackdragonf.github.io/" target="_blank" rel="noopener">blackdragonf.github.io</a> 备份站点</li>
 </ul>
 <blockquote>
 <p>这个博客的意义<br>这个博客不是技术博客（目前），因为我现在并没有足够的技能去支持一个技术博客。我现在仅仅是作为一个学习者记录在学习过程中遇到的各种问题，并且将学到的知识加以总结。欢迎任何的技术交流以及错误指正。<br>如果我所记录的题目的解答或是实验的报告能够给同样还在学习的你带来帮助，这就是对我最大的鼓励。</p>
@@ -361,7 +364,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -411,7 +414,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -431,7 +434,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 CoSidian. All Rights Reserved.
+        Copyrights &copy; 2018 码龙黑曜. All Rights Reserved.
     </span>
 </footer>
 
@@ -463,7 +466,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -513,7 +516,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -587,16 +590,16 @@
         
             <img id="about-card-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
         
-            <h4 id="about-card-name">CoSidian</h4>
+            <h4 id="about-card-name">码龙黑曜</h4>
         
-            <div id="about-card-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+            <div id="about-card-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>本科在读</p>
+                <p>华中科技大学 本科在读</p>
 
             </div>
         
@@ -604,7 +607,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker"></i>
                 <br/>
-                HUST, Wuhan, China
+                Wuhan, China
             </div>
         
     </div>
@@ -614,7 +617,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-i7zzex3jvqnxdf0lp2pg3bcyurjikigtrw9ljle5skc4mit2m7a13rwuyp8g.min.js"></script>
+<script src="/assets/js/script-feiabjni254mgbxiozwsjblcsiodjqohurk0dcfkq0aooroewq6bvkdnadrg.min.js"></script>
 <!--SCRIPTS END-->
 
     

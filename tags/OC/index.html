@@ -7,21 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="码龙的窝">
     <title>标签: OC - 码龙的窝</title>
-    <meta name="author" content="CoSidian">
+    <meta name="author" content="码龙黑曜">
+    
+        <meta name="keywords" content="博客,iOS,Computer Science,码龙,">
     
     
     
-        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
-    
-    <meta name="description" content="/* 0与1之风吹遍山谷 */">
+    <script type="application/ld+json">{}</script>
+    <meta name="description" content="数据界层的码龙 - iOS开发者, 希望在扎实计算机基础的同时更多地接触不同的方向">
+<meta name="keywords" content="博客,iOS,Computer Science,码龙">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="码龙的窝">
 <meta property="og:url" content="http://blog.codedragon.tech/tags/OC/index.html">
 <meta property="og:site_name" content="码龙的窝">
-<meta property="og:description" content="/* 0与1之风吹遍山谷 */">
+<meta property="og:description" content="数据界层的码龙 - iOS开发者, 希望在扎实计算机基础的同时更多地接触不同的方向">
+<meta property="og:locale" content="zh-cn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="码龙的窝">
-<meta name="twitter:description" content="/* 0与1之风吹遍山谷 */">
+<meta name="twitter:description" content="数据界层的码龙 - iOS开发者, 希望在扎实计算机基础的同时更多地接触不同的方向">
     
     
         
@@ -33,7 +36,7 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-gtvt1lbvzeqmr99zec4y42qrxw5ogq1gul5orw7somyh6cv5ckqsrl4abr9a.min.css">
+    <link rel="stylesheet" href="/assets/css/style-j4w0tbtf1olriqsnfyv4egntpbdblucqpyraoqqnvawa2vd6l4m8ljtn2yes.min.css">
     <!--STYLES END-->
     
     <script type="text/javascript">
@@ -92,9 +95,9 @@
                 <a href="/#about">
                     <img class="sidebar-profile-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
                 </a>
-                <h4 class="sidebar-profile-name">CoSidian</h4>
+                <h4 class="sidebar-profile-name">码龙黑曜</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+                    <h5 class="sidebar-profile-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </h5>
                 
             </div>
@@ -197,7 +200,7 @@
                     
                         <a  class="sidebar-button-link " href="https://t.me/Cosidian" target="_blank" rel="noopener" title="Telegram">
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-paper-plane" aria-hidden="true"></i>
+                        <i class="sidebar-button-icon fa fa-lg fa-telegram" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Telegram</span>
                     </a>
             </li>
@@ -227,7 +230,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/friendly-links"
+                             href="/links"
                             
                             title="友情链接"
                         >
@@ -240,13 +243,13 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/book-recommend"
+                             href="/resources"
                             
-                            title="图书推荐"
+                            title="学习资源"
                         >
                     
-                        <i class="sidebar-button-icon fa fa-lg fa-book" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">图书推荐</span>
+                        <i class="sidebar-button-icon fa fa-lg fa-share-alt" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">学习资源</span>
                     </a>
             </li>
             
@@ -264,11 +267,11 @@
     <section class="postShorten-group main-content-wrap">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+    <article class="postShorten postShorten--thumbnailimg-bottom">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
+                <h1 class="postShorten-title">
                     
                         <a class="link-unstyled" href="/2016/07/06/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-89-ef-bc-89/">
                             iOS学习笔记（三）
@@ -276,7 +279,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2016-07-06T23:49:16+08:00">
+    <time datetime="2016-07-06T23:49:16+08:00">
 	
 		    7月 06, 2016
     	
@@ -292,23 +295,23 @@
 
             </div>
             
-                <div class="postShorten-content" itemprop="articleBody">
+                <div class="postShorten-content">
                     <blockquote>
 <p>花了两天半的时间基本实现了APP中让用户选择头像的功能（仿照手机版QQ），整理和总结如下——</p>
 </blockquote>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h3 id="UIImagePickerController"><a href="#UIImagePickerController" class="headerlink" title="- UIImagePickerController"></a>- UIImagePickerController</h3><hr>
 <p>原先想要采用UIImagePickerController来实现这个功能，UIImagePickerController是UINavigationController的子类，是系统提供的拍摄、选择照片和视频的UI。具体来说，在选择头像这个功能中，头像的来源有两种——拍照和从相册选择，同时完成头像的选择后我们还应该能够让用户选择头像的范围以及大小。</p>
 <p>若头像的来源为拍照：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];</div><div class="line">imagePickerController.delegate = self;</div><div class="line">imagePickerController.allowsEditing = YES;//允许编辑图片</div><div class="line">imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;//图片的来源为相机</div><div class="line">//...还可以在这里修改相机的前后镜头 是否开启闪光灯等</div><div class="line">[self presentViewController:imagePickerController animated:YES completion:nil];</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">UIImagePickerController * imagePickerController = [[UIImagePickerController alloc]init];</span><br><span class="line">imagePickerController.delegate = self;</span><br><span class="line">imagePickerController.allowsEditing = YES;//允许编辑图片</span><br><span class="line">imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;//图片的来源为相机</span><br><span class="line">//...还可以在这里修改相机的前后镜头 是否开启闪光灯等</span><br><span class="line">[self presentViewController:imagePickerController animated:YES completion:nil];</span><br></pre></td></tr></table></figure>
 <p>同时，实现UIImagePickerDelegate中的如下方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary&lt;NSString *,id&gt; *)info &#123;</div><div class="line">    UIImage * originImage = info[UIImagePickerControllerOriginalImage];//这样获取的是原图像</div><div class="line">    UIImage * editedImage = info[UIImagePickerControllerEditedImage];//这样获取的是修改后的图像</div><div class="line">    //...在这里实现图像的保存</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary&lt;NSString *,id&gt; *)info &#123;</span><br><span class="line">    UIImage * originImage = info[UIImagePickerControllerOriginalImage];//这样获取的是原图像</span><br><span class="line">    UIImage * editedImage = info[UIImagePickerControllerEditedImage];//这样获取的是修改后的图像</span><br><span class="line">    //...在这里实现图像的保存</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果头像的来源为相册，则只需修改imagePickerController的sourceType属性即可:</p>
 <pre><code>`imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;`
 </code></pre><p>这样做就可以实现我们的需求了，但是这个方法的缺点也很明显，在这个方法中，我们使用的是系统封装好的UI，参考手机版QQ的选择头像我们可以发现，我们不能自定义相册中图片的分类、排版。同样的，我们也不能自定义编辑头像的界面，你不能将正方形的头像选框改成圆形的。因此，我们需要自己实现一个“UIImagePickerController”。在这个UIImagePickerController中，除了图片来源为拍照的情况下我们采用系统原生的UIImagePickerController以外，编辑图片和从相册中选取图片的功能我们都自己实现。</p>
 <h3 id="PhotoKit和UICollectionView"><a href="#PhotoKit和UICollectionView" class="headerlink" title="- PhotoKit和UICollectionView"></a>- PhotoKit和UICollectionView</h3><hr>
-<p><a href="http://ju.outofmemory.cn/entry/182306" target="_blank" rel="external">参考博客：iOS 开发之照片框架详解</a></p>
+<p><a href="http://ju.outofmemory.cn/entry/182306" target="_blank" rel="noopener">参考博客：iOS 开发之照片框架详解</a></p>
 <p>对于从相册选择图片的功能，我们可以采用PhotoKit来获取到图片的信息，并通过UICollectionView加以展示，这里主要给出PhotoKit的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">#import &lt;Photos/Photos.h&gt;</div><div class="line"></div><div class="line">PHFetchOptions *options = [[PHFetchOptions alloc]init];</div><div class="line">options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@&quot;creationDate&quot; ascending:YES]];</div><div class="line">PHFetchResult * results = [PHAsset fetchAssetsWithOptions:options];</div><div class="line">//...这样就取得了照片库中所有照片并将它们通过创建时间排序 当然这只是最简单的做法 还可以创建多个不同类别的相册</div><div class="line"></div><div class="line">//...然后我们要通过如下的代码取得照片</div><div class="line">PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc]init];</div><div class="line">requestOptions.resizeMode = PHImageRequestOptionsResizeModeExact;//这里指定了照片的清晰度</div><div class="line">[[PHImageManager defaultManager]requestImageForAsset:results[number]</div><div class="line">                                          targetSize:CGSizeMake(length, length)//指定了照片的大小</div><div class="line">                                         contentMode:PHImageContentModeDefault</div><div class="line">                                             options:requestOptions resultHandler:^(UIImage * result, NSDictionary * info) &#123;</div><div class="line">    //...在这里展示照片</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Photos/Photos.h&gt;</span><br><span class="line"></span><br><span class="line">PHFetchOptions *options = [[PHFetchOptions alloc]init];</span><br><span class="line">options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@&quot;creationDate&quot; ascending:YES]];</span><br><span class="line">PHFetchResult * results = [PHAsset fetchAssetsWithOptions:options];</span><br><span class="line">//...这样就取得了照片库中所有照片并将它们通过创建时间排序 当然这只是最简单的做法 还可以创建多个不同类别的相册</span><br><span class="line"></span><br><span class="line">//...然后我们要通过如下的代码取得照片</span><br><span class="line">PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc]init];</span><br><span class="line">requestOptions.resizeMode = PHImageRequestOptionsResizeModeExact;//这里指定了照片的清晰度</span><br><span class="line">[[PHImageManager defaultManager]requestImageForAsset:results[number]</span><br><span class="line">                                          targetSize:CGSizeMake(length, length)//指定了照片的大小</span><br><span class="line">                                         contentMode:PHImageContentModeDefault</span><br><span class="line">                                             options:requestOptions resultHandler:^(UIImage * result, NSDictionary * info) &#123;</span><br><span class="line">    //...在这里展示照片</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
 <h3 id="自定义编辑头像的界面"><a href="#自定义编辑头像的界面" class="headerlink" title="- 自定义编辑头像的界面"></a>- 自定义编辑头像的界面</h3><hr>
 <p>主要有两个方面</p>
 <ul>
@@ -316,20 +319,20 @@
 <li>圆形选框 采用了两个CAShapeLayer，一个是选框的Layer，另一个是遮罩的Layer</li>
 </ul>
 <p>实现展示图片的功能首先需要了解UIScrollView中frame，contentSize和contentOffset的区别。同时，为了将图片限制在我们所画的边框内，关键是设置合理的minimumZoomScale（最小缩放比例）以及实时更新ContentSize，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line">- (void)imageConfiguration &#123;</div><div class="line">    self.imageView.frame = CGRectMake(WIDTH/2-LENGTH/2, HEIGHT/2-LENGTH/2-32, _imageSize.width, _imageSize.height);</div><div class="line">    //设置图片的位置</div><div class="line">    CGFloat zoomScale =[self zoomScaleWithSize:_imageSize];</div><div class="line">    //计算初始的zoomScale</div><div class="line">    CGFloat minimumZoomScale = [self minimumZoomScaleWithSize:_imageSize];</div><div class="line">    //计算最小的zoomScale</div><div class="line">    CGFloat maximumZoomScale = (minimumZoomScale &lt;= 1.2) ? 1.2 : minimumZoomScale;</div><div class="line">    //这里的1.2可以替换成其他值</div><div class="line">    self.scrollView.minimumZoomScale = minimumZoomScale;</div><div class="line">    self.scrollView.maximumZoomScale = maximumZoomScale;</div><div class="line">    self.scrollView.zoomScale = zoomScale;</div><div class="line">    self.scrollView.contentSize = CGSizeMake(_imageSize.width*zoomScale+WIDTH-LENGTH, _imageSize.height*zoomScale+HEIGHT-LENGTH-64);</div><div class="line">    //为了保证将图片限制在边框内初始的ContentSize</div><div class="line">    self.scrollView.contentOffset = CGPointMake(WIDTH/2-LENGTH/2, HEIGHT/2-LENGTH/2-32);</div><div class="line">    //WIDTH是屏幕宽度 HEIGHT是屏幕高度 LENGTH是边框变长</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (CGFloat)zoomScaleWithSize:(CGSize)size &#123;</div><div class="line">    CGFloat width = size.width;</div><div class="line">    CGFloat height = size.height;</div><div class="line">    CGFloat scale = (CGFloat)width/height;</div><div class="line">    CGFloat screenScale = (CGFloat)WIDTH/HEIGHT;</div><div class="line">    if (scale &gt; screenScale) &#123;</div><div class="line">        if ((CGFloat)WIDTH/width*height&gt;LENGTH) &#123;</div><div class="line">            return ((CGFloat)WIDTH / width);</div><div class="line">        &#125; else &#123;</div><div class="line">            return (LENGTH/height);</div><div class="line">        &#125;</div><div class="line">    &#125; else &#123;</div><div class="line">        if ((CGFloat)HEIGHT/height*width&gt;LENGTH) &#123;</div><div class="line">            return ((CGFloat)HEIGHT/height);</div><div class="line">        &#125; else &#123;</div><div class="line">            return (LENGTH/width);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//思路是通过比较宽高比确定让图片正好容纳在屏幕内的比例，同时还保证图片能够包括边框</div><div class="line"></div><div class="line">- (CGFloat)minimumZoomScaleWithSize:(CGSize)size &#123;</div><div class="line">    CGFloat width = size.width;</div><div class="line">    CGFloat height = size.height;</div><div class="line">    if ((LENGTH / height)&gt;(LENGTH / width)) &#123;</div><div class="line">        return (LENGTH / height);</div><div class="line">    &#125; else &#123;</div><div class="line">        return (LENGTH / width);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//只保证图片能够包括边框即可</div><div class="line"></div><div class="line">- (void)scrollViewDidZoom:(UIScrollView *)scrollView &#123;</div><div class="line">    self.scrollView.contentSize = CGSizeMake(_imageSize.width*self.scrollView.zoomScale+WIDTH-LENGTH, _imageSize.height*self.scrollView.zoomScale+HEIGHT-LENGTH-64);</div><div class="line">&#125;</div><div class="line">//UIScrollView代理 在缩放时能够正确的更新contentSize</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">- (void)imageConfiguration &#123;</span><br><span class="line">    self.imageView.frame = CGRectMake(WIDTH/2-LENGTH/2, HEIGHT/2-LENGTH/2-32, _imageSize.width, _imageSize.height);</span><br><span class="line">    //设置图片的位置</span><br><span class="line">    CGFloat zoomScale =[self zoomScaleWithSize:_imageSize];</span><br><span class="line">    //计算初始的zoomScale</span><br><span class="line">    CGFloat minimumZoomScale = [self minimumZoomScaleWithSize:_imageSize];</span><br><span class="line">    //计算最小的zoomScale</span><br><span class="line">    CGFloat maximumZoomScale = (minimumZoomScale &lt;= 1.2) ? 1.2 : minimumZoomScale;</span><br><span class="line">    //这里的1.2可以替换成其他值</span><br><span class="line">    self.scrollView.minimumZoomScale = minimumZoomScale;</span><br><span class="line">    self.scrollView.maximumZoomScale = maximumZoomScale;</span><br><span class="line">    self.scrollView.zoomScale = zoomScale;</span><br><span class="line">    self.scrollView.contentSize = CGSizeMake(_imageSize.width*zoomScale+WIDTH-LENGTH, _imageSize.height*zoomScale+HEIGHT-LENGTH-64);</span><br><span class="line">    //为了保证将图片限制在边框内初始的ContentSize</span><br><span class="line">    self.scrollView.contentOffset = CGPointMake(WIDTH/2-LENGTH/2, HEIGHT/2-LENGTH/2-32);</span><br><span class="line">    //WIDTH是屏幕宽度 HEIGHT是屏幕高度 LENGTH是边框变长</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (CGFloat)zoomScaleWithSize:(CGSize)size &#123;</span><br><span class="line">    CGFloat width = size.width;</span><br><span class="line">    CGFloat height = size.height;</span><br><span class="line">    CGFloat scale = (CGFloat)width/height;</span><br><span class="line">    CGFloat screenScale = (CGFloat)WIDTH/HEIGHT;</span><br><span class="line">    if (scale &gt; screenScale) &#123;</span><br><span class="line">        if ((CGFloat)WIDTH/width*height&gt;LENGTH) &#123;</span><br><span class="line">            return ((CGFloat)WIDTH / width);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return (LENGTH/height);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        if ((CGFloat)HEIGHT/height*width&gt;LENGTH) &#123;</span><br><span class="line">            return ((CGFloat)HEIGHT/height);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return (LENGTH/width);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//思路是通过比较宽高比确定让图片正好容纳在屏幕内的比例，同时还保证图片能够包括边框</span><br><span class="line"></span><br><span class="line">- (CGFloat)minimumZoomScaleWithSize:(CGSize)size &#123;</span><br><span class="line">    CGFloat width = size.width;</span><br><span class="line">    CGFloat height = size.height;</span><br><span class="line">    if ((LENGTH / height)&gt;(LENGTH / width)) &#123;</span><br><span class="line">        return (LENGTH / height);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return (LENGTH / width);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//只保证图片能够包括边框即可</span><br><span class="line"></span><br><span class="line">- (void)scrollViewDidZoom:(UIScrollView *)scrollView &#123;</span><br><span class="line">    self.scrollView.contentSize = CGSizeMake(_imageSize.width*self.scrollView.zoomScale+WIDTH-LENGTH, _imageSize.height*self.scrollView.zoomScale+HEIGHT-LENGTH-64);</span><br><span class="line">&#125;</span><br><span class="line">//UIScrollView代理 在缩放时能够正确的更新contentSize</span><br></pre></td></tr></table></figure>
 <p>圆形选框则比较简单，用一个CAShapeLayer即可实现，实现阴影遮罩（效果可以参考手机版QQ）则需要另一个CAShapeLayer，这里有一个问题，如果直接把遮罩设在self.view上，将会在页面切换的时候造成动画的不自然，我的解决方法是在self.view上添加一个UIView的实例contentView作为容器，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">self.contentView.layer.mask = self.maskLayer;</div><div class="line">[self.contentView.layer insertSublayer:self.borderLayer above:self.imageView.layer];</div><div class="line"></div><div class="line">- (CAShapeLayer *)borderLayer &#123;</div><div class="line">    if (!_borderLayer) &#123;</div><div class="line">        //...在此设置边框</div><div class="line">    &#125;</div><div class="line">        return _borderLayer;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (CAShapeLayer *)maskLayer &#123;</div><div class="line">    if (!_maskLayer) &#123;</div><div class="line">        _maskLayer = [CAShapeLayer layer];</div><div class="line">        [_maskLayer setFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];</div><div class="line">        [_maskLayer setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5].CGColor];</div><div class="line">        //确定阴影的明暗</div><div class="line">        //...setPath确定无阴影的范围</div><div class="line">    &#125;</div><div class="line">    return _maskLayer;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">self.contentView.layer.mask = self.maskLayer;</span><br><span class="line">[self.contentView.layer insertSublayer:self.borderLayer above:self.imageView.layer];</span><br><span class="line"></span><br><span class="line">- (CAShapeLayer *)borderLayer &#123;</span><br><span class="line">    if (!_borderLayer) &#123;</span><br><span class="line">        //...在此设置边框</span><br><span class="line">    &#125;</span><br><span class="line">        return _borderLayer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (CAShapeLayer *)maskLayer &#123;</span><br><span class="line">    if (!_maskLayer) &#123;</span><br><span class="line">        _maskLayer = [CAShapeLayer layer];</span><br><span class="line">        [_maskLayer setFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];</span><br><span class="line">        [_maskLayer setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5].CGColor];</span><br><span class="line">        //确定阴影的明暗</span><br><span class="line">        //...setPath确定无阴影的范围</span><br><span class="line">    &#125;</span><br><span class="line">    return _maskLayer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="修改导航栏的高度"><a href="#修改导航栏的高度" class="headerlink" title="- 修改导航栏的高度"></a>- 修改导航栏的高度</h3><hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (void)viewWillAppear:(BOOL)animated &#123;</div><div class="line">    [super viewWillAppear:animated];</div><div class="line">    CGRect navRect = self.navigationController.navigationBar.frame;</div><div class="line">    self.navigationController.navigationBar.frame = CGRectMake(navRect.origin.x, navRect.origin.y, navRect.size.width, 64);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)viewWillDisappear:(BOOL)animated &#123;</div><div class="line">    [super viewWillDisappear:animated];</div><div class="line">    CGRect navRect = self.navigationController.navigationBar.frame;</div><div class="line">    self.navigationController.navigationBar.frame = CGRectMake(navRect.origin.x, navRect.origin.y, navRect.size.width, 44);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewWillAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewWillAppear:animated];</span><br><span class="line">    CGRect navRect = self.navigationController.navigationBar.frame;</span><br><span class="line">    self.navigationController.navigationBar.frame = CGRectMake(navRect.origin.x, navRect.origin.y, navRect.size.width, 64);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)viewWillDisappear:(BOOL)animated &#123;</span><br><span class="line">    [super viewWillDisappear:animated];</span><br><span class="line">    CGRect navRect = self.navigationController.navigationBar.frame;</span><br><span class="line">    self.navigationController.navigationBar.frame = CGRectMake(navRect.origin.x, navRect.origin.y, navRect.size.width, 44);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="调整导航栏中Title和Button的垂直位置"><a href="#调整导航栏中Title和Button的垂直位置" class="headerlink" title="- 调整导航栏中Title和Button的垂直位置"></a>- 调整导航栏中Title和Button的垂直位置</h3><hr>
-<h4 id="Title"><a href="#Title" class="headerlink" title="Title:"></a>Title:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (void)viewWillAppear:(BOOL)animated &#123;</div><div class="line">    [super viewWillAppear:animated];</div><div class="line">    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:-10.0 forBarMetrics:UIBarMetricsDefault];</div><div class="line">    //-10.0可以根据需要调节</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)viewWillDisappear:(BOOL)animated &#123;</div><div class="line">    [super viewWillDisappear:animated];</div><div class="line">    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0.0 forBarMetrics:UIBarMetricsDefault];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="Button"><a href="#Button" class="headerlink" title="Button:"></a>Button:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[self.barButtonItem setBackgroundVerticalPositionAdjustment:-10.0 forBarMetrics:UIBarMetricsDefault];</div><div class="line">//－10.0可以根据需要调节</div></pre></td></tr></table></figure>
+<h4 id="Title"><a href="#Title" class="headerlink" title="Title:"></a>Title:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewWillAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewWillAppear:animated];</span><br><span class="line">    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:-10.0 forBarMetrics:UIBarMetricsDefault];</span><br><span class="line">    //-10.0可以根据需要调节</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)viewWillDisappear:(BOOL)animated &#123;</span><br><span class="line">    [super viewWillDisappear:animated];</span><br><span class="line">    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0.0 forBarMetrics:UIBarMetricsDefault];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Button"><a href="#Button" class="headerlink" title="Button:"></a>Button:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[self.barButtonItem setBackgroundVerticalPositionAdjustment:-10.0 forBarMetrics:UIBarMetricsDefault];</span><br><span class="line">//－10.0可以根据需要调节</span><br></pre></td></tr></table></figure>
 <h3 id="隐藏状态栏"><a href="#隐藏状态栏" class="headerlink" title="- 隐藏状态栏"></a>- 隐藏状态栏</h3><hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (BOOL)prefersStatusBarHidden &#123;</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)prefersStatusBarHidden &#123;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="UIScrollView不能缩放"><a href="#UIScrollView不能缩放" class="headerlink" title="- UIScrollView不能缩放"></a>- UIScrollView不能缩放</h3><hr>
 <p>需要实现代理方法<code>- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView</code>指定需要缩放的子控件</p>
 <h3 id="截取缩放过的UIImageView中的特定位置和大小的图片"><a href="#截取缩放过的UIImageView中的特定位置和大小的图片" class="headerlink" title="- 截取缩放过的UIImageView中的特定位置和大小的图片"></a>- 截取缩放过的UIImageView中的特定位置和大小的图片</h3><hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (UIImage *)imageWithZoomScale:(CGFloat)zoomScale &#123;</div><div class="line">    UIGraphicsBeginImageContextWithOptions(self.imageView.bounds.size, NO, zoomScale);</div><div class="line">    [self.imageView drawViewHierarchyInRect:self.imageView.bounds afterScreenUpdates:YES];</div><div class="line">    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();</div><div class="line">    UIGraphicsEndImageContext();</div><div class="line">    CGRect imageRect = //...在这里指定位置和大小</div><div class="line">    CGImageRef sourceImageRef = [image CGImage];</div><div class="line">    CGImageRef targetImageRef = CGImageCreateWithImageInRect(sourceImageRef, imageRect);</div><div class="line">    return [UIImage imageWithCGImage:targetImageRef];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (UIImage *)imageWithZoomScale:(CGFloat)zoomScale &#123;</span><br><span class="line">    UIGraphicsBeginImageContextWithOptions(self.imageView.bounds.size, NO, zoomScale);</span><br><span class="line">    [self.imageView drawViewHierarchyInRect:self.imageView.bounds afterScreenUpdates:YES];</span><br><span class="line">    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();</span><br><span class="line">    UIGraphicsEndImageContext();</span><br><span class="line">    CGRect imageRect = //...在这里指定位置和大小</span><br><span class="line">    CGImageRef sourceImageRef = [image CGImage];</span><br><span class="line">    CGImageRef targetImageRef = CGImageCreateWithImageInRect(sourceImageRef, imageRect);</span><br><span class="line">    return [UIImage imageWithCGImage:targetImageRef];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
                     
                         
@@ -349,11 +352,11 @@
     </article>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+    <article class="postShorten postShorten--thumbnailimg-bottom">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
+                <h1 class="postShorten-title">
                     
                         <a class="link-unstyled" href="/2016/06/12/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-ba-8c-ef-bc-89/">
                             iOS学习笔记（二）
@@ -361,7 +364,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2016-06-12T22:06:45+08:00">
+    <time datetime="2016-06-12T22:06:45+08:00">
 	
 		    6月 12, 2016
     	
@@ -377,33 +380,35 @@
 
             </div>
             
-                <div class="postShorten-content" itemprop="articleBody">
+                <div class="postShorten-content">
                     <blockquote>
 <p>因为一些原因，用了整整一周的时间来重构项目，因为期末考试的原因，决定暑假继续这个项目，在复习之前最后总结一下这一段开发过程中遇到的一些问题。</p>
 </blockquote>
 <h2 id="定位问题"><a href="#定位问题" class="headerlink" title="定位问题"></a>定位问题</h2><hr>
-<p>参考博客：<a href="http://adad184.com/2015/07/22/how-to-deal-with-background-location-update/" target="_blank" rel="external">后台定位上传的代码实践|里脊串的开发随笔</a></p>
+<p>参考博客：<a href="http://adad184.com/2015/07/22/how-to-deal-with-background-location-update/" target="_blank" rel="noopener">后台定位上传的代码实践|里脊串的开发随笔</a></p>
 <p>需求是每隔一定时间向服务器上传一次地理位置，而不管用户或系统是否杀死了APP。这里参考了里脊串博客里的写法，使用BackgroundMode中的Location updates即可实现。但是与这篇博客中的APP的需求不同，并不需要考虑速度距离等因素，只要考虑时间即可，因此可以通过判断两次location中的时间戳间隔即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#define kUpdateTimeInteval 60.0 //上传间隔</div><div class="line">@interface LocationManager()</div><div class="line">@property (nonatomic, strong) CLLocation * lastLocation; //最新一次的地理位置</div><div class="line">@property (nonatomic) double timeInteval; //上一次上传地理位置时的时间戳</div><div class="line">@end</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#define kUpdateTimeInteval 60.0 //上传间隔</span><br><span class="line">@interface LocationManager()</span><br><span class="line">@property (nonatomic, strong) CLLocation * lastLocation; //最新一次的地理位置</span><br><span class="line">@property (nonatomic) double timeInteval; //上一次上传地理位置时的时间戳</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <p>然后在locationManager的委托方法中加入如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray&lt;CLLocation *&gt; *)locations &#123;</div><div class="line">    _lastLocation = locations[0];</div><div class="line">    if (_lastLocation.timestamp.timeIntervalSince1970 - _timeInteval &gt; kUpdateTimeInteval) &#123;</div><div class="line">        NSLog(@&quot;update location&quot;);</div><div class="line">        [self updateLocation]; //上传地理位置</div><div class="line">        _timeInteval = _lastLocation.timestamp.timeIntervalSince1970;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray&lt;CLLocation *&gt; *)locations &#123;</span><br><span class="line">    _lastLocation = locations[0];</span><br><span class="line">    if (_lastLocation.timestamp.timeIntervalSince1970 - _timeInteval &gt; kUpdateTimeInteval) &#123;</span><br><span class="line">        NSLog(@&quot;update location&quot;);</span><br><span class="line">        [self updateLocation]; //上传地理位置</span><br><span class="line">        _timeInteval = _lastLocation.timestamp.timeIntervalSince1970;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>需要注意的是，在进入后台模式或者是APP被杀的情况下，如果设备的位置没有发生变化，那么locationManager的 didUpdateLocations方法将不会被调用，因此尽管间隔的时间已经超过了设定的时间，地理位置也不会被上传。</p>
 <h2 id="不显示动画"><a href="#不显示动画" class="headerlink" title="不显示动画"></a>不显示动画</h2><hr>
 <p>由于APP中存在用户注册和登录的需求，因此需要加入验证码认证，两次验证码之间应有一分钟的间隔，此时，UI应该每隔1s刷新一次剩余时间以提醒用户，因此我使用了一个每隔1s执行一次的NSTimer去刷新UI，却发现每次刷新的时候按钮上的Title都会有渐入渐出的动画效果。后来发现这是UIButtonTypeRoundedRect的自带动画效果，为了不让这个渐变动画干扰了UI的刷新，加入如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[UIView performWithoutAnimation:^&#123;</div><div class="line">    //在这里设置UIButton的属性如Text等</div><div class="line">    [_button.layer layoutIfNeeded];</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[UIView performWithoutAnimation:^&#123;</span><br><span class="line">    //在这里设置UIButton的属性如Text等</span><br><span class="line">    [_button.layer layoutIfNeeded];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
 <h2 id="自定义UIBarButtonItem"><a href="#自定义UIBarButtonItem" class="headerlink" title="自定义UIBarButtonItem"></a>自定义UIBarButtonItem</h2><hr>
 <p>参考了StackOverFlow</p>
 <p>需求是自定义一个同时带图片和文字的UIBarButtonItem，查阅文档和搜索后发现UIBarButtonItem有以下的方法：</p>
 <p><code>- (instancetype)initWithCustomView:(UIView *)customView;</code></p>
 <p>因此我们可以先实例化一个UIButton，给这个UIButton添加Image并且设置Title，再用这个UIButton去实例化一个UIBarButtonItem即可，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">UIButton * button = [UIButton buttonWithType:UIButtonTypeRoundedRect];</div><div class="line">[button setTitle:@&quot;返回&quot; forState:UIControlStateNormal];</div><div class="line">button.titleLabel.font = [UIFont systemFontOfSize:17.0];</div><div class="line">[button setImage:[UIImage imageNamed:@&quot;back&quot;] forState:UIControlStateNormal];</div><div class="line">button.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0); //使用这个属性控制UIImageView和UILabel之间的距离</div><div class="line">[button sizeToFit]; //设定button的frame</div><div class="line">[button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];</div><div class="line">UIBarButtonItem * leftButton = [[UIBarButtonItem alloc]initWithCustomView:button];</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">UIButton * button = [UIButton buttonWithType:UIButtonTypeRoundedRect];</span><br><span class="line">[button setTitle:@&quot;返回&quot; forState:UIControlStateNormal];</span><br><span class="line">button.titleLabel.font = [UIFont systemFontOfSize:17.0];</span><br><span class="line">[button setImage:[UIImage imageNamed:@&quot;back&quot;] forState:UIControlStateNormal];</span><br><span class="line">button.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0); //使用这个属性控制UIImageView和UILabel之间的距离</span><br><span class="line">[button sizeToFit]; //设定button的frame</span><br><span class="line">[button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">UIBarButtonItem * leftButton = [[UIBarButtonItem alloc]initWithCustomView:button];</span><br></pre></td></tr></table></figure>
 <p>但是这样又发现一个新的问题，我们无法控制UIBarButtonItem的边距。官方文档UINavigationItem中对于leftBarButtonItems和rightBarButtonItems这两个属性中有如下描述：</p>
 <blockquote>
 <p>leftBarButtonItems are placed in the navigation bar left to right with the first item in the list at the left outside edge and left aligned.</p>
+</blockquote>
+<blockquote>
 <p>rightBarButtonItems are placed right to left with the first item in the list at the right outside edge and right aligned.</p>
 </blockquote>
 <p>因此我们可以再实例化一个UIBarButtonItem并设置它的width，完整代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">UIBarButtonItem * negativeSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];</div><div class="line">negativeSpacer.width = -16.0; //可根据实际需要调整</div><div class="line">UIButton * button = [UIButton buttonWithType:UIButtonTypeRoundedRect];</div><div class="line">[button setTitle:@&quot;返回&quot; forState:UIControlStateNormal];</div><div class="line">button.titleLabel.font = [UIFont systemFontOfSize:17.0];</div><div class="line">[button setImage:[UIImage imageNamed:@&quot;back&quot;] forState:UIControlStateNormal];</div><div class="line">button.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0);</div><div class="line">[button sizeToFit];</div><div class="line">[button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];</div><div class="line">UIBarButtonItem * leftButton = [[UIBarButtonItem alloc]initWithCustomView:button];</div><div class="line">self.navigationItem.leftBarButtonItems = @[negativeSpacer, leftbutton];</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">UIBarButtonItem * negativeSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];</span><br><span class="line">negativeSpacer.width = -16.0; //可根据实际需要调整</span><br><span class="line">UIButton * button = [UIButton buttonWithType:UIButtonTypeRoundedRect];</span><br><span class="line">[button setTitle:@&quot;返回&quot; forState:UIControlStateNormal];</span><br><span class="line">button.titleLabel.font = [UIFont systemFontOfSize:17.0];</span><br><span class="line">[button setImage:[UIImage imageNamed:@&quot;back&quot;] forState:UIControlStateNormal];</span><br><span class="line">button.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0);</span><br><span class="line">[button sizeToFit];</span><br><span class="line">[button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">UIBarButtonItem * leftButton = [[UIBarButtonItem alloc]initWithCustomView:button];</span><br><span class="line">self.navigationItem.leftBarButtonItems = @[negativeSpacer, leftbutton];</span><br></pre></td></tr></table></figure>
 <h2 id="去除UINavigationBar的阴影"><a href="#去除UINavigationBar的阴影" class="headerlink" title="去除UINavigationBar的阴影"></a>去除UINavigationBar的阴影</h2><hr>
 <p>我采用的是如下的方法：</p>
 <p><code>[nav.navigationBar setShadowImage:[[UIImage alloc]init]];</code></p>
@@ -426,11 +431,11 @@
     </article>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+    <article class="postShorten postShorten--thumbnailimg-bottom">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
-                <h1 class="postShorten-title" itemprop="headline">
+                <h1 class="postShorten-title">
                     
                         <a class="link-unstyled" href="/2016/05/01/ios-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0-ef-bc-88-e4-b8-80-ef-bc-89/">
                             iOS学习笔记（一）
@@ -438,7 +443,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time itemprop="datePublished" datetime="2016-05-01T02:02:30+08:00">
+    <time datetime="2016-05-01T02:02:30+08:00">
 	
 		    5月 01, 2016
     	
@@ -454,17 +459,17 @@
 
             </div>
             
-                <div class="postShorten-content" itemprop="articleBody">
+                <div class="postShorten-content">
                     <hr>
 <h3 id="最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下："><a href="#最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下：" class="headerlink" title="最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下："></a>最近开始了自己的第一个项目，到目前为止已经写完了基本的界面，将开发过程中遇到的一些问题列举如下：</h3><h4 id="自定义cell分割线"><a href="#自定义cell分割线" class="headerlink" title="自定义cell分割线"></a>自定义cell分割线</h4><p>首先设置 <code>tableView.separatorStyle = UITableViewCellSeparatorStyleNone;</code></p>
 <p>然后在自定义的cell的实现文件内实现如下的方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (void)drawSeparator&#123;</div><div class="line">    _separatorlineLayer = [CAShapeLayer layer];</div><div class="line">    CGMutablePathRef separatorShapePath = CGPathCreateMutable();</div><div class="line">    [_separatorLayer setFillColor:[UIColor clearColor].CGColor];</div><div class="line">    [_separatorLayer setStrokeColor:[UIColor headlineColor].CGColor];</div><div class="line">    _separatorLayer.lineWidth = 0.5f;</div><div class="line">    CGPathMoveToPoint(separatorShapePath, NULL, 0.0f, 0.0f);</div><div class="line">    CGPathAddLineToPoint(separatorShapePath, NULL, WIDTH, 0.0f);</div><div class="line">    [_headlineLayer setPath:separatorShapePath];</div><div class="line">    CGPathRelease(separatorShapePath);</div><div class="line">    [self.contentView.layer addSublayer:_separatorLineLayer];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)drawSeparator&#123;</span><br><span class="line">    _separatorlineLayer = [CAShapeLayer layer];</span><br><span class="line">    CGMutablePathRef separatorShapePath = CGPathCreateMutable();</span><br><span class="line">    [_separatorLayer setFillColor:[UIColor clearColor].CGColor];</span><br><span class="line">    [_separatorLayer setStrokeColor:[UIColor headlineColor].CGColor];</span><br><span class="line">    _separatorLayer.lineWidth = 0.5f;</span><br><span class="line">    CGPathMoveToPoint(separatorShapePath, NULL, 0.0f, 0.0f);</span><br><span class="line">    CGPathAddLineToPoint(separatorShapePath, NULL, WIDTH, 0.0f);</span><br><span class="line">    [_headlineLayer setPath:separatorShapePath];</span><br><span class="line">    CGPathRelease(separatorShapePath);</span><br><span class="line">    [self.contentView.layer addSublayer:_separatorLineLayer];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其中，<code>_separatorLayer</code>是<code>CAShapeLayer</code>的实例，<code>setStrokeColor</code>方法设定了线的颜色，<code>CGPathMoveToPoint</code>和<code>CGPathAddLineToPoint</code>设定了线的起始点。</p>
 <p>同理，可以类似地实现画点或者更为复杂形状的效果。</p>
 <h4 id="iOS8之后cell的动态高度计算"><a href="#iOS8之后cell的动态高度计算" class="headerlink" title="iOS8之后cell的动态高度计算"></a>iOS8之后cell的动态高度计算</h4><p>首先使用autolayout布局，且确保cell的contentView至少top和bottom都和cell内部的View建立了约束。之后添加如下代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tableView.estimatedRowHeight = 60.0f;</div><div class="line">tableView.rowHeight = UITableViewAutomaticDimension;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tableView.estimatedRowHeight = 60.0f;</span><br><span class="line">tableView.rowHeight = UITableViewAutomaticDimension;</span><br></pre></td></tr></table></figure>
 <p>需要注意的是，必须要为tebleView的estimiatedRowHeight属性设定值。</p>
-<h4 id="返回键盘的高度"><a href="#返回键盘的高度" class="headerlink" title="返回键盘的高度"></a>返回键盘的高度</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">- (void)viewDidLoad&#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">    //注册通知</div><div class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];</div><div class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)dealloc &#123;</div><div class="line">    //移除通知</div><div class="line">    [[NSNotificationCenter defaultCenter]removeObserver:self];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)keyboardWillShow:(NSNotification *)notification&#123;</div><div class="line">    //键盘弹出时调用</div><div class="line">    NSDictionary * userInfo = [notification userInfo];</div><div class="line">    NSValue * frameValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];</div><div class="line">    CGRect keyboardRect = [frameValue CGRectValue];</div><div class="line">    NSInteger height = keyboardRect.size.height;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)keyboardWillHide:(NSNotification *)notification&#123;</div><div class="line">    //键盘隐藏时调用</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="返回键盘的高度"><a href="#返回键盘的高度" class="headerlink" title="返回键盘的高度"></a>返回键盘的高度</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad&#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    //注册通知</span><br><span class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];</span><br><span class="line">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dealloc &#123;</span><br><span class="line">    //移除通知</span><br><span class="line">    [[NSNotificationCenter defaultCenter]removeObserver:self];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)keyboardWillShow:(NSNotification *)notification&#123;</span><br><span class="line">    //键盘弹出时调用</span><br><span class="line">    NSDictionary * userInfo = [notification userInfo];</span><br><span class="line">    NSValue * frameValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];</span><br><span class="line">    CGRect keyboardRect = [frameValue CGRectValue];</span><br><span class="line">    NSInteger height = keyboardRect.size.height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)keyboardWillHide:(NSNotification *)notification&#123;</span><br><span class="line">    //键盘隐藏时调用</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>height中储存的即为当前键盘的高度</p>
 <h4 id="小心block导致的retain-cycle"><a href="#小心block导致的retain-cycle" class="headerlink" title="小心block导致的retain cycle"></a>小心block导致的retain cycle</h4><p>如果在block中需要访问本类的实例变量，需要使用</p>
 <p><code>__weak UIViewController * weakSelf = self;</code></p>
@@ -500,7 +505,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 CoSidian. All Rights Reserved.
+        Copyrights &copy; 2018 码龙黑曜. All Rights Reserved.
     </span>
 </footer>
 
@@ -522,16 +527,16 @@
         
             <img id="about-card-picture" src="/assets/images/avatar.jpg" alt="作者的图片"/>
         
-            <h4 id="about-card-name">CoSidian</h4>
+            <h4 id="about-card-name">码龙黑曜</h4>
         
-            <div id="about-card-bio"><p>码龙黑曜 - iOS开发者/计算机科学/兽人控</p>
+            <div id="about-card-bio"><p>iOS开发者/计算机科学/兽人控</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>本科在读</p>
+                <p>华中科技大学 本科在读</p>
 
             </div>
         
@@ -539,7 +544,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker"></i>
                 <br/>
-                HUST, Wuhan, China
+                Wuhan, China
             </div>
         
     </div>
@@ -549,7 +554,7 @@
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/assets/js/script-i7zzex3jvqnxdf0lp2pg3bcyurjikigtrw9ljle5skc4mit2m7a13rwuyp8g.min.js"></script>
+<script src="/assets/js/script-feiabjni254mgbxiozwsjblcsiodjqohurk0dcfkq0aooroewq6bvkdnadrg.min.js"></script>
 <!--SCRIPTS END-->
 
 
